@@ -13,6 +13,7 @@ import { BullModule } from './shared/bull/bull.module';
 import { ElasticsearchModule } from './shared/elasticsearch/elasticsearch.module';
 import { RedisModule } from './shared/redis/redis.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { ArticleModule } from './modules/article/article.module';
 import { UserModule } from './modules/user/user.module';
 
 @Module({
@@ -33,6 +34,7 @@ import { UserModule } from './modules/user/user.module';
     BullModule,
     UserModule,
     AuthModule,
+    ArticleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
