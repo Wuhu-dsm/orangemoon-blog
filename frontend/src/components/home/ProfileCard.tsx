@@ -1,0 +1,76 @@
+import { Code, Mail, X } from 'lucide-react'
+
+const stats = [
+  { label: '文章', value: '56' },
+  { label: '项目', value: '12' },
+  { label: '笔记', value: '89' },
+  { label: '粉丝', value: '1.2k' },
+]
+
+const socials = [
+  { icon: Code, label: 'GitHub', href: '#' },
+  { icon: X, label: '知乎', href: '#' },
+  { icon: X, label: '微博', href: '#' },
+  { icon: Mail, label: '邮箱', href: '#' },
+]
+
+export default function ProfileCard() {
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-sm">
+      {/* Decorative cat */}
+      <img
+        src="/images/home/avatar.png"
+        alt=""
+        className="pointer-events-none absolute -right-2 -top-2 h-16 w-16 opacity-60"
+      />
+
+      <div className="relative z-10 flex flex-col items-center text-center">
+        <div className="relative">
+          <img
+            src="/images/home/avatar.png"
+            alt="Sora"
+            className="h-16 w-16 rounded-full border-2 border-primary/20 object-cover"
+          />
+          <span className="absolute -bottom-1 -right-1 rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-medium text-primary-foreground">
+            Lv.5
+          </span>
+        </div>
+
+        <h4 className="mt-3 text-base font-semibold">Sora</h4>
+        <p className="text-xs text-muted-foreground">前端开发 & 设计爱好者</p>
+        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+          热爱技术，喜欢设计，也热爱生活。
+          <br />
+          这里是我的数字花园 🌱
+        </p>
+
+        {/* Stats */}
+        <div className="mt-4 grid w-full grid-cols-4 gap-2">
+          {stats.map((s) => (
+            <div key={s.label} className="flex flex-col items-center">
+              <span className="text-sm font-semibold">{s.value}</span>
+              <span className="text-[10px] text-muted-foreground">{s.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Socials */}
+        <div className="mt-4 flex gap-3">
+          {socials.map((s) => {
+            const Icon = s.icon
+            return (
+              <a
+                key={s.label}
+                href={s.href}
+                title={s.label}
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition hover:bg-primary hover:text-primary-foreground"
+              >
+                <Icon size={14} />
+              </a>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
