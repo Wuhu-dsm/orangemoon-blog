@@ -1,4 +1,4 @@
-import { Bell, Menu, Search, User } from 'lucide-react'
+import { Bell, Gift, Menu, Search, User } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { useSidebarStore } from '../../stores/sidebarStore'
@@ -22,17 +22,29 @@ export default function Header() {
         </button>
         <div className="relative w-full max-w-96">
           <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             size={16}
           />
           <input
             type="text"
             placeholder="搜索文章、笔记、项目..."
-            className="h-10 w-full rounded-lg bg-gray-100 pl-10 pr-4 text-sm outline-none ring-primary-500 transition focus:ring-2 dark:bg-gray-800"
+            className="h-10 w-full rounded-xl bg-muted pl-10 pr-16 text-sm outline-none ring-primary transition focus:ring-2"
           />
+          <kbd className="absolute right-3 top-1/2 hidden -translate-y-1/2 rounded border border-border bg-card px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground sm:inline">
+            ⌘ K
+          </kbd>
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+        <button
+          type="button"
+          className="relative rounded-lg p-2 text-foreground/70 transition hover:bg-accent hover:text-foreground"
+          aria-label="活动"
+          title="活动"
+        >
+          <Gift size={18} />
+          <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-primary" />
+        </button>
         <ThemeToggle />
         <button
           type="button"
