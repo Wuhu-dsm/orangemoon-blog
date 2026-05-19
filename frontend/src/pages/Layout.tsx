@@ -10,9 +10,9 @@ export default function Layout() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Sidebar />
-      <div className="flex min-h-screen flex-col lg:ml-64 lg:mr-80">
+      <div className="flex min-h-screen flex-col lg:ml-64 xl:mr-80">
         <Header />
-        <div className="flex flex-1 gap-6 p-4 sm:p-6">
+        <div className="flex flex-1 p-4 sm:p-6">
           <main className="flex-1">
             <Outlet />
           </main>
