@@ -1,7 +1,6 @@
 import profileCardBg from '@/assets/home/profile-card-bg.png'
 import { profileStats, socialActions } from '../data'
 import styles from '../Home.module.css'
-import IconActionButton from './IconActionButton'
 
 export default function ProfileCard() {
   return (
@@ -12,19 +11,23 @@ export default function ProfileCard() {
       <img
         src={profileCardBg}
         alt=""
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-12"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.12]"
         aria-hidden="true"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-white/88 via-white/76 to-[#ecfbff]/84" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/75 to-[#ecfbff]/80" />
 
       <div className="relative z-10 flex flex-col items-center text-center">
         <img
           src={profileCardBg}
-          alt="Sora avatar"
+          alt=""
           className="size-24 rounded-[28px] border-4 border-white object-cover shadow-lg shadow-sky-100"
+          aria-hidden="true"
         />
         <div className="mt-4 flex items-center gap-2">
-          <h2 id="home-profile-title" className="text-2xl font-bold text-[#173861]">
+          <h2
+            id="home-profile-title"
+            className="text-2xl font-bold text-[#173861]"
+          >
             Sora
           </h2>
           <span className="rounded-full border border-[#bfeaf0] bg-[#e9fbff] px-2.5 py-1 text-xs font-bold text-[#17a7a0]">
@@ -59,14 +62,21 @@ export default function ProfileCard() {
         className="relative z-10 mt-6 flex items-center justify-center gap-2"
         aria-label="社交链接"
       >
-        {socialActions.map((action) => (
-          <IconActionButton
-            key={action.label}
-            icon={action.icon}
-            label={action.label}
-            className="size-10 rounded-xl"
-          />
-        ))}
+        {socialActions.map((action) => {
+          const Icon = action.icon
+
+          return (
+            <span
+              key={action.label}
+              className="inline-flex size-10 items-center justify-center rounded-xl border border-[#c8dff0] bg-white/75 text-[#294574] shadow-sm"
+              aria-label={action.label}
+              title={action.label}
+              role="img"
+            >
+              <Icon size={19} strokeWidth={1.9} aria-hidden="true" />
+            </span>
+          )
+        })}
       </div>
     </aside>
   )
