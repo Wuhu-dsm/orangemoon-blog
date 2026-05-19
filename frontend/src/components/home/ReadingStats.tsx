@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, ChevronDown } from 'lucide-react'
 
 const data = [
   { day: '05-01', value: 320 },
@@ -35,21 +35,22 @@ export default function ReadingStats() {
     <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
       <div className="flex items-center justify-between">
         <h4 className="text-sm font-semibold">阅读统计</h4>
-        <div className="flex gap-1">
-          {ranges.map((r, idx) => (
-            <button
-              key={r}
-              type="button"
-              onClick={() => setRange(idx)}
-              className={`rounded-md px-2 py-1 text-[10px] transition ${
-                idx === range
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:bg-accent'
-              }`}
-            >
-              {r}
-            </button>
-          ))}
+        <div className="relative">
+          <select
+            value={range}
+            onChange={(e) => setRange(Number(e.target.value))}
+            className="appearance-none rounded-md border border-border bg-secondary px-2 py-1 pr-6 text-[10px] text-secondary-foreground outline-none"
+          >
+            {ranges.map((r, idx) => (
+              <option key={r} value={idx}>
+                {r}
+              </option>
+            ))}
+          </select>
+          <ChevronDown
+            size={12}
+            className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+          />
         </div>
       </div>
 

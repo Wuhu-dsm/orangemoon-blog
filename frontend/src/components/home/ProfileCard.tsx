@@ -16,46 +16,52 @@ const socials = [
 
 export default function ProfileCard() {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-sm">
-      {/* Decorative cat */}
-      <img
-        src="/images/home/avatar.png"
-        alt=""
-        className="pointer-events-none absolute -right-2 -top-2 h-16 w-16 opacity-60"
-      />
-
-      <div className="relative z-10 flex flex-col items-center text-center">
-        <div className="relative">
+    <div
+      className="relative overflow-hidden rounded-2xl border border-border bg-cover bg-center p-5 shadow-sm"
+      style={{ backgroundImage: 'url(/images/home/profile.png)' }}
+    >
+      <div className="relative z-10">
+        {/* Top row: avatar + info */}
+        <div className="flex items-start gap-3">
           <img
             src="/images/home/avatar.png"
             alt="Sora"
-            className="h-16 w-16 rounded-full border-2 border-primary/20 object-cover"
+            className="h-14 w-14 rounded-full border-2 border-primary/20 object-cover"
           />
-          <span className="absolute -bottom-1 -right-1 rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-medium text-primary-foreground">
-            Lv.5
-          </span>
+          <div className="flex-1 pt-0.5">
+            <div className="flex items-center gap-2">
+              <h4 className="text-base font-semibold">Sora</h4>
+              <span className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-medium text-primary-foreground">
+                Lv.5
+              </span>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              前端开发 & 设计爱好者
+            </p>
+          </div>
         </div>
 
-        <h4 className="mt-3 text-base font-semibold">Sora</h4>
-        <p className="text-xs text-muted-foreground">前端开发 & 设计爱好者</p>
-        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+        {/* Bio */}
+        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
           热爱技术，喜欢设计，也热爱生活。
           <br />
           这里是我的数字花园 🌱
         </p>
 
         {/* Stats */}
-        <div className="mt-4 grid w-full grid-cols-4 gap-2">
+        <div className="mt-4 grid grid-cols-4 gap-2 border-t border-border/60 pt-4">
           {stats.map((s) => (
             <div key={s.label} className="flex flex-col items-center">
               <span className="text-sm font-semibold">{s.value}</span>
-              <span className="text-[10px] text-muted-foreground">{s.label}</span>
+              <span className="text-[10px] text-muted-foreground">
+                {s.label}
+              </span>
             </div>
           ))}
         </div>
 
         {/* Socials */}
-        <div className="mt-4 flex gap-3">
+        <div className="mt-4 flex justify-center gap-3">
           {socials.map((s) => {
             const Icon = s.icon
             return (

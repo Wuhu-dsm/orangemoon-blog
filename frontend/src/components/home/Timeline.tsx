@@ -23,7 +23,7 @@ const events = [
 export default function Timeline() {
   return (
     <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-      <div className="flex items-center justify-between">
+      <div className="mb-3 flex items-center justify-between">
         <h4 className="text-xs font-semibold">时间轴</h4>
         <Link
           to="/timeline"
@@ -32,7 +32,7 @@ export default function Timeline() {
           查看全部 <ArrowRight size={10} />
         </Link>
       </div>
-      <div className="relative mt-3 space-y-3 pl-3">
+      <div className="relative space-y-3 pl-3">
         {/* Vertical line */}
         <div className="absolute left-[5px] top-1.5 h-[calc(100%-12px)] w-px bg-border" />
         {events.map((e, idx) => (

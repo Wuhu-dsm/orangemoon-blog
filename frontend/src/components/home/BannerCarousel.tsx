@@ -15,7 +15,11 @@ export default function BannerCarousel() {
   const [current] = useState(0)
 
   return (
-    <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary-100 to-accent p-8 sm:p-10">
+    <section
+      className="relative overflow-hidden rounded-2xl bg-cover bg-center p-8 sm:p-10"
+      style={{ backgroundImage: 'url(/images/home/banner-bg.png)' }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-transparent" />
       <AnimatePresence mode="wait">
         <motion.div
           key={current}
@@ -25,13 +29,13 @@ export default function BannerCarousel() {
           transition={{ duration: 0.4 }}
           className="relative z-10"
         >
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-white drop-shadow-sm sm:text-4xl">
             {slides[current].title}
           </h2>
-          <p className="mt-1 text-3xl font-bold tracking-tight text-primary sm:text-4xl">
+          <p className="mt-1 text-3xl font-bold tracking-tight text-white drop-shadow-sm sm:text-4xl">
             {slides[current].subtitle}
           </p>
-          <p className="mt-4 max-w-md text-sm text-muted-foreground">
+          <p className="mt-4 max-w-md text-sm text-white/80">
             {slides[current].description}
           </p>
           <button
@@ -50,7 +54,7 @@ export default function BannerCarousel() {
           <span
             key={idx}
             className={`block h-1.5 rounded-full transition-all ${
-              idx === current ? 'w-6 bg-primary' : 'w-1.5 bg-primary/40'
+              idx === current ? 'w-6 bg-white' : 'w-1.5 bg-white/50'
             }`}
           />
         ))}

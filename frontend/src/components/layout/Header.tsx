@@ -9,11 +9,11 @@ export default function Header() {
   const openSidebar = useSidebarStore((state) => state.open)
 
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-gray-200 bg-white/95 px-4 backdrop-blur dark:border-gray-800 dark:bg-gray-900/95 sm:px-6">
+    <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-border bg-card/95 px-4 backdrop-blur sm:px-6">
       <div className="flex min-w-0 flex-1 items-center gap-3">
         <button
           type="button"
-          className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 lg:hidden dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-50"
+          className="rounded-lg p-2 text-muted-foreground transition hover:bg-accent hover:text-foreground lg:hidden"
           onClick={openSidebar}
           aria-label="打开导航"
           title="打开导航"
@@ -48,7 +48,7 @@ export default function Header() {
         <ThemeToggle />
         <button
           type="button"
-          className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-50"
+          className="rounded-lg p-2 text-muted-foreground transition hover:bg-accent hover:text-foreground"
           aria-label="通知"
           title="通知"
         >
@@ -59,14 +59,14 @@ export default function Header() {
             <img
               src={user?.avatar || '/default-avatar.png'}
               alt={user?.username || '用户头像'}
-              className="size-8 rounded-full bg-gray-200 object-cover dark:bg-gray-700"
+              className="size-8 rounded-full bg-muted object-cover"
             />
             <span className="hidden text-sm sm:inline">{user?.username}</span>
           </div>
         ) : (
           <Link
             to="/login"
-            className="flex h-10 items-center gap-2 rounded-lg bg-primary-500 px-3 text-sm font-medium text-white transition hover:bg-primary-600 sm:px-4"
+            className="flex h-10 items-center gap-2 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 sm:px-4"
           >
             <User size={16} />
             <span className="hidden sm:inline">登录</span>

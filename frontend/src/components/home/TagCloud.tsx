@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const tags = [
@@ -16,13 +17,21 @@ const tags = [
 export default function TagCloud() {
   return (
     <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-      <h4 className="text-xs font-semibold">标签云</h4>
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="mb-3 flex items-center justify-between">
+        <h4 className="text-xs font-semibold">标签云</h4>
+        <Link
+          to="/articles"
+          className="flex items-center gap-0.5 text-[10px] text-muted-foreground transition hover:text-primary"
+        >
+          更多标签 <ArrowRight size={10} />
+        </Link>
+      </div>
+      <div className="flex flex-wrap gap-2">
         {tags.map((tag) => (
           <Link
             key={tag.name}
             to={`/articles?tag=${encodeURIComponent(tag.name)}`}
-            className="inline-flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-[10px] text-secondary-foreground transition hover:bg-primary hover:text-primary-foreground"
+            className="inline-flex items-center gap-1 rounded-full bg-primary-50 px-2.5 py-1 text-[10px] text-primary-700 transition hover:bg-primary-100 dark:bg-primary-900/20 dark:text-primary-300 dark:hover:bg-primary-900/30"
           >
             {tag.name}
             <span className="text-[9px] opacity-70">{tag.count}</span>
