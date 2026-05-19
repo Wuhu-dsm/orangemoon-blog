@@ -16,11 +16,13 @@ const socials = [
 
 export default function ProfileCard() {
   return (
-    <div
-      className="relative overflow-hidden rounded-2xl border border-border bg-cover bg-center p-5 shadow-sm"
-      style={{ backgroundImage: 'url(/images/home/profile.png)' }}
-    >
-      <div className="relative z-10">
+    <div className="relative overflow-hidden rounded-2xl shadow-sm">
+      <img
+        src="/images/home/profile.png"
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <div className="relative z-10 p-5">
         {/* Top row: avatar + info */}
         <div className="flex items-start gap-3">
           <img
