@@ -1,17 +1,20 @@
 import {
   BookOpen,
   Clock,
+  Code,
   FileText,
   FolderOpen,
+  Gift,
   Home,
   Link as LinkIcon,
   MessageSquare,
+  Moon,
+  Settings,
   User,
   X,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useSidebarStore } from '../../stores/sidebarStore'
-import { Settings, Moon, Gift, Code } from 'lucide-react'
 import { useThemeStore } from '../../stores/themeStore'
 
 const navItems = [
@@ -87,7 +90,7 @@ export default function Sidebar() {
         <div className="relative mt-4 flex justify-center px-3">
           <img
             src="/images/home/role_sider.png"
-            alt=" decoration"
+            alt=""
             className="h-40 w-auto object-contain opacity-90"
           />
           <img
@@ -150,7 +153,7 @@ export default function Sidebar() {
 
         {/* Copyright */}
         <div className="mt-auto py-4 text-center">
-          <p className="text-[10px] text-muted-foreground">© 2024 SoraBlog</p>
+          <p className="text-[10px] text-muted-foreground">© {new Date().getFullYear()} SoraBlog</p>
         </div>
       </aside>
     </>
