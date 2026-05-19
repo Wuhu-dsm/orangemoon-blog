@@ -9,7 +9,7 @@ export default function Header() {
   const openSidebar = useSidebarStore((state) => state.open)
 
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b border-border bg-card/95 px-4 backdrop-blur sm:px-6">
+    <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 px-4 sm:px-6">
       <div className="flex min-w-0 flex-1 items-center gap-3">
         <button
           type="button"
@@ -20,17 +20,17 @@ export default function Header() {
         >
           <Menu size={18} />
         </button>
-        <div className="relative w-full max-w-96">
+        <div className="relative w-full max-w-md">
           <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/70"
             size={16}
           />
           <input
             type="text"
             placeholder="搜索文章、笔记、项目..."
-            className="h-10 w-full rounded-xl bg-muted pl-10 pr-16 text-sm outline-none ring-primary transition focus:ring-2"
+            className="h-11 w-full rounded-full bg-white pl-11 pr-16 text-sm font-normal shadow-sm outline-none transition placeholder:text-muted-foreground/60 focus:shadow-md"
           />
-          <kbd className="absolute right-3 top-1/2 hidden -translate-y-1/2 rounded border border-border bg-card px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground sm:inline">
+          <kbd className="absolute right-3 top-1/2 hidden -translate-y-1/2 rounded-md border border-border/50 bg-white/60 px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground/70 backdrop-blur-sm sm:inline">
             ⌘ K
           </kbd>
         </div>
@@ -61,7 +61,7 @@ export default function Header() {
               alt={user?.username || '用户头像'}
               className="size-8 rounded-full bg-muted object-cover"
             />
-            <span className="hidden text-sm sm:inline">{user?.username}</span>
+            <span className="hidden text-sm font-medium sm:inline">{user?.username}</span>
           </div>
         ) : (
           <Link

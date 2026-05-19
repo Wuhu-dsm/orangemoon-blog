@@ -16,7 +16,7 @@ const socials = [
 
 export default function ProfileCard() {
   return (
-    <div className="relative overflow-hidden rounded-2xl shadow-sm">
+    <div className="relative overflow-hidden">
       <img
         src="/images/home/profile.png"
         alt=""

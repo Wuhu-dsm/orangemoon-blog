@@ -1,21 +1,18 @@
 import {
   BookOpen,
   Clock,
-  Code,
   FileText,
   FolderOpen,
-  Gift,
   Home,
   Link as LinkIcon,
   MessageSquare,
-  Moon,
-  Settings,
+  PanelLeftClose,
+  PanelLeftOpen,
   User,
   X,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useSidebarStore } from '../../stores/sidebarStore'
-import { useThemeStore } from '../../stores/themeStore'
 
 const navItems = [
   { icon: Home, label: '首页', path: '/' },
@@ -30,8 +27,7 @@ const navItems = [
 
 export default function Sidebar() {
   const location = useLocation()
-  const { isOpen, close } = useSidebarStore()
-  const { toggle } = useThemeStore()
+  const { isOpen, close, collapsed, toggleCollapsed } = useSidebarStore()
 
   return (
     <>
@@ -42,17 +38,51 @@ export default function Sidebar() {
         onClick={close}
       />
       <aside
-        className={`fixed left-0 top-0 z-40 flex h-screen w-64 flex-col border-r border-gray-200 bg-white transition-transform dark:border-gray-800 dark:bg-gray-900 ${
+        className={`fixed left-0 top-0 z-40 flex h-screen flex-col border-r border-gray-200 bg-white transition-all duration-300 dark:border-gray-800 dark:bg-gray-900 ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        }`}
+        } ${collapsed ? 'w-[72px]' : 'w-64'}`}
       >
-        <div className="flex items-start justify-between p-6">
-          <Link to="/" className="flex flex-col" onClick={close}>
-            <span className="text-xl font-bold leading-none">
-              <span className="text-primary-500">Sora</span>Blog
-            </span>
-            <span className="mt-1 text-xs text-gray-500">记录 · 思考 · 成长</span>
-          </Link>
+        {/* Logo 区 */}
+        <div
+          className={`flex items-start pt-6 pb-4 ${
+            collapsed
+              ? 'px-2 justify-center'
+              : 'px-6 justify-between'
+          }`}
+        >
+          {!collapsed && (
+            <Link
+              to="/"
+              className="flex items-center gap-3"
+              onClick={close}
+            >
+              <img
+                src="/images/sidebar/logo.png"
+                alt=""
+                className="h-10 w-auto shrink-0"
+              />
+              <div className="flex flex-col">
+                <span className="flex items-center gap-1 text-xl font-bold leading-none text-gray-800 dark:text-gray-100">
+                  SoraBlog
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className="text-teal-400"
+                  >
+                    <path
+                      d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+                <span className="mt-1 text-xs text-gray-400 tracking-wide">
+                  记录 · 思考 · 成长
+                </span>
+              </div>
+            </Link>
+          )}
           <button
             type="button"
             className="rounded-md p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 lg:hidden dark:hover:bg-gray-800 dark:hover:text-gray-50"
@@ -62,8 +92,19 @@ export default function Sidebar() {
           >
             <X size={18} />
           </button>
+          <button
+            type="button"
+            className="hidden rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-900 lg:flex dark:hover:bg-gray-800 dark:hover:text-gray-50"
+            onClick={toggleCollapsed}
+            aria-label={collapsed ? '展开侧边栏' : '收起侧边栏'}
+            title={collapsed ? '展开侧边栏' : '收起侧边栏'}
+          >
+            {collapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
+          </button>
         </div>
-        <nav className="flex flex-1 flex-col gap-1 px-3">
+
+        {/* 主导航菜单 */}
+        <nav className={`flex flex-1 flex-col gap-1 ${collapsed ? 'px-2' : 'px-4'}`}>
           {navItems.map((item) => {
             const Icon = item.icon
             const isActive = location.pathname === item.path
@@ -73,88 +114,63 @@ export default function Sidebar() {
                 key={item.path}
                 to={item.path}
                 onClick={close}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
+                title={item.label}
+                className={`flex items-center rounded-xl py-3 text-[15px] font-medium transition-colors ${
+                  collapsed ? 'justify-center px-2' : 'gap-4 px-5'
+                } ${
                   isActive
-                    ? 'bg-primary-100/60 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
-                    : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                    ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-300'
+                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800/60 dark:hover:text-gray-200'
                 }`}
               >
-                <Icon size={18} />
-                <span>{item.label}</span>
+                <Icon size={19} strokeWidth={1.8} />
+                {!collapsed && <span>{item.label}</span>}
               </Link>
             )
           })}
         </nav>
 
-        {/* Decorative illustration */}
-        <div className="relative mt-4 flex justify-center px-3">
-          <img
-            src="/images/home/role_sider.png"
-            alt=""
-            className="h-40 w-auto object-contain opacity-90"
-          />
-          <img
-            src="/images/home/star.png"
-            alt=""
-            className="absolute -right-2 top-4 h-8 w-auto animate-pulse"
-          />
-          <img
-            src="/images/home/leaf.png"
-            alt=""
-            className="absolute -left-1 top-8 h-6 w-auto"
-          />
-        </div>
+        {/* 装饰插画区 */}
+        {!collapsed && (
+          <div className="relative -mt-3 flex justify-start px-4">
+            <img
+              src="/images/sidebar/cat.png"
+              alt=""
+              className="h-44 w-auto object-contain"
+            />
+            <img
+              src="/images/sidebar/stars.png"
+              alt=""
+              className="pointer-events-none absolute -top-5 right-0 h-auto w-40"
+            />
+          </div>
+        )}
 
-        {/* Quote */}
-        <div className="mt-4 px-6 text-center">
-          <p className="text-xs leading-relaxed text-muted-foreground">
-            生活明朗，万物可爱
-            <br />
-            保持热爱，奔赴山海。
-          </p>
-        </div>
+        {/* 语录卡片 */}
+        {!collapsed && (
+          <div className="mx-5 mt-3 rounded-2xl bg-gray-50 px-4 py-2 dark:bg-gray-800/50">
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="self-start text-2xl font-bold leading-none text-gray-400 dark:text-gray-500">
+                &ldquo;
+              </span>
+              <p className="line-clamp-2 px-2 text-center text-xs font-medium leading-relaxed text-gray-600 dark:text-gray-300">
+                生活明朗，万物可爱，保持热爱，奔赴山海。
+              </p>
+              <span className="self-end text-2xl font-bold leading-none text-gray-400 dark:text-gray-500">
+                &rdquo;
+              </span>
+            </div>
+          </div>
+        )}
 
-        {/* Shortcut buttons */}
-        <div className="mt-4 flex justify-center gap-3 px-3">
-          <button
-            type="button"
-            aria-label="切换主题"
-            title="切换主题"
-            onClick={toggle}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition hover:bg-secondary/80"
-          >
-            <Moon size={16} />
-          </button>
-          <button
-            type="button"
-            aria-label="设置"
-            title="设置"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition hover:bg-secondary/80"
-          >
-            <Settings size={16} />
-          </button>
-          <button
-            type="button"
-            aria-label="通知"
-            title="通知"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition hover:bg-secondary/80"
-          >
-            <Gift size={16} />
-          </button>
-          <button
-            type="button"
-            aria-label="GitHub"
-            title="GitHub"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition hover:bg-secondary/80"
-          >
-            <Code size={16} />
-          </button>
-        </div>
-
-        {/* Copyright */}
-        <div className="mt-auto py-4 text-center">
-          <p className="text-[10px] text-muted-foreground">© {new Date().getFullYear()} SoraBlog</p>
-        </div>
+        {/* 版权信息 */}
+        {!collapsed && (
+          <div className="mt-auto py-4 text-center">
+            <p className="text-[10px] text-muted-foreground">
+              © {new Date().getFullYear()} SoraBlog
+            </p>
+          </div>
+        )}
       </aside>
     </>
   )

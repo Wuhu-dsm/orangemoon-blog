@@ -2,6 +2,7 @@ import { ArrowRight, Eye } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Badge } from '../ui/badge'
 import { Card, CardContent } from '../ui/card'
+import ContentSwiper from './ContentSwiper'
 
 const articles = [
   {
@@ -31,54 +32,72 @@ const articles = [
     views: '1.5k',
     cover: '/images/home/avatar.png',
   },
+  {
+    id: 4,
+    category: '技术',
+    title: 'TypeScript 高级类型体操入门',
+    excerpt: '从条件类型到模板字面量类型，带你系统掌握 TS 类型编程。',
+    date: '2024/05/15',
+    views: '2.1k',
+    cover: '/images/home/avatar.png',
+  },
+  {
+    id: 5,
+    category: '设计',
+    title: '聊聊我常用的配色方案',
+    excerpt: '分享几个我日常工作中高频使用的配色工具与配色思路。',
+    date: '2024/05/10',
+    views: '860',
+    cover: '/images/home/email.png',
+  },
 ]
 
 export default function LatestArticles() {
   return (
-    <section>
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold">最新文章</h3>
+    <section className="rounded-2xl bg-card p-5 shadow-sm">
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-base font-semibold">最新文章</h3>
         <Link
           to="/articles"
-          className="flex items-center gap-1 text-sm text-muted-foreground transition hover:text-primary"
+          className="flex items-center gap-1 text-xs text-muted-foreground transition hover:text-primary"
         >
-          查看全部 <ArrowRight size={14} />
+          查看全部 <ArrowRight size={12} />
         </Link>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ContentSwiper itemsPerPage={3} className="h-[180px]">
         {articles.map((article) => (
           <Card
             key={article.id}
-            className="group overflow-hidden border-border/60 bg-card transition hover:shadow-md"
+            className="group h-full overflow-hidden border-border/60 bg-white transition hover:shadow-md dark:bg-gray-900"
           >
-            <div className="relative aspect-[16/10] overflow-hidden">
+            <div className="relative h-24 overflow-hidden">
               <img
                 src={article.cover}
                 alt={article.title}
                 className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
               />
-              <Badge className="absolute left-3 top-3 bg-primary/90 text-primary-foreground hover:bg-primary">
+              <Badge className="absolute left-2 top-2 bg-primary/90 text-[10px] text-primary-foreground hover:bg-primary">
                 {article.category}
               </Badge>
             </div>
-            <CardContent className="p-4">
-              <h4 className="line-clamp-1 text-sm font-semibold text-foreground">
+            <CardContent className="p-2.5">
+              <h4 className="line-clamp-1 text-xs font-semibold text-foreground">
                 {article.title}
               </h4>
-              <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+              <p className="mt-0.5 line-clamp-1 text-[11px] text-muted-foreground">
                 {article.excerpt}
               </p>
-              <div className="mt-3 flex items-center justify-between text-[11px] text-muted-foreground">
+              <div className="mt-1.5 flex items-center justify-between text-[10px] text-muted-foreground">
                 <span>{article.date}</span>
-                <span className="flex items-center gap-1">
-                  <Eye size={12} />
+                <span className="flex items-center gap-0.5">
+                  <Eye size={10} />
                   {article.views}
                 </span>
               </div>
             </CardContent>
           </Card>
         ))}
-      </div>
+      </ContentSwiper>
     </section>
   )
 }

@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Badge } from '../ui/badge'
 import { Card, CardContent } from '../ui/card'
+import ContentSwiper from './ContentSwiper'
 
 const projects = [
   {
@@ -26,79 +26,54 @@ const projects = [
     description: '收集整理的动画效果与实战示例',
     color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
   },
+  {
+    id: 4,
+    name: 'Markdown 编辑器',
+    status: '进行中',
+    description: '支持实时预览的轻量 Markdown 编辑器',
+    color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
+  },
+  {
+    id: 5,
+    name: '个人博客 v2.0',
+    status: '已完成',
+    description: '使用 Next.js 重构的全栈博客系统',
+    color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
+  },
 ]
 
 export default function FeaturedProjects() {
-  const [page, setPage] = useState(0)
-  const perPage = 2
-  const maxPage = Math.ceil(projects.length / perPage) - 1
-  const visible = projects.slice(page * perPage, page * perPage + perPage)
-
   return (
-    <section>
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold">精选项目</h3>
+    <section className="rounded-2xl bg-card p-5 shadow-sm">
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-base font-semibold">精选项目</h3>
         <Link
           to="/projects"
-          className="flex items-center gap-1 text-sm text-muted-foreground transition hover:text-primary"
+          className="flex items-center gap-1 text-xs text-muted-foreground transition hover:text-primary"
         >
-          查看全部 <ArrowRight size={14} />
+          查看全部 <ArrowRight size={12} />
         </Link>
       </div>
-      <div className="relative">
-        <div className="grid gap-4 sm:grid-cols-2">
-          {visible.map((project) => (
-            <Card
-              key={project.id}
-              className="border-border/60 bg-card transition hover:shadow-md"
-            >
-              <CardContent className="flex flex-col gap-2 p-5">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold">{project.name}</h4>
-                  <Badge variant="secondary" className={project.color}>
-                    {project.status}
-                  </Badge>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {project.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Carousel controls */}
-        <div className="mt-4 flex items-center justify-center gap-3">
-          <button
-            type="button"
-            onClick={() => setPage((p) => Math.max(0, p - 1))}
-            disabled={page === 0}
-            className="rounded-full p-1 text-muted-foreground transition hover:bg-accent disabled:opacity-30"
-            aria-label="上一页"
+      <ContentSwiper itemsPerPage={3} className="h-[100px]">
+        {projects.map((project) => (
+          <Card
+            key={project.id}
+            className="flex h-full flex-col justify-center border-border/60 bg-white transition hover:shadow-md dark:bg-gray-900"
           >
-            <ChevronLeft size={18} />
-          </button>
-          <div className="flex gap-1.5">
-            {Array.from({ length: maxPage + 1 }).map((_, idx) => (
-              <span
-                key={idx}
-                className={`block h-1.5 rounded-full transition-all ${
-                  idx === page ? 'w-4 bg-primary' : 'w-1.5 bg-primary/30'
-                }`}
-              />
-            ))}
-          </div>
-          <button
-            type="button"
-            onClick={() => setPage((p) => Math.min(maxPage, p + 1))}
-            disabled={page === maxPage}
-            className="rounded-full p-1 text-muted-foreground transition hover:bg-accent disabled:opacity-30"
-            aria-label="下一页"
-          >
-            <ChevronRight size={18} />
-          </button>
-        </div>
-      </div>
+            <CardContent className="flex flex-col gap-1.5 p-3">
+              <div className="flex items-center justify-between">
+                <h4 className="text-xs font-semibold">{project.name}</h4>
+                <Badge variant="secondary" className={`text-[10px] ${project.color}`}>
+                  {project.status}
+                </Badge>
+              </div>
+              <p className="text-[11px] text-muted-foreground">
+                {project.description}
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </ContentSwiper>
     </section>
   )
 }
