@@ -11,6 +11,8 @@ import {
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useSidebarStore } from '../../stores/sidebarStore'
+import { Settings, Moon, Gift, Code } from 'lucide-react'
+import { useThemeStore } from '../../stores/themeStore'
 
 const navItems = [
   { icon: Home, label: '首页', path: '/' },
@@ -26,6 +28,7 @@ const navItems = [
 export default function Sidebar() {
   const location = useLocation()
   const { isOpen, close } = useSidebarStore()
+  const { toggle } = useThemeStore()
 
   return (
     <>
@@ -69,7 +72,7 @@ export default function Sidebar() {
                 onClick={close}
                 className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
                   isActive
-                    ? 'bg-primary-50 text-primary-700 dark:bg-primary-900/20 dark:text-primary-300'
+                    ? 'bg-primary-100/60 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
                     : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
                 }`}
               >
@@ -79,6 +82,76 @@ export default function Sidebar() {
             )
           })}
         </nav>
+
+        {/* Decorative illustration */}
+        <div className="relative mt-4 flex justify-center px-3">
+          <img
+            src="/images/home/role_sider.png"
+            alt=" decoration"
+            className="h-40 w-auto object-contain opacity-90"
+          />
+          <img
+            src="/images/home/star.png"
+            alt=""
+            className="absolute -right-2 top-4 h-8 w-auto animate-pulse"
+          />
+          <img
+            src="/images/home/leaf.png"
+            alt=""
+            className="absolute -left-1 top-8 h-6 w-auto"
+          />
+        </div>
+
+        {/* Quote */}
+        <div className="mt-4 px-6 text-center">
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            生活明朗，万物可爱
+            <br />
+            保持热爱，奔赴山海。
+          </p>
+        </div>
+
+        {/* Shortcut buttons */}
+        <div className="mt-4 flex justify-center gap-3 px-3">
+          <button
+            type="button"
+            aria-label="切换主题"
+            title="切换主题"
+            onClick={toggle}
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition hover:bg-secondary/80"
+          >
+            <Moon size={16} />
+          </button>
+          <button
+            type="button"
+            aria-label="设置"
+            title="设置"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition hover:bg-secondary/80"
+          >
+            <Settings size={16} />
+          </button>
+          <button
+            type="button"
+            aria-label="通知"
+            title="通知"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition hover:bg-secondary/80"
+          >
+            <Gift size={16} />
+          </button>
+          <button
+            type="button"
+            aria-label="GitHub"
+            title="GitHub"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition hover:bg-secondary/80"
+          >
+            <Code size={16} />
+          </button>
+        </div>
+
+        {/* Copyright */}
+        <div className="mt-auto py-4 text-center">
+          <p className="text-[10px] text-muted-foreground">© 2024 SoraBlog</p>
+        </div>
       </aside>
     </>
   )
