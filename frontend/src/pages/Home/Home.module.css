@@ -152,3 +152,19 @@
     min-height: 240px;
   }
 }
+@media (max-width: 640px) {
+  .mainCanvas {
+    padding: 14px;
+  }
+
+  .contentGrid,
+  .leftColumn,
+  .rightColumn {
+    gap: 14px;
+  }
+
+  .glassPanel,
+  .softPanel {
+    border-radius: 18px;
+  }
+}
