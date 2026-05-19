@@ -9,6 +9,9 @@ import {
   jwtConfig,
   redisConfig,
 } from './config';
+import { BullModule } from './shared/bull/bull.module';
+import { ElasticsearchModule } from './shared/elasticsearch/elasticsearch.module';
+import { RedisModule } from './shared/redis/redis.module';
 
 @Module({
   imports: [
@@ -23,6 +26,9 @@ import {
       }),
       inject: [ConfigService],
     }),
+    RedisModule,
+    ElasticsearchModule,
+    BullModule,
   ],
   controllers: [AppController],
   providers: [AppService],
