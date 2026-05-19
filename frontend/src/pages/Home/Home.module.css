@@ -1,0 +1,154 @@
+.dashboardPage {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 22% 8%, rgba(205, 239, 255, 0.9), transparent 34%),
+    radial-gradient(circle at 86% 12%, rgba(218, 247, 241, 0.82), transparent 28%),
+    linear-gradient(135deg, #f8fcff 0%, #edf8ff 48%, #f7fbff 100%);
+  color: #102a56;
+}
+
+.dashboardShell {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  border-right: 1px solid rgba(172, 207, 230, 0.65);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(24px);
+}
+
+.mainCanvas {
+  min-width: 0;
+  padding: 24px 32px 28px;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.52fr) minmax(350px, 0.92fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.leftColumn,
+.rightColumn {
+  display: grid;
+  gap: 18px;
+}
+
+.glassPanel {
+  border: 1px solid rgba(181, 218, 239, 0.72);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 18px 50px rgba(85, 132, 166, 0.14);
+  backdrop-filter: blur(18px);
+}
+
+.softPanel {
+  border: 1px solid rgba(185, 222, 238, 0.72);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: 0 14px 36px rgba(88, 130, 168, 0.1);
+}
+
+.heroSky {
+  position: relative;
+  overflow: hidden;
+  min-height: 286px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 58% 24%, rgba(255, 255, 255, 0.98) 0 10%, transparent 11%),
+    radial-gradient(circle at 66% 32%, rgba(255, 255, 255, 0.86) 0 8%, transparent 9%),
+    linear-gradient(135deg, #48aef0 0%, #79d7f8 44%, #bff2ff 100%);
+}
+
+.heroSky::after {
+  content: '';
+  position: absolute;
+  inset: auto -6% -22% 36%;
+  height: 58%;
+  border-radius: 50% 50% 0 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(126, 216, 226, 0.32));
+  filter: blur(2px);
+}
+
+.thumbnailStudio,
+.thumbnailOcean,
+.thumbnailRoom,
+.thumbnailLibrary,
+.thumbnailSystem,
+.thumbnailAnime {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.thumbnailStudio {
+  background: linear-gradient(135deg, #183d66, #9bdcf7 55%, #fff4cf);
+}
+
+.thumbnailOcean {
+  background: linear-gradient(135deg, #4aaee8, #b9f0ff 48%, #ffe6a7);
+}
+
+.thumbnailRoom {
+  background: linear-gradient(135deg, #314a73, #d8ecf3 52%, #ffd9bf);
+}
+
+.thumbnailLibrary {
+  background: linear-gradient(135deg, #7ed9f8, #f8fcff 52%, #87d8cc);
+}
+
+.thumbnailSystem {
+  background: linear-gradient(135deg, #52b8f2, #e6fbff 48%, #7edecf);
+}
+
+.thumbnailAnime {
+  background: linear-gradient(135deg, #0f223e, #4e7ca5 52%, #12182a);
+}
+
+.chartPath {
+  fill: none;
+  stroke: #56bdea;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chartArea {
+  fill: url('#readingGradient');
+}
+
+@media (max-width: 1180px) {
+  .dashboardShell {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 820px) {
+  .dashboardShell {
+    display: block;
+  }
+
+  .sidebar {
+    position: relative;
+    height: auto;
+  }
+
+  .mainCanvas {
+    padding: 18px;
+  }
+
+  .heroSky {
+    min-height: 240px;
+  }
+}
