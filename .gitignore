@@ -30,3 +30,29 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# SoraBlog dependencies
+node_modules/
+.pnpm-store/
+
+# Frontend / backend build output
+frontend/dist/
+backend/dist/
+
+# Environment files
+.env.local
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs and uploads
+*.log
+logs/
+uploads/
+
+# Local Docker data
+mongo_data/
+es_data/
