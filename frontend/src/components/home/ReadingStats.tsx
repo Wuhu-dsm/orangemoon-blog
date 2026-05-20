@@ -9,6 +9,7 @@ import {
   CartesianGrid,
 } from 'recharts'
 import { ArrowUpRight, ChevronDown } from 'lucide-react'
+import SectionCard from '@/components/ui/section-card'
 
 const data = [
   { day: '05-01', value: 320 },
@@ -32,14 +33,15 @@ export default function ReadingStats() {
   const [range, setRange] = useState(1)
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+    <SectionCard>
       <div className="flex items-center justify-between">
         <h4 className="text-sm font-semibold">阅读统计</h4>
         <div className="relative">
           <select
+            aria-label="选择阅读统计范围"
             value={range}
             onChange={(e) => setRange(Number(e.target.value))}
-            className="appearance-none rounded-md border border-border bg-secondary px-2 py-1 pr-6 text-[10px] text-secondary-foreground outline-none"
+            className="appearance-none rounded-md border border-border bg-secondary px-2 py-1 pr-6 text-[10px] text-secondary-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
           >
             {ranges.map((r, idx) => (
               <option key={r} value={idx}>
@@ -49,6 +51,7 @@ export default function ReadingStats() {
           </select>
           <ChevronDown
             size={12}
+            aria-hidden="true"
             className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-muted-foreground"
           />
         </div>
@@ -69,8 +72,8 @@ export default function ReadingStats() {
       </div>
 
       {/* Chart */}
-      <div className="mt-4 h-32 w-full">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="mt-4 h-32 min-h-32 w-full min-w-0">
+        <ResponsiveContainer width="100%" height="100%" minWidth={0}>
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
             <XAxis
@@ -101,6 +104,6 @@ export default function ReadingStats() {
           </LineChart>
         </ResponsiveContainer>
       </div>
-    </div>
+    </SectionCard>
   )
 }

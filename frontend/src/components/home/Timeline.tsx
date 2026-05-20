@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import SectionCard from '@/components/ui/section-card'
 
 const events = [
   {
@@ -22,7 +23,7 @@ const events = [
 
 export default function Timeline() {
   return (
-    <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+    <SectionCard padding="sm">
       <div className="mb-3 flex items-center justify-between">
         <h4 className="text-xs font-semibold">时间轴</h4>
         <Link
@@ -47,6 +48,6 @@ export default function Timeline() {
           </div>
         ))}
       </div>
-    </div>
+    </SectionCard>
   )
 }
