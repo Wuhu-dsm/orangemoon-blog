@@ -16,7 +16,7 @@ export default function Layout() {
       >
         <Header />
         <div className="flex min-h-0 flex-1 overflow-hidden p-4 ">
-          <main className="min-h-0 w-full min-w-0 flex-1 overflow-y-auto overflow-x-hidden pb-6">
+          <main className="min-h-0 w-full min-w-0 flex-1 overflow-y-hidden overflow-x-hidden pb-6">
             <Outlet />
           </main>
         </div>

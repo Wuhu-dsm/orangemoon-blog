@@ -20,7 +20,7 @@ export default function SectionCard({
   return (
     <div
       className={cn(
-        'overflow-hidden rounded-2xl border border-border bg-card shadow-[0_2px_16px_rgba(0,0,0,0.05)]',
+        'overflow-hidden rounded-2xl  bg-card shadow-[0_2px_16px_rgba(0,0,0,0.05)]',
         paddingMap[padding],
         className
       )}

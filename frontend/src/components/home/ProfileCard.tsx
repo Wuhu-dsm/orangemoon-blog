@@ -5,7 +5,7 @@ const stats = [
   { label: "文章", value: "56" },
   { label: "项目", value: "12" },
   { label: "笔记", value: "89" },
-  { label: "粉丝", value: "1.2k" },
+  { label: "访客量", value: "3.2k" },
 ];
 
 const socials = [
@@ -19,8 +19,12 @@ export default function ProfileCard() {
   return (
     <SectionCard
       padding="none"
-      className="relative bg-[url('/images/home/profile.png')] bg-cover"
+      className="relative bg-card"
     >
+      <div
+        aria-hidden="true"
+        className="profile-card-breeze pointer-events-none absolute -inset-x-3 -inset-y-2 bg-[url('/images/home/profile.png')] bg-cover bg-center"
+      />
       <div className="relative z-10 p-5">
         {/* Top row: avatar + info */}
         <div className="flex items-start gap-3 cursor-pointer">

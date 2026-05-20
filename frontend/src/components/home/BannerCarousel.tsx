@@ -1,47 +1,92 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useRef, useState } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import type { Swiper as SwiperInstance } from 'swiper'
+import { A11y, Autoplay } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
+import 'swiper/css'
 
 const slides = [
   {
-    title: "写代码是热爱",
-    subtitle: "写生活是本能",
-    description: "在技术与生活之间，寻找平衡与热爱",
-    cta: "探索我的世界",
+    image: '/images/home/banner.png',
   },
-];
+  {
+    image: '/images/home/banner-bg.png',
+  },
+]
 
 export default function BannerCarousel() {
-  const [current] = useState(0);
+  const swiperRef = useRef<SwiperInstance | null>(null)
+  const [current, setCurrent] = useState(0)
 
   return (
     <section
-      className="relative overflow-hidden rounded-2xl bg-cover bg-center p-6 sm:p-8 h-[250px]"
-      style={{ backgroundImage: "url(/images/home/banner.png)" }}
+      className="relative h-[250px] overflow-hidden rounded-2xl bg-cover bg-center"
+      aria-label="Home banner carousel"
     >
-      {/*<div className="absolute inset-0 bg-gradient-to-r from-black/10 to-transparent" />*/}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={current}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.4 }}
-          className="relative z-10"
-        ></motion.div>
-      </AnimatePresence>
+      <Swiper
+        modules={[A11y, Autoplay]}
+        rewind={slides.length > 1}
+        speed={650}
+        grabCursor
+        resistanceRatio={0.65}
+        threshold={4}
+        autoplay={{ delay: 4500, disableOnInteraction: false }}
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper
+        }}
+        onSlideChange={(swiper) => setCurrent(swiper.activeIndex)}
+        className="absolute inset-0 h-full w-full"
+      >
+        {slides.map((slide) => (
+          <SwiperSlide key={slide.image}>
+            <div
+              className="h-full w-full bg-cover bg-center"
+              style={{ backgroundImage: `url(${slide.image})` }}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
-      {/* Pagination dots */}
+      <button
+        type="button"
+        onClick={() => swiperRef.current?.slidePrev()}
+        className="group absolute left-4 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-background/90 text-primary shadow-md backdrop-blur-md border border-border/50 transition-all duration-300 hover:scale-110 hover:bg-primary hover:text-primary-foreground hover:shadow-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        aria-label="上一张轮播图"
+        title="上一张"
+      >
+        <ChevronLeft size={20} strokeWidth={2.5} aria-hidden="true" />
+      </button>
+
+      <button
+        type="button"
+        onClick={() => swiperRef.current?.slideNext()}
+        className="group absolute right-4 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-background/90 text-primary shadow-md backdrop-blur-md border border-border/50 transition-all duration-300 hover:scale-110 hover:bg-primary hover:text-primary-foreground hover:shadow-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        aria-label="下一张轮播图"
+        title="下一张"
+      >
+        <ChevronRight size={20} strokeWidth={2.5} aria-hidden="true" />
+      </button>
+
       <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-2">
-        {slides.map((_, idx) => (
-          <span
-            key={idx}
-            className={`block h-1.5 rounded-full transition-all ${
-              idx === current ? "w-6 bg-white" : "w-1.5 bg-white/50"
-            }`}
-          />
+        {slides.map((slide, idx) => (
+          <button
+            type="button"
+            key={slide.image}
+            onClick={() => swiperRef.current?.slideTo(idx)}
+            className="flex h-4 w-5 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/80"
+            aria-label={`切换到第 ${idx + 1} 张轮播图`}
+            aria-current={idx === current ? 'true' : undefined}
+          >
+            <span
+              className={`block h-1.5 rounded-full transition-all duration-300 ${
+                idx === current ? 'bg-primary shadow-sm shadow-primary/50' : 'bg-white/60 hover:bg-white/90'
+              }`}
+              style={{ width: idx === current ? 24 : 8 }}
+            />
+          </button>
         ))}
       </div>
     </section>
-  );
+  )
 }

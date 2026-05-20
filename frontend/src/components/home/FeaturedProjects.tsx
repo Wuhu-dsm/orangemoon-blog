@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Badge } from '../ui/badge'
 import { Card, CardContent } from '../ui/card'
 import { cn } from '../../lib/utils'
-import ContentSwiper from './ContentSwiper'
+import ShowcaseGrid from './ShowcaseGrid'
 
 interface Project {
   id: number
@@ -72,33 +72,35 @@ const projects: Project[] = [
   },
 ]
 
+const visibleProjects = projects.slice(0, 3)
+
 export default function FeaturedProjects({ className }: FeaturedProjectsProps) {
   return (
     <section
       className={cn(
-        'rounded-[24px] border border-white/60 bg-white/60 p-5 shadow-[0_12px_40px_rgba(125,211,252,0.2)] backdrop-blur-xl dark:ring-white/10',
+        'rounded-[14px] border border-white/60 bg-white/60 p-3 shadow-[0_12px_40px_rgba(125,211,252,0.2)] backdrop-blur-xl dark:ring-white/10',
         className
       )}
     >
-      <div className="mb-3 flex items-center justify-between">
-        <h3 className="flex items-center gap-2 text-base font-semibold text-[#1E293B]">
-          <Sparkles size={16} className="text-cyan-400" />
+      <div className="mb-2 flex items-center justify-between">
+        <h3 className="flex items-center gap-1.5 text-sm font-semibold text-[#1E293B]">
+          <Sparkles size={14} className="text-cyan-400" />
           精选项目
         </h3>
         <Link
           to="/projects"
-          className="flex items-center gap-1 text-xs text-muted-foreground transition hover:text-primary"
+          className="flex items-center gap-1 text-[11px] text-muted-foreground transition hover:text-primary"
         >
           查看全部 <ArrowRight size={12} />
         </Link>
       </div>
-      <ContentSwiper itemsPerPage={3} className="h-[260px]">
-        {projects.map((project) => (
+      <ShowcaseGrid className="h-[156px]">
+        {visibleProjects.map((project) => (
           <Card
             key={project.id}
-            className="group relative flex h-full flex-col gap-0 overflow-hidden rounded-[24px] border border-white/50 bg-white/40 py-0 shadow-[0_8px_32px_rgba(125,211,252,0.15)] backdrop-blur-xl transition-all duration-300 ease-out hover:translate-y-[-6px] hover:shadow-[0_16px_48px_rgba(125,211,252,0.25)] group-[.is-active]:shadow-[0_16px_48px_rgba(125,211,252,0.3)] before:pointer-events-none before:absolute before:inset-0 before:rounded-[24px] before:bg-gradient-to-b before:from-white/25 before:to-transparent dark:bg-white/10"
+            className="group relative flex h-full flex-col gap-0 overflow-hidden rounded-[14px] border border-white/50 bg-white/40 py-0 shadow-[0_5px_20px_rgba(125,211,252,0.14)] backdrop-blur-xl transition-all duration-300 ease-out hover:translate-y-[-3px] hover:shadow-[0_10px_30px_rgba(125,211,252,0.22)] group-[.is-active]:shadow-[0_10px_30px_rgba(125,211,252,0.28)] before:pointer-events-none before:absolute before:inset-0 before:rounded-[14px] before:bg-gradient-to-b before:from-white/25 before:to-transparent dark:bg-white/10"
           >
-            <div className="relative h-[180px] shrink-0 overflow-hidden rounded-t-[24px] bg-muted group-[.is-active]:h-full">
+            <div className="relative h-[108px] shrink-0 overflow-hidden rounded-t-[14px] bg-muted group-[.is-active]:h-full">
               <img
                 src={project.cover}
                 alt=""
@@ -112,7 +114,7 @@ export default function FeaturedProjects({ className }: FeaturedProjectsProps) {
               <Badge
                 variant="secondary"
                 className={cn(
-                  'absolute left-3 top-3 rounded-full px-2.5 py-0.5 text-[10px] text-white shadow-[0_2px_8px_rgba(0,0,0,0.12)]',
+                  'absolute left-2 top-2 rounded-full px-2 py-0.5 text-[9px] text-white shadow-[0_2px_8px_rgba(0,0,0,0.12)]',
                   project.status === '进行中'
                     ? 'bg-gradient-to-r from-sky-400 to-blue-500'
                     : 'bg-gradient-to-r from-emerald-400 to-teal-500'
@@ -121,25 +123,25 @@ export default function FeaturedProjects({ className }: FeaturedProjectsProps) {
                 {project.status}
               </Badge>
               {/* Active card overlay */}
-              <div className="hidden absolute inset-x-0 bottom-0 flex-col justify-end p-5 group-[.is-active]:flex">
-                <h4 className="text-lg font-bold text-white drop-shadow-md">{project.name}</h4>
-                <p className="mt-1 text-sm text-white/80 drop-shadow">{project.description}</p>
-                <div className="mt-3 inline-flex items-center gap-1 self-start rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 px-4 py-1.5 text-sm font-medium text-white shadow-lg">
+              <div className="absolute inset-x-0 bottom-0 hidden flex-col justify-end p-3 group-[.is-active]:flex">
+                <h4 className="text-sm font-bold text-white drop-shadow-md">{project.name}</h4>
+                <p className="mt-0.5 line-clamp-2 text-xs text-white/80 drop-shadow">{project.description}</p>
+                <div className="mt-2 inline-flex items-center gap-1 self-start rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 px-2.5 py-1 text-xs font-medium text-white shadow-lg">
                   探索项目详情 <ArrowRight size={14} />
                 </div>
               </div>
             </div>
-            <CardContent className="flex min-h-0 flex-1 flex-col p-3 group-[.is-active]:hidden">
+            <CardContent className="flex min-h-0 flex-1 flex-col p-2 group-[.is-active]:hidden">
               <div className="min-w-0">
-                <h4 className="truncate text-xs font-bold text-[#1E293B]">{project.name}</h4>
-                <p className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-[#64748B]">
+                <h4 className="truncate text-[11px] font-bold text-[#1E293B]">{project.name}</h4>
+                <p className="mt-0.5 line-clamp-1 text-[10px] leading-relaxed text-[#64748B]">
                   {project.description}
                 </p>
               </div>
             </CardContent>
           </Card>
         ))}
-      </ContentSwiper>
+      </ShowcaseGrid>
     </section>
   )
 }
