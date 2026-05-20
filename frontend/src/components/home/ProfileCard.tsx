@@ -16,11 +16,11 @@ const socials = [
 
 export default function ProfileCard() {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden rounded-2xl bg-card shadow-sm">
       <img
         src="/images/home/profile.png"
         alt=""
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute -right-2 -top-4 w-24 object-contain opacity-80"
       />
       <div className="relative z-10 p-5">
         {/* Top row: avatar + info */}

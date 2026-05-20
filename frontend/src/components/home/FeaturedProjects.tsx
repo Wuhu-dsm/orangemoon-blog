@@ -11,6 +11,7 @@ const projects = [
     status: '进行中',
     description: '基于 React + TS 的轻量级组件库',
     color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
+    cover: '/images/home/01-home-dashboard.png',
   },
   {
     id: 2,
@@ -18,6 +19,7 @@ const projects = [
     status: '已完成',
     description: '一款简洁美观的团队管理工具',
     color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
+    cover: '/images/home/banner-bg.png',
   },
   {
     id: 3,
@@ -25,20 +27,7 @@ const projects = [
     status: '已完成',
     description: '收集整理的动画效果与实战示例',
     color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
-  },
-  {
-    id: 4,
-    name: 'Markdown 编辑器',
-    status: '进行中',
-    description: '支持实时预览的轻量 Markdown 编辑器',
-    color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
-  },
-  {
-    id: 5,
-    name: '个人博客 v2.0',
-    status: '已完成',
-    description: '使用 Next.js 重构的全栈博客系统',
-    color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
+    cover: '/images/home/profile.png',
   },
 ]
 
@@ -54,20 +43,25 @@ export default function FeaturedProjects() {
           查看全部 <ArrowRight size={12} />
         </Link>
       </div>
-      <ContentSwiper itemsPerPage={3} className="h-[100px]">
+      <ContentSwiper itemsPerPage={3} className="h-[180px]">
         {projects.map((project) => (
           <Card
             key={project.id}
-            className="flex h-full flex-col justify-center border-border/60 bg-white transition hover:shadow-md dark:bg-gray-900"
+            className="group flex h-full flex-col overflow-hidden border-border/60 bg-white transition hover:shadow-md dark:bg-gray-900"
           >
+            <div className="relative h-24 overflow-hidden">
+              <img
+                src={project.cover}
+                alt={project.name}
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              />
+              <Badge variant="secondary" className={`absolute left-2 top-2 text-[10px] ${project.color}`}>
+                {project.status}
+              </Badge>
+            </div>
             <CardContent className="flex flex-col gap-1.5 p-3">
-              <div className="flex items-center justify-between">
-                <h4 className="text-xs font-semibold">{project.name}</h4>
-                <Badge variant="secondary" className={`text-[10px] ${project.color}`}>
-                  {project.status}
-                </Badge>
-              </div>
-              <p className="text-[11px] text-muted-foreground">
+              <h4 className="text-xs font-semibold">{project.name}</h4>
+              <p className="text-[11px] text-muted-foreground line-clamp-1">
                 {project.description}
               </p>
             </CardContent>

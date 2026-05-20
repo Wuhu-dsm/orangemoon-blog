@@ -20,10 +20,10 @@ export default function Layout() {
       >
         <Header />
         <div className="flex flex-1 gap-6 overflow-hidden p-4 sm:p-6">
-          <main className="w-[60%] min-w-0 overflow-hidden">
+          <main className="w-[60%] min-w-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             <Outlet />
           </main>
-          <aside className="hidden flex-1 flex-shrink-0 flex-col gap-4 overflow-hidden xl:flex">
+          <aside className="hidden flex-1 flex-shrink-0 flex-col gap-4 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] xl:flex">
             <ProfileCard />
             <ReadingStats />
             <div className="grid grid-cols-2 gap-4">
