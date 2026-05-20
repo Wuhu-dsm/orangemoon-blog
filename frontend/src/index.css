@@ -103,3 +103,22 @@
     font: inherit;
   }
 }
+
+/* Swiper custom pagination for BannerCarousel */
+.swiper-pagination-bullet {
+  width: 6px !important;
+  height: 6px !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+  opacity: 1 !important;
+  border-radius: 9999px !important;
+  transition: all 0.3s ease !important;
+}
+
+.swiper-pagination-bullet-active {
+  width: 24px !important;
+  background: #ffffff !important;
+}
+
+.swiper-pagination {
+  bottom: 12px !important;
+}

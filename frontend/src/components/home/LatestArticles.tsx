@@ -2,7 +2,6 @@ import { ArrowRight, Eye } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Badge } from '../ui/badge'
 import { Card, CardContent } from '../ui/card'
-import ContentSwiper from './ContentSwiper'
 
 const articles = [
   {
@@ -64,40 +63,45 @@ export default function LatestArticles() {
           查看全部 <ArrowRight size={12} />
         </Link>
       </div>
-      <ContentSwiper itemsPerPage={3} className="h-[180px]">
-        {articles.map((article) => (
-          <Card
-            key={article.id}
-            className="group h-full overflow-hidden border-border/60 bg-white transition hover:shadow-md dark:bg-gray-900"
-          >
-            <div className="relative h-24 overflow-hidden">
-              <img
-                src={article.cover}
-                alt={article.title}
-                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-              />
-              <Badge className="absolute left-2 top-2 bg-primary/90 text-[10px] text-primary-foreground hover:bg-primary">
-                {article.category}
-              </Badge>
-            </div>
-            <CardContent className="p-2.5">
-              <h4 className="line-clamp-1 text-xs font-semibold text-foreground">
-                {article.title}
-              </h4>
-              <p className="mt-0.5 line-clamp-1 text-[11px] text-muted-foreground">
-                {article.excerpt}
-              </p>
-              <div className="mt-1.5 flex items-center justify-between text-[10px] text-muted-foreground">
-                <span>{article.date}</span>
-                <span className="flex items-center gap-0.5">
-                  <Eye size={10} />
-                  {article.views}
-                </span>
+      <div className="h-[108px]">
+        <div 
+          className="grid grid-cols-3 gap-3 h-[180px]" 
+          style={{ transform: 'scale(0.6)', transformOrigin: 'top left', width: '166.666666%' }}
+        >
+          {articles.slice(0, 3).map((article) => (
+            <Card
+              key={article.id}
+              className="group h-full overflow-hidden border-border/60 bg-white transition hover:shadow-md dark:bg-gray-900"
+            >
+              <div className="relative h-24 overflow-hidden">
+                <img
+                  src={article.cover}
+                  alt={article.title}
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                />
+                <Badge className="absolute left-2 top-2 bg-primary/90 text-[10px] text-primary-foreground hover:bg-primary">
+                  {article.category}
+                </Badge>
               </div>
-            </CardContent>
-          </Card>
-        ))}
-      </ContentSwiper>
+              <CardContent className="p-2.5">
+                <h4 className="line-clamp-1 text-xs font-semibold text-foreground">
+                  {article.title}
+                </h4>
+                <p className="mt-0.5 line-clamp-1 text-[11px] text-muted-foreground">
+                  {article.excerpt}
+                </p>
+                <div className="mt-1.5 flex items-center justify-between text-[10px] text-muted-foreground">
+                  <span>{article.date}</span>
+                  <span className="flex items-center gap-0.5">
+                    <Eye size={10} />
+                    {article.views}
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
     </section>
   )
 }

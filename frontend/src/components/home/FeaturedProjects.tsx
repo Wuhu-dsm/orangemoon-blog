@@ -2,7 +2,6 @@ import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Badge } from '../ui/badge'
 import { Card, CardContent } from '../ui/card'
-import ContentSwiper from './ContentSwiper'
 
 const projects = [
   {
@@ -54,26 +53,31 @@ export default function FeaturedProjects() {
           查看全部 <ArrowRight size={12} />
         </Link>
       </div>
-      <ContentSwiper itemsPerPage={3} className="h-[100px]">
-        {projects.map((project) => (
-          <Card
-            key={project.id}
-            className="flex h-full flex-col justify-center border-border/60 bg-white transition hover:shadow-md dark:bg-gray-900"
-          >
-            <CardContent className="flex flex-col gap-1.5 p-3">
-              <div className="flex items-center justify-between">
-                <h4 className="text-xs font-semibold">{project.name}</h4>
-                <Badge variant="secondary" className={`text-[10px] ${project.color}`}>
-                  {project.status}
-                </Badge>
-              </div>
-              <p className="text-[11px] text-muted-foreground">
-                {project.description}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-      </ContentSwiper>
+      <div className="h-[60px]">
+        <div 
+          className="grid grid-cols-3 gap-3 h-[100px]" 
+          style={{ transform: 'scale(0.6)', transformOrigin: 'top left', width: '166.666666%' }}
+        >
+          {projects.slice(0, 3).map((project) => (
+            <Card
+              key={project.id}
+              className="flex h-full flex-col justify-center border-border/60 bg-white transition hover:shadow-md dark:bg-gray-900"
+            >
+              <CardContent className="flex flex-col gap-1.5 p-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-semibold">{project.name}</h4>
+                  <Badge variant="secondary" className={`text-[10px] ${project.color}`}>
+                    {project.status}
+                  </Badge>
+                </div>
+                <p className="text-[11px] text-muted-foreground">
+                  {project.description}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
     </section>
   )
 }
