@@ -20,7 +20,7 @@ export default function SubscribeBox({ className }: SubscribeBoxProps) {
   return (
     <section
       className={cn(
-        '-mt-5 bg-right-bottom  bg-no-repeat bg-contain bg-[url("./images/home/subscribe-banner.png")] relative h-48  rounded-2xl border border-sky-100/80 bg-transparent shadow-[0_10px_30px_rgba(125,211,252,0.16)]',
+        'pt-10 -mt-10 bg-right-bottom  bg-no-repeat bg-contain bg-[url("./images/home/subscribe-banner.png")] relative h-56  rounded-2xl  border-sky-100/80 bg-transparent shadow-[0_10px_30px_rgba(125,211,252,0.16)]',
         className
       )}
     >
@@ -33,7 +33,7 @@ export default function SubscribeBox({ className }: SubscribeBoxProps) {
             不错过每一篇精彩内容
           </p>
         </div>
-        <form className="mt-3 flex max-w-[360px] items-center gap-2" onSubmit={handleSubmit}>
+        <form className="mt-3 flex max-w-[450px] items-center gap-2" onSubmit={handleSubmit}>
           <label htmlFor="subscribe-email" className="sr-only">
             邮箱地址
           </label>

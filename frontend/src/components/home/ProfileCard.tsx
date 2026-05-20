@@ -19,12 +19,8 @@ export default function ProfileCard() {
   return (
     <SectionCard
       padding="none"
-      className="relative bg-card"
+      className="relative bg-[url('/images/home/profile.png')] bg-cover"
     >
-      <div
-        aria-hidden="true"
-        className="profile-card-breeze pointer-events-none absolute -inset-x-3 -inset-y-2 bg-[url('/images/home/profile.png')] bg-cover bg-center"
-      />
       <div className="relative z-10 p-5">
         {/* Top row: avatar + info */}
         <div className="flex items-start gap-3 cursor-pointer">

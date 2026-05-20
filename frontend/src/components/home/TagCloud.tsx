@@ -106,13 +106,14 @@ const colorThemes = [
 export default function TagCloud() {
   return (
     <SectionCard padding="none" className="p-4">
-      <div className="mb-4 flex items-center justify-between">
-        <h4 className="text-sm font-semibold">标签云</h4>
+
+      <div className="mb-2 flex items-center justify-between">
+        <h4 className="text-xs font-semibold mb-1">标签云</h4>
         <Link
           to="/articles"
-          className="flex items-center gap-1 text-xs text-muted-foreground transition hover:text-primary"
+          className="flex items-center gap-0.5 text-[10px] text-muted-foreground transition hover:text-primary"
         >
-          更多标签 <ArrowRight size={12} />
+          更多标签 <ArrowRight size={10} />
         </Link>
       </div>
       <div className="flex flex-wrap gap-2.5">

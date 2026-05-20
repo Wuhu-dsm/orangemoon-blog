@@ -25,7 +25,7 @@ export default function Timeline() {
   return (
     <SectionCard padding="none" className="p-3">
       <div className="mb-2 flex items-center justify-between">
-        <h4 className="text-xs font-semibold">时间轴</h4>
+        <h4 className="text-xs font-semibold mb-1">时间轴</h4>
         <Link
           to="/timeline"
           className="flex items-center gap-0.5 text-[10px] text-muted-foreground transition hover:text-primary"
@@ -35,7 +35,7 @@ export default function Timeline() {
       </div>
       <div className="relative space-y-2.5 pl-3">
         {/* Vertical line */}
-        <div className="absolute left-[5px] top-1.5 h-[calc(100%-12px)] w-px bg-border" />
+        <div className="absolute left-[2px] top-1.5 h-[calc(100%-12px)] w-px bg-border" />
         {events.map((e, idx) => (
           <div key={idx} className="relative">
             <span className="absolute -left-3 top-1.5 h-1.5 w-1.5 rounded-full bg-primary ring-2 ring-card" />
