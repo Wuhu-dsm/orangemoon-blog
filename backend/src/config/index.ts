@@ -3,3 +3,4 @@ export { default as elasticsearchConfig } from './elasticsearch.config';
 export { default as jwtConfig } from './jwt.config';
 export { default as rateLimitConfig } from './rate-limit.config';
 export { default as redisConfig } from './redis.config';
+export { default as uploadConfig } from './upload.config';

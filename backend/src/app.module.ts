@@ -13,6 +13,7 @@ import {
   jwtConfig,
   rateLimitConfig,
   redisConfig,
+  uploadConfig,
 } from './config';
 import { RATE_LIMIT_MESSAGE } from './config/rate-limit.config';
 import { BullModule } from './shared/bull/bull.module';
@@ -22,6 +23,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ArticleModule } from './modules/article/article.module';
 import { UserModule } from './modules/user/user.module';
 import { JwtAuthGuard } from './modules/auth/strategies/jwt-auth.guard';
+import { UploadModule } from './modules/upload/upload.module';
 import { VisitorModule } from './modules/visitor/visitor.module';
 
 @Module({
@@ -34,6 +36,7 @@ import { VisitorModule } from './modules/visitor/visitor.module';
         elasticsearchConfig,
         jwtConfig,
         rateLimitConfig,
+        uploadConfig,
       ],
     }),
     ThrottlerModule.forRootAsync({
@@ -63,6 +66,7 @@ import { VisitorModule } from './modules/visitor/visitor.module';
     UserModule,
     AuthModule,
     VisitorModule,
+    UploadModule,
     ArticleModule,
   ],
   controllers: [AppController],
