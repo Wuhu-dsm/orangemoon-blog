@@ -14,14 +14,14 @@ See: `.planning/PROJECT.md` (updated 2026-05-21)
 | Phase | Name | Status | Requirements | Completed |
 |-------|------|--------|--------------|-----------|
 | 1 | Infrastructure | 🔄 In Progress | 9/9 | 0 |
-| 2 | Home Dashboard | ⏳ Not Started | 9/9 | 0 |
-| 3 | Article System | ⏳ Not Started | 7/7 | 0 |
-| 4 | Project System | ⏳ Not Started | 5/5 | 0 |
-| 5 | Note System | ⏳ Not Started | 5/5 | 0 |
-| 6 | Timeline & About | ⏳ Not Started | 4/4 | 0 |
-| 7 | Community | ⏳ Not Started | 7/7 | 0 |
-| 8 | Search & Admin | ⏳ Not Started | 13/13 | 0 |
-| 9 | Deployment & Polish | ⏳ Not Started | 2/2 | 0 |
+| 2 | Content Management Core | ⏳ Not Started | 9/9 | 0 |
+| 3 | Article Frontend | ⏳ Not Started | 6/6 | 0 |
+| 4 | Note Frontend | ⏳ Not Started | 4/4 | 0 |
+| 5 | Home Dashboard | ⏳ Not Started | 9/9 | 0 |
+| 6 | Project System | ⏳ Not Started | 4/4 | 0 |
+| 7 | Timeline & About | ⏳ Not Started | 4/4 | 0 |
+| 8 | Community & Search | ⏳ Not Started | 11/11 | 0 |
+| 9 | Admin Dashboard & Polish | ⏳ Not Started | 6/6 | 0 |
 
 **Overall:** 0 / 62 requirements complete
 
@@ -50,7 +50,7 @@ See: `.planning/PROJECT.md` (updated 2026-05-21)
 
 - 2026-05-21: Project initialized with GSD workflow
 - 2026-05-21: PROJECT.md, REQUIREMENTS.md, ROADMAP.md, STATE.md created
-- 2026-05-21: 62 v1 requirements mapped to 9 phases
+- 2026-05-21: Roadmap restructured — Phase 2 "Content Management Core" moved up to build MVP skeleton first (Admin + content APIs before frontend display)
 
 ---
 
@@ -60,7 +60,7 @@ See: `.planning/PROJECT.md` (updated 2026-05-21)
 
 ## Risks
 
-- Phase 8（Search & Admin）需求最多（13 个），可能需拆分为子阶段
+- Phase 8（Community & Search）需求最多（11 个），可能需在执行时拆分为子阶段
 - 前端 UI 需严格对照 18 张设计稿，实现精度要求高
 - Elasticsearch IK 分词插件需额外安装配置，可能引入环境差异
 

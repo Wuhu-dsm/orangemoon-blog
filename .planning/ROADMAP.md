@@ -11,14 +11,14 @@
 | # | Phase | Goal | Requirements | Success Criteria |
 |---|-------|------|--------------|------------------|
 | 1 | Infrastructure | 完善基础设施与认证体系 | INFR-01~04, AUTH-01~05 | 5 |
-| 2 | Home Dashboard | 实现完整动态首页 | HOME-01~09 | 5 |
-| 3 | Article System | 文章列表、详情、归档、评论 | ARTC-01~07 | 5 |
-| 4 | Project System | 项目展示与详情 | PROJ-01~05 | 4 |
-| 5 | Note System | 笔记看板、详情、文集 | NOTE-01~05 | 4 |
-| 6 | Timeline & About | 时间轴、年度总结、关于我 | TIML-01~02, ABOT-01~02 | 4 |
-| 7 | Community | 友链、留言板、我的留言 | FRND-01~03, GSTB-01~04 | 7 |
-| 8 | Search & Admin | 全文搜索与管理后台 | SRCH-01~04, ADMN-01~06, DATA-01~03 | 10 |
-| 9 | Deployment & Polish | 部署验证、订阅、收尾 | SUBS-01~02 | 3 |
+| 2 | Content Management Core | 搭建管理后台与内容管理核心 API | ADMN-01,03~06, ARTC-07, NOTE-05, PROJ-05, INFR-04 | 6 |
+| 3 | Article Frontend | 文章列表、详情、归档、评论前端 | ARTC-01~06 | 5 |
+| 4 | Note Frontend | 笔记看板、详情、文集前端 | NOTE-01~04 | 4 |
+| 5 | Home Dashboard | 数据驱动的完整首页 | HOME-01~09 | 5 |
+| 6 | Project System | 项目展示画廊与详情 | PROJ-01~04 | 4 |
+| 7 | Timeline & About | 时间轴、年度总结、关于我 | TIML-01~02, ABOT-01~02 | 4 |
+| 8 | Community & Search | 友链、留言板、全文搜索 | FRND-01~03, GSTB-01~04, SRCH-01~04 | 6 |
+| 9 | Admin Dashboard & Polish | 后台仪表盘、数据统计、订阅、部署 | ADMN-02, DATA-01~03, SUBS-01~02 | 5 |
 
 ---
 
@@ -38,7 +38,58 @@
 
 ---
 
-### Phase 2: Home Dashboard
+### Phase 2: Content Management Core
+**Goal:** 搭建管理后台框架与内容管理核心，让博主能先创建和编辑文章、笔记、项目
+**Mode:** mvp
+**Success Criteria**:
+1. 管理后台 `/admin` 路由可用，需管理员角色登录，有基础布局（侧边栏 + 内容区）
+2. 后台支持文章的完整 CRUD：创建（富文本/Markdown 编辑器）、编辑、发布/草稿、删除、列表管理
+3. 后台支持笔记的完整 CRUD：创建、编辑、发布、删除、列表管理
+4. 后台支持项目的基础 CRUD：创建、编辑、删除、列表管理
+5. 后台支持友链审核、留言管理、用户管理的基础操作界面
+6. 后端文章/笔记/项目 API 完整，支持封面图和正文内容存储，前端 Admin 可调用
+7. 文件上传在 Admin 中可用（文章封面、笔记图片、项目截图）
+
+**Requirements:** ADMN-01, ADMN-03, ADMN-04, ADMN-05, ADMN-06, ARTC-07, NOTE-05, PROJ-05, INFR-04
+
+**UI hint:** yes
+
+**Note:** 这是 MVP 的核心骨架。Phase 2 完成后，博主已经可以通过后台独立生产内容，后续 phase 只需在前端和消费端迭代。
+
+---
+
+### Phase 3: Article Frontend
+**Goal:** 实现文章列表、详情、标签归档和评论的前端展示
+**Mode:** mvp
+**Success Criteria**:
+1. 文章列表页支持分页、标签筛选、分类筛选、排序（时间/热度）
+2. 文章详情页正确渲染 Markdown 内容，代码块高亮，生成目录导航
+3. 文章详情页显示阅读数、点赞数、发布时间，评论列表可加载
+4. 标签归档页展示该标签下所有文章，URL 可分享
+5. 访客可匿名评论，登录用户实名评论，评论实时显示
+
+**Requirements:** ARTC-01, ARTC-02, ARTC-03, ARTC-04, ARTC-05, ARTC-06
+
+**UI hint:** yes
+
+---
+
+### Phase 4: Note Frontend
+**Goal:** 实现笔记看板、详情和文集聚合的前端展示
+**Mode:** mvp
+**Success Criteria**:
+1. 笔记看板页以瀑布流/网格展示笔记卡片
+2. 笔记卡片支持多种视觉样式（短文、代码片段、引用、待办）
+3. 笔记详情页 Markdown 渲染正确，代码高亮
+4. 笔记文集页按主题聚合，展示系列笔记导航
+
+**Requirements:** NOTE-01, NOTE-02, NOTE-03, NOTE-04
+
+**UI hint:** yes
+
+---
+
+### Phase 5: Home Dashboard
 **Goal:** 实现数据驱动的完整首页，所有模块从后端 API 获取实时数据
 **Mode:** mvp
 **Success Criteria**:
@@ -55,24 +106,7 @@
 
 ---
 
-### Phase 3: Article System
-**Goal:** 实现文章列表、详情、标签归档和评论系统
-**Mode:** mvp
-**Success Criteria**:
-1. 文章列表页支持分页、标签筛选、分类筛选、排序（时间/热度）
-2. 文章详情页正确渲染 Markdown 内容，代码块高亮，生成目录导航
-3. 文章详情页显示阅读数、点赞数、发布时间，评论列表可加载
-4. 标签归档页展示该标签下所有文章，URL 可分享
-5. 访客可匿名评论，登录用户实名评论，评论实时显示
-6. 后端文章 CRUD API 完整，支持封面图上传和内容编辑
-
-**Requirements:** ARTC-01, ARTC-02, ARTC-03, ARTC-04, ARTC-05, ARTC-06, ARTC-07
-
-**UI hint:** yes
-
----
-
-### Phase 4: Project System
+### Phase 6: Project System
 **Goal:** 实现项目展示画廊和项目详情页
 **Mode:** mvp
 **Success Criteria**:
@@ -80,31 +114,14 @@
 2. 项目卡片包含真实封面、名称、简介、技术栈标签、状态标签
 3. 状态筛选（开发中/已完成/维护中）实时过滤卡片
 4. 项目详情页展示完整描述、多图截图、外部链接、技术细节
-5. 后端项目 CRUD API 完整，支持封面图和截图上传
 
-**Requirements:** PROJ-01, PROJ-02, PROJ-03, PROJ-04, PROJ-05
-
-**UI hint:** yes
-
----
-
-### Phase 5: Note System
-**Goal:** 实现笔记看板、详情和文集聚合
-**Mode:** mvp
-**Success Criteria**:
-1. 笔记看板页以瀑布流/网格展示笔记卡片
-2. 笔记卡片支持多种视觉样式（短文、代码片段、引用、待办）
-3. 笔记详情页 Markdown 渲染正确，代码高亮
-4. 笔记文集页按主题聚合，展示系列笔记导航
-5. 后端笔记 CRUD API 完整
-
-**Requirements:** NOTE-01, NOTE-02, NOTE-03, NOTE-04, NOTE-05
+**Requirements:** PROJ-01, PROJ-02, PROJ-03, PROJ-04
 
 **UI hint:** yes
 
 ---
 
-### Phase 6: Timeline & About
+### Phase 7: Timeline & About
 **Goal:** 实现时间轴、年度总结、关于我和联系页面
 **Mode:** mvp
 **Success Criteria**:
@@ -112,7 +129,6 @@
 2. 年度总结页展示当年文章数、阅读量、项目数等数据可视化图表
 3. 关于我页面展示个人简介、技能栈、经历时间线、社交链接
 4. 联系合作页表单可提交，后端接收并记录（或发送邮件通知）
-5. 所有页面数据从后端 API 获取
 
 **Requirements:** TIML-01, TIML-02, ABOT-01, ABOT-02
 
@@ -120,61 +136,46 @@
 
 ---
 
-### Phase 7: Community
-**Goal:** 实现友链系统和留言板完整互动功能
+### Phase 8: Community & Search
+**Goal:** 实现友链系统、留言板和全文搜索
 **Mode:** mvp
 **Success Criteria**:
 1. 友链展示页按分类展示已审核友链，点击可跳转
 2. 友链申请表单提交后进入待审核状态，博主后台可审核
 3. 留言板支持富文本留言（文字、表情、图片、链接）
 4. 留言支持楼中楼回复，嵌套层级正确渲染
-5. 博主可置顶、删除、回复留言
-6. 用户可在"我的留言"页面查看自己发过的所有留言
+5. 博主可置顶、删除、回复留言；用户可查看"我的留言"
+6. 全局搜索框输入关键词时展示实时搜索建议
+7. 搜索结果页展示文章/项目/笔记的综合结果，支持按类型过滤
+8. Elasticsearch IK 分词正确索引和搜索中文内容
 
-**Requirements:** FRND-01, FRND-02, FRND-03, GSTB-01, GSTB-02, GSTB-03, GSTB-04
-
-**UI hint:** yes
-
----
-
-### Phase 8: Search & Admin
-**Goal:** 实现全文搜索和管理后台
-**Mode:** mvp
-**Success Criteria**:
-1. 全局搜索框输入关键词时展示实时搜索建议
-2. 搜索结果页展示文章/项目/笔记的综合结果，支持按类型过滤
-3. Elasticsearch IK 分词正确索引和搜索中文内容
-4. 管理后台 `/admin` 需管理员角色登录，非管理员重定向
-5. 后台仪表盘展示内容统计、访问趋势、最新动态概览
-6. 后台支持文章/项目/笔记的完整 CRUD（含富文本编辑器）
-7. 后台支持友链审核、留言管理、用户管理
-8. 阅读统计系统记录每篇文章 PV/UV，活跃日历展示发布频率
-
-**Requirements:** SRCH-01, SRCH-02, SRCH-03, SRCH-04, ADMN-01, ADMN-02, ADMN-03, ADMN-04, ADMN-05, ADMN-06, DATA-01, DATA-02, DATA-03
+**Requirements:** FRND-01, FRND-02, FRND-03, GSTB-01, GSTB-02, GSTB-03, GSTB-04, SRCH-01, SRCH-02, SRCH-03, SRCH-04
 
 **UI hint:** yes
 
 ---
 
-### Phase 9: Deployment & Polish
-**Goal:** 完成部署验证、邮件订阅和最终收尾
+### Phase 9: Admin Dashboard & Polish
+**Goal:** 完成后台仪表盘、数据统计、邮件订阅和部署验证
 **Mode:** mvp
 **Success Criteria**:
-1. `docker-compose up -d` 后全站可用，所有 18 个页面可访问
-2. 邮件订阅系统收集邮箱并发送确认邮件（Bull 队列异步）
-3. 新文章发布时自动通知已确认订阅的用户
-4. README 完善，包含部署指南和环境变量说明
-5. 全站端到端手动验证通过（核心用户流程无阻塞）
+1. 管理后台仪表盘展示站点概览（内容统计、访问趋势、最新动态）
+2. 阅读统计系统记录每篇文章 PV/UV，活跃日历展示发布频率
+3. 成长趋势图表展示博主内容产出和阅读增长趋势
+4. 邮件订阅系统收集邮箱并发送确认邮件（Bull 队列异步）
+5. 新文章发布时自动通知已确认订阅的用户
+6. `docker-compose up -d` 后全站可用，所有页面可访问，README 完善
+7. 全站端到端手动验证通过（核心用户流程无阻塞）
 
-**Requirements:** SUBS-01, SUBS-02
+**Requirements:** ADMN-02, DATA-01, DATA-02, DATA-03, SUBS-01, SUBS-02
 
-**UI hint:** no
+**UI hint:** yes
 
 ---
 
 ## Execution Notes
 
 - **Phase 依赖：** 必须按顺序执行（1 → 2 → 3 → ... → 9），后续 phase 依赖前置 phase 的 API 和数据模型
-- **Brownfield 起点：** Phase 1 部分基础设施（NestJS、MongoDB、Redis、ES、JWT、Docker）已实现，本 phase 聚焦补齐缺口（限流、文件上传、前端登录态持久化、API 联调）
+- **MVP 骨架：** Phase 2 是核心转折点。完成后博主已经拥有独立的内容生产能力（后台 + 内容 API），后续 phase 均是在此骨架上迭代前端展示和消费端功能
 - **设计稿驱动：** Phase 2-8 的所有前端页面必须严格对照 `ui-drafts/` 和 `home-ui-design/` 中的 PNG 设计稿实现
-- **参考文档：** 每个 phase 的详细任务分解可参考 `docs/superpowers/plans/sorablog/phase-*.md`
+- **参考文档：** 每个 phase 的详细任务分解可参考 `docs/superpowers/plans/sorablog/phase-*.md`（注意 phase 编号已重新编排，内容需对应映射）
