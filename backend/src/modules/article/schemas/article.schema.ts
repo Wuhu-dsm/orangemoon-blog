@@ -29,6 +29,7 @@ export class Article {
   body?: BlockContentDto;
 
   @Prop({
+    type: String,
     required: true,
     enum: ContentStatus,
     default: ContentStatus.Draft,
