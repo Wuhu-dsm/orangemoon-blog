@@ -14,11 +14,11 @@
 
 ### Authentication
 
-- [ ] **AUTH-01**: 用户可通过邮箱/密码注册账号
-- [ ] **AUTH-02**: 用户可通过邮箱/密码登录并获得 JWT Token
-- [ ] **AUTH-03**: Token 过期后可使用 Refresh Token 换取新 Token
-- [ ] **AUTH-04**: 未认证用户访问受保护 API 时返回 401 并被引导登录
-- [ ] **AUTH-05**: 前端登录状态持久化，刷新页面后保持登录
+- [x] **AUTH-01**: 用户可通过邮箱/密码注册账号
+- [x] **AUTH-02**: 用户可通过邮箱/密码登录并获得 JWT Token
+- [x] **AUTH-03**: Token 过期后可使用 Refresh Token 换取新 Token
+- [x] **AUTH-04**: 未认证用户访问受保护 API 时返回 401 并被引导登录
+- [x] **AUTH-05**: 前端登录状态持久化，刷新页面后保持登录
 
 ### Home Dashboard
 
@@ -138,11 +138,11 @@
 | INFR-02 | Phase 1 | Pending |
 | INFR-03 | Phase 1 | Pending |
 | INFR-04 | Phase 1 | Pending |
-| AUTH-01 | Phase 1 | Pending |
-| AUTH-02 | Phase 1 | Pending |
-| AUTH-03 | Phase 1 | Pending |
-| AUTH-04 | Phase 1 | Pending |
-| AUTH-05 | Phase 1 | Pending |
+| AUTH-01 | Phase 1 | Complete |
+| AUTH-02 | Phase 1 | Complete |
+| AUTH-03 | Phase 1 | Complete |
+| AUTH-04 | Phase 1 | Complete |
+| AUTH-05 | Phase 1 | Complete |
 | ADMN-01 | Phase 2 | Pending |
 | ADMN-03 | Phase 2 | Pending |
 | ADMN-04 | Phase 2 | Pending |
