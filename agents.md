@@ -67,3 +67,50 @@ hook 命名使用 `useXxx`，只暴露调用方需要的状态和方法。hook �
 - 是否考虑了响应式、暗色模式和可访问性。
 - 修改前端代码后运行 `npm run lint`。
 - 影响构建、路由、依赖或类型边界时运行 `npm run build`。
+
+---
+
+# GSD 工作流指南
+
+本项目使用 GSD (Get Shit Done) 工作流管理开发和规划。以下指引适用于所有代码修改。
+
+## 项目规划文件
+
+所有规划文档位于 `.planning/` 目录：
+
+| 文件 | 用途 |
+|------|------|
+| `PROJECT.md` | 项目上下文、核心价值、需求状态、约束和决策记录 |
+| `REQUIREMENTS.md` | v1/v2 需求清单，含 REQ-ID 和可追踪性矩阵 |
+| `ROADMAP.md` | 9 个 phase 的路线图，含目标、成功标准、需求映射 |
+| `STATE.md` | 当前项目状态、phase 进度、阻塞项和风险 |
+| `config.json` | 工作流配置（模式、粒度、并行化、agents） |
+
+## 开发节奏
+
+- **Phase 驱动：** 开发按 ROADMAP.md 中的 phase 顺序推进（1 → 2 → ... → 9）
+- **需求追踪：** 每个功能实现对应 REQUIREMENTS.md 中的一个 REQ-ID，完成后更新 checkbox
+- **Phase 边界：** 每个 phase 完成后更新 STATE.md 和 PROJECT.md 中的需求状态
+- **Brownfield 起点：** Phase 1 部分基础设施已实现，开发时复用现有代码，不重复造轮子
+
+## 关键决策
+
+- **设计稿优先：** 所有前端页面必须与 `ui-drafts/` 和 `home-ui-design/` 中的 PNG 设计稿视觉一致
+- **技术栈锁定：** React 18 + Vite + NestJS 11 + MongoDB + Redis + Elasticsearch，不改变基础架构
+- **API 规范：** 后端全局前缀 `api/v1`，统一响应格式由 TransformInterceptor 处理
+- **复用现有：** 修改前先检查 `.planning/codebase/` 中的架构和约定文档
+
+## 参考文档
+
+- 详细设计文档：`docs/superpowers/specs/2026-05-19-blog-design.md`
+- Phase 详细计划：`docs/superpowers/plans/sorablog/phase-*.md`
+- 代码库映射：`.planning/codebase/`（ARCHITECTURE.md, STACK.md, CONVENTIONS.md 等）
+
+## 下一步
+
+当前 focus：Phase 1 — Infrastructure
+
+执行命令：
+- `$gsd-discuss-phase 1` — 讨论 Phase 1 细节
+- `$gsd-plan-phase 1` — 制定 Phase 1 计划
+- `$gsd-execute-phase 1` — 执行 Phase 1
