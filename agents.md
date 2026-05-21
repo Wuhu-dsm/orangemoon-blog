@@ -106,11 +106,3 @@ hook 命名使用 `useXxx`，只暴露调用方需要的状态和方法。hook �
 - Phase 详细计划：`docs/superpowers/plans/sorablog/phase-*.md`
 - 代码库映射：`.planning/codebase/`（ARCHITECTURE.md, STACK.md, CONVENTIONS.md 等）
 
-## 下一步
-
-当前 focus：Phase 1 — Infrastructure
-
-执行命令：
-- `$gsd-discuss-phase 1` — 讨论 Phase 1 细节
-- `$gsd-plan-phase 1` — 制定 Phase 1 计划
-- `$gsd-execute-phase 1` — 执行 Phase 1

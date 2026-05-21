@@ -54,6 +54,29 @@
 
 **UI hint:** yes
 
+**Plans:** 8 plans
+
+Plans:
+
+**Wave 1**
+- [ ] `02-01-PLAN.md` — Backend content contracts, slug helpers, upload purposes, module entrypoints
+- [ ] `02-05-PLAN.md` — Protected admin route shell, sidebar, top bar, overview, conditional public sidebar entry
+
+**Wave 2 *(blocked on relevant Wave 1 foundations)***
+- [ ] `02-02-PLAN.md` — Article schema, service, public/admin APIs, tests
+- [ ] `02-03-PLAN.md` — Note schema, service, public/admin APIs, tests
+- [ ] `02-04-PLAN.md` — Project schema, service, public/admin APIs, tests
+- [ ] `02-06-PLAN.md` — Block editor adapter, preview, frontend upload purpose parity
+
+**Wave 3 *(blocked on backend content APIs, admin shell, and editor adapter)***
+- [ ] `02-07-PLAN.md` — Admin article/note/project content tables, editor flows, API hooks
+
+**Wave 4 *(blocked on admin shell and content workspace)***
+- [ ] `02-08-PLAN.md` — Friend-link, guestbook, user management shells, admin user API, final automated verification
+
+Cross-cutting constraints:
+- Admin writes must be admin-only, public reads must expose only published non-deleted content, and editor body content must remain editor-native JSON only.
+
 **Note:** 这是 MVP 的核心骨架。Phase 2 完成后，博主已经可以通过后台独立生产内容，后续 phase 只需在前端和消费端迭代。
 
 ---
