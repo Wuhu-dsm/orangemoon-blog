@@ -39,11 +39,20 @@ None.
 
 Before the review fix, `JwtStrategy.validate` returned the role and identity directly from the token payload. A deleted, banned, downgraded, or token-version-revoked owner could keep using a still-unexpired access token until expiry. The strategy now reloads the user, requires `status === "active"`, compares `refreshTokenVersion`, and returns the current database role.
 
+### [P1] Owner seed password could be echoed by npm CLI arguments
+
+- File: `backend/src/scripts/seed-owner.ts`
+- Fixed in commit: `18b7177 fix(01): keep owner seed password out of npm echo`
+
+The seed script did not print secrets itself, but invoking it through `npm run seed:owner -- --password ...` caused npm to echo the full command, including the password. The seed command now rejects `--password`, requires `OWNER_PASSWORD`, supports `npm run --silent seed:owner`, and the README examples were updated to avoid CLI password arguments.
+
 ## Verification
 
 - `backend`: `npm run build`
 - `backend`: `npm test -- --runInBand`
 - `frontend`: `npm run lint`
 - `frontend`: `npm run build`
+- `backend`: `npm run --silent seed:owner` with `OWNER_PASSWORD`
+- `backend`: `npm run --silent seed:owner -- --password ...` rejects CLI password input
 
-All commands passed after the review fix.
+All commands passed after the review fixes.
