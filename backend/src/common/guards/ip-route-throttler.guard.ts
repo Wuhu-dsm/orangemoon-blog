@@ -25,10 +25,7 @@ export class IpRouteThrottlerGuard extends ThrottlerGuard {
     const forwardedIp = forwardedValue?.split(',')[0]?.trim();
 
     return (
-      forwardedIp ??
-      req.ip ??
-      req.socket?.remoteAddress ??
-      'unknown-visitor'
+      forwardedIp ?? req.ip ?? req.socket?.remoteAddress ?? 'unknown-visitor'
     );
   }
 

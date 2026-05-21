@@ -17,6 +17,9 @@ export class Visitor {
   @Prop()
   lastIpHash?: string;
 
+  @Prop()
+  city?: string;
+
   @Prop({ default: Date.now })
   firstSeenAt: Date;
 
@@ -25,3 +28,5 @@ export class Visitor {
 }
 
 export const VisitorSchema = SchemaFactory.createForClass(Visitor);
+
+VisitorSchema.index({ userAgentHash: 1, lastIpHash: 1, lastSeenAt: -1 });

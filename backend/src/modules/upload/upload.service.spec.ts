@@ -62,7 +62,9 @@ describe('UploadService', () => {
     expect(result.url).toMatch(/^\/uploads\/article-cover\/.+\.png$/);
     expect(result.purpose).toBe(UploadPurpose.ArticleCover);
 
-    const saved = await readFile(join(uploadDir, 'article-cover', result.filename));
+    const saved = await readFile(
+      join(uploadDir, 'article-cover', result.filename),
+    );
     expect(saved.toString()).toBe('png');
   });
 

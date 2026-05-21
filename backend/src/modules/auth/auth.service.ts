@@ -1,13 +1,12 @@
-import {
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import type { StringValue } from 'ms';
+import type { Request } from 'express';
 import { UserDocument } from '../user/schemas/user.schema';
 import { UserService } from '../user/user.service';
+import { VisitorService } from '../visitor/visitor.service';
 import { OwnerLoginDto } from './dto/owner-login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 
@@ -22,6 +21,7 @@ type AuthTokenPayload = {
 export class AuthService {
   constructor(
     private readonly userService: UserService,
+    private readonly visitorService: VisitorService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
@@ -72,6 +72,58 @@ export class AuthService {
     }
 
     return this.generateAuthResponse(user);
+  }
+
+  async getMe(request: Request) {
+    const authHeader = request.headers.authorization;
+
+    // 尝试 JWT 认证
+    if (authHeader?.startsWith('Bearer ')) {
+      const token = authHeader.substring(7);
+      try {
+        const secret = this.configService.getOrThrow<string>('jwt.secret');
+        const payload = await this.jwtService.verifyAsync<AuthTokenPayload>(
+          token,
+          { secret },
+        );
+        const user = await this.userService.findById(payload.sub);
+        if (user && user.status === 'active') {
+          return {
+            type: 'user' as const,
+            _id: user._id.toString(),
+            email: user.email,
+            username: user.username,
+            avatar: user.avatar,
+            role: user.role,
+            level: user.level,
+            exp: user.exp,
+            bio: user.bio,
+            location: user.location,
+            website: user.website,
+            socials: user.socials,
+            status: user.status,
+            lastLoginAt: user.lastLoginAt,
+          };
+        }
+      } catch {
+        // token 无效，继续走访客逻辑
+      }
+    }
+
+    // 访客逻辑
+    const visitorId = request.headers['x-visitor-id'] as string | undefined;
+    const session = await this.visitorService.createOrRefreshSession(
+      visitorId,
+      request.ip,
+      request.headers['user-agent'],
+    );
+
+    return {
+      type: 'visitor' as const,
+      visitorId: session.visitorId,
+      nickname: session.nickname,
+      city: session.city,
+    };
   }
 
   private generateAuthResponse(user: UserDocument) {

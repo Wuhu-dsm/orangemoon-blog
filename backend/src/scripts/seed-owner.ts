@@ -13,7 +13,9 @@ function hasCliOption(name: string): boolean {
   const flag = `--${name}`;
   const inlinePrefix = `${flag}=`;
 
-  return process.argv.some((arg) => arg === flag || arg.startsWith(inlinePrefix));
+  return process.argv.some(
+    (arg) => arg === flag || arg.startsWith(inlinePrefix),
+  );
 }
 
 function readOption(name: string, envName: string): string | undefined {

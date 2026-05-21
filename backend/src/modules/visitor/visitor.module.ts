@@ -6,9 +6,7 @@ import { VisitorService } from './visitor.service';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: Visitor.name, schema: VisitorSchema },
-    ]),
+    MongooseModule.forFeature([{ name: Visitor.name, schema: VisitorSchema }]),
   ],
   controllers: [VisitorController],
   providers: [VisitorService],

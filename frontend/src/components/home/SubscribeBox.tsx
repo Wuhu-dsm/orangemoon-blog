@@ -20,7 +20,7 @@ export default function SubscribeBox({ className }: SubscribeBoxProps) {
   return (
     <section
       className={cn(
-        'pt-10 -mt-10 bg-right-bottom  bg-no-repeat bg-contain bg-[url("./images/home/subscribe-banner.png")] relative h-56  rounded-2xl  border-sky-100/80 bg-transparent shadow-[0_10px_30px_rgba(125,211,252,0.16)]',
+        'pt-10 -mt-10 bg-right-bottom  bg-no-repeat bg-contain bg-[url("/images/home/subscribe-banner.png")] relative h-56  rounded-2xl  border-sky-100/80 bg-transparent shadow-[0_10px_30px_rgba(125,211,252,0.16)]',
         className
       )}
     >

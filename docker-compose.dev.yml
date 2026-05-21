@@ -1,32 +1,43 @@
 services:
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: node:20
+    working_dir: /app
+    command: >
+      sh -c "
+        if [ ! -f node_modules/.package-lock.json ]; then npm install; fi &&
+        npm run dev -- --host
+      "
     ports:
-      - "80:80"
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - VITE_PROXY_TARGET=http://backend:3000
     depends_on:
       backend:
-        condition: service_healthy
-    volumes:
-      - uploads:/usr/share/nginx/html/uploads:ro
-    healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://localhost/health >/dev/null"]
-      interval: 10s
-      timeout: 5s
-      retries: 6
-      start_period: 10s
+        condition: service_started
     networks:
-      - sorablog
+      - sorablog-dev
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: node:20
+    working_dir: /app
+    command: >
+      sh -c "
+        if [ ! -f node_modules/.package-lock.json ]; then npm install; fi &&
+        npm run start:dev
+      "
     ports:
       - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - backend_node_modules:/app/node_modules
+      - uploads:/app/uploads
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - PORT=3000
       - MONGODB_URI=mongodb://mongodb:27017/sorablog
       - REDIS_URL=redis://redis:6379
@@ -36,6 +47,7 @@ services:
       - JWT_REFRESH_EXPIRES_IN=30d
       - UPLOAD_DIR=/app/uploads
       - MAX_FILE_SIZE=5242880
+      - CHOKIDAR_USEPOLLING=true
     depends_on:
       mongodb:
         condition: service_healthy
@@ -43,20 +55,8 @@ services:
         condition: service_healthy
       elasticsearch:
         condition: service_healthy
-    volumes:
-      - uploads:/app/uploads
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "node -e \"fetch('http://localhost:3000/api/v1/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\"",
-        ]
-      interval: 10s
-      timeout: 5s
-      retries: 12
-      start_period: 30s
     networks:
-      - sorablog
+      - sorablog-dev
 
   mongodb:
     image: mongo:7.0
@@ -76,7 +76,7 @@ services:
       retries: 12
       start_period: 20s
     networks:
-      - sorablog
+      - sorablog-dev
 
   redis:
     image: redis:7-alpine
@@ -90,7 +90,7 @@ services:
       retries: 12
       start_period: 5s
     networks:
-      - sorablog
+      - sorablog-dev
 
   elasticsearch:
     image: elasticsearch:8.11.0
@@ -114,13 +114,15 @@ services:
       retries: 20
       start_period: 40s
     networks:
-      - sorablog
+      - sorablog-dev
 
 volumes:
   mongo_data:
   es_data:
   uploads:
+  frontend_node_modules:
+  backend_node_modules:
 
 networks:
-  sorablog:
+  sorablog-dev:
     driver: bridge
