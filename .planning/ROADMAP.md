@@ -10,7 +10,7 @@
 
 | # | Phase | Goal | Requirements | Success Criteria |
 |---|-------|------|--------------|------------------|
-| 1 | Infrastructure | 2/4 | In Progress|  |
+| 1 | Infrastructure | 3/4 | In Progress|  |
 | 2 | Content Management Core | 搭建管理后台与内容管理核心 API | ADMN-01,03~06, ARTC-07, NOTE-05, PROJ-05, INFR-04 | 6 |
 | 3 | Article Frontend | 文章列表、详情、归档、评论前端 | ARTC-01~06 | 5 |
 | 4 | Note Frontend | 笔记看板、详情、文集前端 | NOTE-01~04 | 4 |
