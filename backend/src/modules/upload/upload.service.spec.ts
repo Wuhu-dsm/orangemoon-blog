@@ -68,6 +68,36 @@ describe('UploadService', () => {
     expect(saved.toString()).toBe('png');
   });
 
+  it('stores note images in their own folder', async () => {
+    const service = new UploadService(createConfigService(uploadDir));
+    const result = await service.saveImage(
+      createFile(),
+      UploadPurpose.NoteImage,
+    );
+
+    expect(result.url).toMatch(/^\/uploads\/note-image\/.+\.png$/);
+    expect(result.purpose).toBe(UploadPurpose.NoteImage);
+
+    const saved = await readFile(join(uploadDir, 'note-image', result.filename));
+    expect(saved.toString()).toBe('png');
+  });
+
+  it('stores project screenshots in their own folder', async () => {
+    const service = new UploadService(createConfigService(uploadDir));
+    const result = await service.saveImage(
+      createFile(),
+      UploadPurpose.ProjectScreenshot,
+    );
+
+    expect(result.url).toMatch(/^\/uploads\/project-screenshot\/.+\.png$/);
+    expect(result.purpose).toBe(UploadPurpose.ProjectScreenshot);
+
+    const saved = await readFile(
+      join(uploadDir, 'project-screenshot', result.filename),
+    );
+    expect(saved.toString()).toBe('png');
+  });
+
   it('rejects non-image MIME types', async () => {
     const service = new UploadService(createConfigService(uploadDir));
 
