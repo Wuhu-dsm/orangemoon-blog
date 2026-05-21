@@ -24,6 +24,10 @@ export class ElasticsearchService {
     return this.esService.search({ index, ...query });
   }
 
+  async ping() {
+    return this.esService.ping();
+  }
+
   async createIndex(index: string, mappings: SearchBody) {
     const exists = await this.esService.indices.exists({ index });
     if (!exists) {
