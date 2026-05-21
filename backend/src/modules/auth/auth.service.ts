@@ -1,5 +1,4 @@
 import {
-  ConflictException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -9,8 +8,15 @@ import * as bcrypt from 'bcrypt';
 import type { StringValue } from 'ms';
 import { UserDocument } from '../user/schemas/user.schema';
 import { UserService } from '../user/user.service';
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
+import { OwnerLoginDto } from './dto/owner-login.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
+
+type AuthTokenPayload = {
+  sub: string;
+  username: string;
+  role: string;
+  tokenVersion: number;
+};
 
 @Injectable()
 export class AuthService {
@@ -20,26 +26,7 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async register(dto: RegisterDto) {
-    const existing = await this.userService.findByEmailOrUsername(
-      dto.email,
-      dto.username,
-    );
-
-    if (existing) {
-      throw new ConflictException('Email or username already exists');
-    }
-
-    const hashedPassword = await bcrypt.hash(dto.password, 10);
-    const user = await this.userService.create({
-      ...dto,
-      password: hashedPassword,
-    });
-
-    return this.generateTokens(user);
-  }
-
-  async login(dto: LoginDto) {
+  async login(dto: OwnerLoginDto) {
     const user = await this.userService.findByEmailOrUsername(
       dto.usernameOrEmail,
       dto.usernameOrEmail,
@@ -54,7 +41,44 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return this.generateTokens(user);
+    this.assertOwner(user);
+    await this.userService.touchLastLogin(user._id.toString());
+
+    return this.generateAuthResponse(user);
+  }
+
+  async refresh(dto: RefreshTokenDto) {
+    const secret = this.configService.getOrThrow<string>('jwt.secret');
+    let payload: AuthTokenPayload;
+
+    try {
+      payload = await this.jwtService.verifyAsync<AuthTokenPayload>(
+        dto.refreshToken,
+        { secret },
+      );
+    } catch {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+
+    const user = await this.userService.findById(payload.sub);
+    if (!user) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+
+    this.assertOwner(user);
+
+    if ((user.refreshTokenVersion ?? 0) !== payload.tokenVersion) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+
+    return this.generateAuthResponse(user);
+  }
+
+  private generateAuthResponse(user: UserDocument) {
+    return {
+      user: this.toSafeUser(user),
+      ...this.generateTokens(user),
+    };
   }
 
   private generateTokens(user: UserDocument) {
@@ -62,6 +86,7 @@ export class AuthService {
       sub: user._id.toString(),
       username: user.username,
       role: user.role,
+      tokenVersion: user.refreshTokenVersion ?? 0,
     };
     const secret = this.configService.getOrThrow<string>('jwt.secret');
 
@@ -78,6 +103,24 @@ export class AuthService {
           'jwt.refreshExpiresIn',
         ) as StringValue,
       }),
+    };
+  }
+
+  private assertOwner(user: UserDocument) {
+    if (user.role !== 'admin' || user.status !== 'active') {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+  }
+
+  private toSafeUser(user: UserDocument) {
+    return {
+      _id: user._id.toString(),
+      email: user.email,
+      username: user.username,
+      avatar: user.avatar,
+      role: user.role,
+      level: user.level,
+      status: user.status,
     };
   }
 }

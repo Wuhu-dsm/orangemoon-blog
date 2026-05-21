@@ -46,6 +46,9 @@ export class User {
   @Prop({ default: 'active', enum: ['active', 'banned'] })
   status: string;
 
+  @Prop({ default: 0 })
+  refreshTokenVersion: number;
+
   @Prop()
   lastLoginAt?: Date;
 }

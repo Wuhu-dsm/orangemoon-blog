@@ -7,6 +7,7 @@ type JwtPayload = {
   sub: string;
   username: string;
   role: string;
+  tokenVersion?: number;
 };
 
 @Injectable()

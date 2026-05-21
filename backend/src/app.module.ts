@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { RolesGuard } from './common/guards/roles.guard';
 import {
   databaseConfig,
   elasticsearchConfig,
@@ -15,6 +17,7 @@ import { RedisModule } from './shared/redis/redis.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ArticleModule } from './modules/article/article.module';
 import { UserModule } from './modules/user/user.module';
+import { JwtAuthGuard } from './modules/auth/strategies/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -37,6 +40,16 @@ import { UserModule } from './modules/user/user.module';
     ArticleModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}
