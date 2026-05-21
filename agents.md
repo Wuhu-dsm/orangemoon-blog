@@ -106,3 +106,21 @@ hook 命名使用 `useXxx`，只暴露调用方需要的状态和方法。hook �
 - Phase 详细计划：`docs/superpowers/plans/sorablog/phase-*.md`
 - 代码库映射：`.planning/codebase/`（ARCHITECTURE.md, STACK.md, CONVENTIONS.md 等）
 
+
+
+<claude-mem-context>
+# Memory Context
+
+# claude-mem status
+
+This project has no memory yet. The current session will seed it; subsequent sessions will receive auto-injected context for relevant past work.
+
+Memory injection starts on your second session in a project.
+
+`/learn-codebase` is available if the user wants to front-load the entire repo into memory in a single pass (~5 minutes on a typical repo, optional). Otherwise memory builds passively as work happens.
+
+Live activity: http://localhost:37777
+How it works: `/how-it-works`
+
+This message disappears once the first observation lands.
+</claude-mem-context>
