@@ -52,6 +52,9 @@ Passed. Phase 01 delivers the infrastructure goal: repeatable local full-stack s
 - `docker compose ps` showed backend, frontend, MongoDB, Redis, and Elasticsearch as healthy.
 - `GET http://localhost:3000/api/v1/health` returned healthy normalized data.
 - `GET http://localhost/api/v1/health` returned healthy normalized data through Nginx.
+- Browser render check opened `http://localhost/` and confirmed the public header, generated visitor nickname, and no visible `/login` link.
+- Browser render check opened `http://localhost/owner-login` and confirmed username/password fields and login action render.
+- Browser login smoke submitted `orangeMoon` / owner password and returned to `http://localhost/` with owner name visible.
 
 ## Runtime Smoke
 
