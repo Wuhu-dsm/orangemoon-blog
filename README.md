@@ -37,16 +37,24 @@ For a local backend process:
 
 ```bash
 cd backend
-npm run seed:owner -- --email owner@example.com --username orangeMoon --password "replace-with-a-real-password"
+export OWNER_EMAIL=owner@example.com
+export OWNER_USERNAME=orangeMoon
+export OWNER_PASSWORD="replace-with-a-real-password"
+npm run --silent seed:owner
 ```
 
 For the Compose backend container:
 
 ```bash
-docker compose exec backend npm run seed:owner -- --email owner@example.com --username orangeMoon --password "replace-with-a-real-password"
+export OWNER_PASSWORD="replace-with-a-real-password"
+docker compose exec \
+  -e OWNER_EMAIL=owner@example.com \
+  -e OWNER_USERNAME=orangeMoon \
+  -e OWNER_PASSWORD="$OWNER_PASSWORD" \
+  backend npm run --silent seed:owner
 ```
 
-The seed command never prints the password or tokens.
+The seed command never prints the password or tokens. Password input must use `OWNER_PASSWORD`; `--password` is rejected because `npm run` can echo CLI arguments.
 
 ### 4. Verify health
 

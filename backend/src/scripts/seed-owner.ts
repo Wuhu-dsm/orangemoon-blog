@@ -9,8 +9,22 @@ type SeedOptions = {
   mongodbUri: string;
 };
 
+function hasCliOption(name: string): boolean {
+  const flag = `--${name}`;
+  const inlinePrefix = `${flag}=`;
+
+  return process.argv.some((arg) => arg === flag || arg.startsWith(inlinePrefix));
+}
+
 function readOption(name: string, envName: string): string | undefined {
   const flag = `--${name}`;
+  const inlinePrefix = `${flag}=`;
+  const inlineArg = process.argv.find((arg) => arg.startsWith(inlinePrefix));
+
+  if (inlineArg) {
+    return inlineArg.slice(inlinePrefix.length);
+  }
+
   const index = process.argv.indexOf(flag);
 
   if (index >= 0) {
@@ -23,15 +37,21 @@ function readOption(name: string, envName: string): string | undefined {
 function loadOptions(): SeedOptions {
   const email = readOption('email', 'OWNER_EMAIL');
   const username = readOption('username', 'OWNER_USERNAME');
-  const password = readOption('password', 'OWNER_PASSWORD');
+  const password = process.env.OWNER_PASSWORD;
   const mongodbUri =
     readOption('mongodb-uri', 'MONGODB_URI') ??
     'mongodb://localhost:27017/sorablog';
 
+  if (hasCliOption('password')) {
+    throw new Error(
+      'Use OWNER_PASSWORD instead of --password so npm does not echo the secret.',
+    );
+  }
+
   const missing = [
     !email && '--email or OWNER_EMAIL',
     !username && '--username or OWNER_USERNAME',
-    !password && '--password or OWNER_PASSWORD',
+    !password && 'OWNER_PASSWORD',
   ].filter(Boolean);
 
   if (missing.length > 0) {
@@ -73,7 +93,7 @@ async function seed() {
         exp: 0,
       },
     },
-    { new: true, upsert: true },
+    { returnDocument: 'after', upsert: true },
   ).exec();
 
   console.log(
