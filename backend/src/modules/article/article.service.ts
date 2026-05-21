@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, FilterQuery } from 'mongoose';
+import { Model } from 'mongoose';
 import { Article, ArticleDocument } from './schemas/article.schema';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
@@ -192,8 +192,8 @@ export class ArticleService {
 
   // ─── Helpers ───
 
-  private buildAdminFilter(query: ArticleQueryDto): FilterQuery<ArticleDocument> {
-    const filter: FilterQuery<ArticleDocument> = {};
+  private buildAdminFilter(query: ArticleQueryDto): Record<string, unknown> {
+    const filter: Record<string, unknown> = {};
 
     if (query.status) {
       filter.status = query.status;
@@ -219,8 +219,8 @@ export class ArticleService {
 
   private buildPublicFilter(
     query: ArticleQueryDto,
-  ): FilterQuery<ArticleDocument> {
-    const filter: FilterQuery<ArticleDocument> = {
+  ): Record<string, unknown> {
+    const filter: Record<string, unknown> = {
       status: ContentStatus.Published,
       deletedAt: null,
     };
@@ -252,7 +252,7 @@ export class ArticleService {
 
     // eslint-disable-next-line no-constant-condition
     while (true) {
-      const query: FilterQuery<ArticleDocument> = { slug };
+      const query: Record<string, unknown> = { slug };
       if (excludeId) {
         query._id = { $ne: excludeId };
       }
