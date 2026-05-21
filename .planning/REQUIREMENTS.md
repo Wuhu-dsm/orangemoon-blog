@@ -7,7 +7,7 @@
 
 ### Infrastructure
 
-- [ ] **INFR-01**: Docker Compose 全栈部署可一键启动（Nginx + NestJS + MongoDB + Redis + ES）
+- [x] **INFR-01**: Docker Compose 全栈部署可一键启动（Nginx + NestJS + MongoDB + Redis + ES）
 - [x] **INFR-02**: 后端全局异常处理、请求日志、响应格式统一
 - [x] **INFR-03**: API 限流与防刷机制生效（@nestjs/throttler）
 - [x] **INFR-04**: 文件上传服务可用（头像、文章封面、留言图片）
@@ -134,7 +134,7 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFR-01 | Phase 1 | Pending |
+| INFR-01 | Phase 1 | Complete |
 | INFR-02 | Phase 1 | Complete |
 | INFR-03 | Phase 1 | Complete |
 | INFR-04 | Phase 1 | Complete |
