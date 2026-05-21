@@ -8,12 +8,14 @@ import {
   MessageSquare,
   PanelLeftClose,
   PanelLeftOpen,
+  Settings,
   User,
   X,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { cn } from '../../lib/utils'
 import { useSidebarStore } from '../../stores/sidebarStore'
+import { useAuthStore } from '../../stores/authStore'
 
 const navItems = [
   { icon: Home, label: '首页', path: '/' },
@@ -38,6 +40,7 @@ function sidebarTextClass(collapsed: boolean) {
 export default function Sidebar() {
   const location = useLocation()
   const { isOpen, close, collapsed, toggleCollapsed } = useSidebarStore()
+  const user = useAuthStore((state) => state.user)
 
   return (
     <>
@@ -150,6 +153,24 @@ export default function Sidebar() {
               </Link>
             )
           })}
+          {user?.role === 'admin' && (
+            <Link
+              to="/admin"
+              onClick={close}
+              title="后台管理"
+              aria-label="后台管理"
+              className={cn(
+                'flex min-w-0 items-center overflow-hidden rounded-xl py-3 text-[15px] font-medium transition-[background-color,color,gap,padding] duration-300 ease-out',
+                collapsed ? 'justify-center gap-0 px-2' : 'justify-start gap-4 px-5',
+                location.pathname.startsWith('/admin')
+                  ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-300'
+                  : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800/60 dark:hover:text-gray-200'
+              )}
+            >
+              <Settings className="shrink-0" size={19} strokeWidth={1.8} />
+              <span className={sidebarTextClass(collapsed)}>后台管理</span>
+            </Link>
+          )}
         </nav>
 
         {/* 装饰插画区 */}
