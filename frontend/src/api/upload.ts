@@ -1,6 +1,13 @@
 import { apiClient, type ApiEnvelope } from './client'
 
-export type UploadPurpose = 'avatar' | 'article-cover' | 'guestbook-image'
+export type UploadPurpose =
+  | 'avatar'
+  | 'article-cover'
+  | 'article-image'
+  | 'note-image'
+  | 'project-cover'
+  | 'project-screenshot'
+  | 'guestbook-image'
 
 export interface UploadImageResponse {
   url: string
