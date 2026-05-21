@@ -2,15 +2,19 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { IpRouteThrottlerGuard } from './common/guards/ip-route-throttler.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 import {
   databaseConfig,
   elasticsearchConfig,
   jwtConfig,
+  rateLimitConfig,
   redisConfig,
 } from './config';
+import { RATE_LIMIT_MESSAGE } from './config/rate-limit.config';
 import { BullModule } from './shared/bull/bull.module';
 import { ElasticsearchModule } from './shared/elasticsearch/elasticsearch.module';
 import { RedisModule } from './shared/redis/redis.module';
@@ -18,12 +22,33 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ArticleModule } from './modules/article/article.module';
 import { UserModule } from './modules/user/user.module';
 import { JwtAuthGuard } from './modules/auth/strategies/jwt-auth.guard';
+import { VisitorModule } from './modules/visitor/visitor.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, redisConfig, elasticsearchConfig, jwtConfig],
+      load: [
+        databaseConfig,
+        redisConfig,
+        elasticsearchConfig,
+        jwtConfig,
+        rateLimitConfig,
+      ],
+    }),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        errorMessage: RATE_LIMIT_MESSAGE,
+        throttlers: [
+          {
+            name: 'default',
+            limit: configService.getOrThrow<number>('rateLimit.global.limit'),
+            ttl: configService.getOrThrow<number>('rateLimit.global.ttl'),
+          },
+        ],
+      }),
+      inject: [ConfigService],
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -37,11 +62,16 @@ import { JwtAuthGuard } from './modules/auth/strategies/jwt-auth.guard';
     BullModule,
     UserModule,
     AuthModule,
+    VisitorModule,
     ArticleModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
+    {
+      provide: APP_GUARD,
+      useClass: IpRouteThrottlerGuard,
+    },
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

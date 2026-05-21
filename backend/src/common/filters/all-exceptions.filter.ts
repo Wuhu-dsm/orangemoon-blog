@@ -6,6 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { RATE_LIMIT_MESSAGE } from '../../config/rate-limit.config';
 
 type HttpErrorBody = {
   message?: string | string[];
@@ -33,6 +34,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
   private getMessage(exception: unknown): string | string[] {
     if (!(exception instanceof HttpException)) {
       return 'Internal server error';
+    }
+
+    if (exception.getStatus() === HttpStatus.TOO_MANY_REQUESTS) {
+      return RATE_LIMIT_MESSAGE;
     }
 
     const exceptionResponse = exception.getResponse();

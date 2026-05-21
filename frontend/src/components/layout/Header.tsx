@@ -1,11 +1,14 @@
 import { Bell, Gift, LogOut, Menu, Search } from 'lucide-react'
 import { useAuthStore } from '../../stores/authStore'
 import { useSidebarStore } from '../../stores/sidebarStore'
+import { useVisitorStore } from '../../stores/visitorStore'
 import ThemeToggle from './ThemeToggle'
 
 export default function Header() {
   const { isAuthenticated, user, logout } = useAuthStore()
   const openSidebar = useSidebarStore((state) => state.open)
+  const { nickname, isLoading, error } = useVisitorStore()
+  const visitorLabel = error ? '访客' : nickname || (isLoading ? '识别中' : '访客')
 
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 px-4 sm:px-6">
@@ -83,8 +86,11 @@ export default function Header() {
             </button>
           </div>
         ) : (
-          <span className="hidden rounded-lg border border-white/60 bg-white/60 px-3 py-2 text-sm font-medium text-muted-foreground shadow-sm backdrop-blur sm:inline">
-            访客
+          <span
+            className="hidden max-w-32 truncate rounded-lg border border-white/60 bg-white/60 px-3 py-2 text-sm font-medium text-muted-foreground shadow-sm backdrop-blur sm:inline"
+            title={error || visitorLabel}
+          >
+            {visitorLabel}
           </span>
         )}
       </div>

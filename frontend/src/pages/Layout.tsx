@@ -2,11 +2,13 @@ import { Outlet } from "react-router-dom";
 import Header from "../components/layout/Header";
 import Sidebar from "../components/layout/Sidebar";
 import { useOwnerLoginEasterEgg } from "../hooks/useOwnerLoginEasterEgg";
+import { useVisitorIdentity } from "../hooks/useVisitorIdentity";
 import { useSidebarStore } from "../stores/sidebarStore";
 
 export default function Layout() {
   const collapsed = useSidebarStore((state) => state.collapsed);
   useOwnerLoginEasterEgg();
+  useVisitorIdentity();
 
   return (
     <div className="h-screen overflow-hidden bg-background text-foreground">
