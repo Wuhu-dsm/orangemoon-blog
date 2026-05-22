@@ -13,6 +13,7 @@ import type { Block, BlockNoteEditor, PartialBlock } from '@blocknote/core'
 import { useEffect, useRef, useMemo } from 'react'
 import { Trash2 } from 'lucide-react'
 import type { BlockContent } from '../../../types/content'
+import { useThemeStore } from '../../../stores/themeStore'
 
 interface ContentBlockEditorProps {
   value?: BlockContent
@@ -94,6 +95,8 @@ export function ContentBlockEditor({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const { isDark } = useThemeStore()
+
   const editor = useCreateBlockNote(
     {
       initialContent,
@@ -138,10 +141,11 @@ export function ContentBlockEditor({
   }, [value, editor])
 
   return (
-    <div className="bn-container">
+    <div className="bn-container admin-block-editor">
       <BlockNoteViewRaw
         editor={editor}
         editable={!readOnly}
+        theme={isDark ? 'dark' : 'light'}
         onChange={() => {
           isInternalChange.current = true
           onChange?.(editor.document as BlockContent)
