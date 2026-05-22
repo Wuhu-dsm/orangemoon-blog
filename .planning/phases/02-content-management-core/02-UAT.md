@@ -1,5 +1,5 @@
 ---
-status: partial
+status: diagnosed
 phase: 02-content-management-core
 source:
   - 02-01-SUMMARY.md
@@ -11,7 +11,7 @@ source:
   - 02-07-SUMMARY.md
   - 02-08-SUMMARY.md
 started: 2026-05-22T14:30:00+08:00
-updated: 2026-05-22T15:00:00+08:00
+updated: 2026-05-22T15:10:00+08:00
 ---
 
 ## Current Test
@@ -98,61 +98,117 @@ blocked: 1
   reason: "User reported: 创建新笔记发布后，数量还是显示0"
   severity: major
   test: 3
-  artifacts: []
-  missing: []
+  root_cause: "AdminOverview.tsx lines 20-42: stats is a hardcoded const with all zero counts. Component never imports useAdminArticles/useAdminNotes/useAdminProjects hooks."
+  artifacts:
+    - path: "frontend/src/pages/admin/AdminOverview.tsx"
+      issue: "Hardcoded stats constant, zero API integration"
+  missing:
+    - "Wire useAdminArticles/useAdminNotes/useAdminProjects to replace hardcoded stats"
+  debug_session: ".planning/debug/admin-overview-mock-data.md"
 - truth: "Recent edits section shows a list of recently modified content"
   status: failed
   reason: "User reported: 近期编辑记录板块也没有显示"
   severity: major
   test: 3
-  artifacts: []
-  missing: []
+  root_cause: "AdminOverview.tsx line 51: hasContent always false due to hardcoded zero stats. Lines 138-140: else branch is static placeholder text with no data fetching."
+  artifacts:
+    - path: "frontend/src/pages/admin/AdminOverview.tsx"
+      issue: "Recent edits section never fetches data"
+  missing:
+    - "Fetch content by updatedAt, merge, sort descending, render top N"
+  debug_session: ".planning/debug/admin-overview-mock-data.md"
 - truth: "Table blocks can be easily deleted via block-level controls"
   status: failed
   reason: "User reported: 表格块的删除操作体验差"
   severity: major
   test: 5
-  artifacts: []
-  missing: []
+  root_cause: "BlockNote v0.51.2 TableHandleMenu only exposes AddButton/DeleteButton for rows/columns — no whole-table delete button. DragHandleMenu's RemoveBlockItem exists but is in a separate interaction area."
+  artifacts:
+    - path: "frontend/src/components/admin/editor/ContentBlockEditor.tsx"
+      issue: "tableHandles enabled without custom delete-table menu item"
+  missing:
+    - "Add custom table handle menu item for whole-table deletion"
+  debug_session: ".planning/debug/block-editor-ux-issues.md"
 - truth: "Editor toolbar is bound to the active line/block, not floating disconnected"
   status: failed
   reason: "User reported: 工具栏需要跟行绑定"
   severity: major
   test: 5
-  artifacts: []
-  missing: []
+  root_cause: "BlockNote v0.51.2 formattingToolbar is boolean-only (no position option). Inline/block-bound toolbar mode does not exist in this version."
+  artifacts:
+    - path: "frontend/src/components/admin/editor/ContentBlockEditor.tsx"
+      issue: "formattingToolbar: true — boolean-only, no inline binding option in v0.51.x"
+  missing:
+    - "Upgrade to BlockNote v0.60+ for inline toolbar support, or build custom slash-menu toolbar"
+  debug_session: ".planning/debug/block-editor-ux-issues.md"
 - truth: "Editor provides a preview mode to see rendered content before publishing"
   status: failed
   reason: "User reported: 缺少预览功能"
   severity: major
   test: 5
-  artifacts: []
-  missing: []
+  root_cause: "ContentBlockPreview.tsx uses read-only BlockNoteViewRaw — same editor look, not a public-facing HTML render. blocksToFullHTML() API exists but is unused."
+  artifacts:
+    - path: "frontend/src/components/admin/editor/ContentBlockPreview.tsx"
+      issue: "Renders editor-internal view, not HTML output"
+    - path: "frontend/src/components/admin/content/AdminContentEditor.tsx"
+      issue: "Preview Dialog wraps ContentBlockPreview — shows editor style, not public style"
+  missing:
+    - "Use blocksToFullHTML() to render actual HTML in preview mode"
+  debug_session: ".planning/debug/block-editor-ux-issues.md"
 - truth: "Pasting markdown text auto-detects and renders as structured blocks"
   status: failed
   reason: "User reported: 需要支持粘贴的md文本自动识别渲染"
   severity: major
   test: 5
-  artifacts: []
-  missing: []
+  root_cause: "BlockNote has built-in markdown paste support, but isMarkdown() detection is conservative — when clipboard has both text/html and text/plain, HTML wins without explicit pasteHandler config."
+  artifacts:
+    - path: "frontend/src/components/admin/editor/ContentBlockEditor.tsx"
+      issue: "No custom pasteHandler configured"
+  missing:
+    - "Add pasteHandler with plainTextAsMarkdown: true to prioritize markdown over HTML"
+  debug_session: ".planning/debug/block-editor-ux-issues.md"
 - truth: "Project editor is purpose-built with form fields (cover image, name, description, status, git URL) rather than reusing the article/note block editor"
   status: failed
   reason: "User reported: 项目编辑不应该跟笔记或者文章一样，而是提供封面图、名称、简介、状态、git地址"
   severity: major
   test: 8
-  artifacts: []
-  missing: []
+  root_cause: "AdminContentEditor.tsx always renders ContentBlockEditor as the primary (1fr) content area for all kinds. Project-specific fields are relegated to a 320px sidebar card."
+  artifacts:
+    - path: "frontend/src/components/admin/content/AdminContentEditor.tsx"
+      issue: "Lines 267-281: ContentBlockEditor always primary; lines 382-448: project fields in sidebar"
+  missing:
+    - "Create purpose-built ProjectForm component replacing block editor for project kind"
+  debug_session: ".planning/debug/phase-02-project-management-gaps.md"
 - truth: "Project status machine supports 待启动, 开发中, 更新中, 已归档 states with proper transitions"
   status: failed
   reason: "User reported: 项目的状态机需要设计，例如待启动、开发中、更新中、已归档"
   severity: major
   test: 8
-  artifacts: []
-  missing: []
+  root_cause: "ProjectStatus enum uses planning/in-progress/completed/maintenance across backend enum, DTOs, and frontend type/selector — doesn't match user's required states."
+  artifacts:
+    - path: "backend/src/modules/project/enums/project-status.enum.ts"
+      issue: "Enum values: planning, in-progress, completed, maintenance"
+    - path: "frontend/src/api/adminContent.ts"
+      issue: "Type union uses old enum values"
+    - path: "frontend/src/components/admin/content/AdminContentEditor.tsx"
+      issue: "UI labels use 规划中/进行中/已完成/维护中"
+  missing:
+    - "Update enum to pending/developing/updating/archived across full stack"
+    - "Write migration for existing project documents"
+  debug_session: ".planning/debug/phase-02-project-management-gaps.md"
 - truth: "Home page project section supports iterative migration from mock data to real API"
   status: failed
   reason: "User reported: 首页项目部分也需要支持从mock数据到真实接口的迭代"
   severity: major
   test: 8
-  artifacts: []
-  missing: []
+  root_cause: "FeaturedProjects.tsx has hardcoded mock data (lines 22-74) with no API integration. No public project API client exists in frontend/src/api/. Backend GET /api/v1/projects endpoint is available but unused."
+  artifacts:
+    - path: "frontend/src/components/home/FeaturedProjects.tsx"
+      issue: "Hardcoded mock data, local Project interface incompatible with API type"
+    - path: "frontend/src/api/"
+      issue: "No public project API client exists"
+  missing:
+    - "Create public API client for GET /api/v1/projects"
+    - "Refactor FeaturedProjects to use useQuery with real data"
+    - "Keep mock data as fallback/loading skeleton"
+  debug_session: ".planning/debug/phase-02-project-management-gaps.md"
