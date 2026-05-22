@@ -1,3 +1,4 @@
+import { type ReactNode } from 'react'
 import { ArrowRight, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Badge } from '../ui/badge'
@@ -54,104 +55,13 @@ function mapToDisplayProject(project: PublicProject): DisplayProject {
   }
 }
 
-export default function FeaturedProjects({ className }: FeaturedProjectsProps) {
-  const { data, isLoading, isError } = usePublicProjects({ pageSize: 10 })
-
-  const displayProjects = (data?.items ?? []).map(mapToDisplayProject)
-  const visibleProjects = displayProjects.slice(0, 3)
-
-  // Error state: API failed — keep section visible with non-breaking fallback
-  if (isError && !isLoading) {
-    return (
-      <section
-        className={cn(
-          'rounded-[14px] border border-white/60 bg-white/60 p-3 shadow-[0_12px_40px_rgba(125,211,252,0.2)] backdrop-blur-xl dark:ring-white/10',
-          className
-        )}
-      >
-        <div className="mb-2 flex items-center justify-between">
-          <h3 className="flex items-center gap-1.5 text-sm font-semibold text-[#1E293B]">
-            <Sparkles size={14} className="text-cyan-400" />
-            精选项目
-          </h3>
-          <Link
-            to="/projects"
-            className="flex items-center gap-1 text-[11px] text-muted-foreground transition hover:text-primary"
-          >
-            查看全部 <ArrowRight size={12} />
-          </Link>
-        </div>
-        <div className="flex h-[156px] items-center justify-center rounded-[14px] border border-dashed border-amber-200 bg-amber-50/50 dark:border-amber-800 dark:bg-amber-950/20">
-          <p className="text-xs text-muted-foreground">项目加载失败，请稍后重试</p>
-        </div>
-      </section>
-    )
-  }
-
-  // Loading state: render skeleton cards
-  if (isLoading) {
-    return (
-      <section
-        className={cn(
-          'rounded-[14px] border border-white/60 bg-white/60 p-3 shadow-[0_12px_40px_rgba(125,211,252,0.2)] backdrop-blur-xl dark:ring-white/10',
-          className
-        )}
-      >
-        <div className="mb-2 flex items-center justify-between">
-          <h3 className="flex items-center gap-1.5 text-sm font-semibold text-[#1E293B]">
-            <Sparkles size={14} className="text-cyan-400" />
-            精选项目
-          </h3>
-          <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-            查看全部 <ArrowRight size={12} />
-          </span>
-        </div>
-        <ShowcaseGrid className="h-[156px]">
-          {Array.from({ length: 3 }).map((_, index) => (
-            <div
-              key={index}
-              className="flex h-full flex-col gap-0 overflow-hidden rounded-[14px] border border-white/50 bg-white/40 py-0"
-            >
-              <div className="h-[108px] shrink-0 animate-pulse rounded-t-[14px] bg-gray-200 dark:bg-gray-800" />
-              <div className="flex min-h-0 flex-1 flex-col gap-1 p-2">
-                <div className="h-3 w-16 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
-                <div className="h-2.5 w-24 animate-pulse rounded bg-gray-100 dark:bg-gray-800/60" />
-              </div>
-            </div>
-          ))}
-        </ShowcaseGrid>
-      </section>
-    )
-  }
-
-  // Empty state: no published projects — keep section visible so layout stays stable
-  if (visibleProjects.length === 0) {
-    return (
-      <section
-        className={cn(
-          'rounded-[14px] border border-white/60 bg-white/60 p-3 shadow-[0_12px_40px_rgba(125,211,252,0.2)] backdrop-blur-xl dark:ring-white/10',
-          className
-        )}
-      >
-        <div className="mb-2 flex items-center justify-between">
-          <h3 className="flex items-center gap-1.5 text-sm font-semibold text-[#1E293B]">
-            <Sparkles size={14} className="text-cyan-400" />
-            精选项目
-          </h3>
-          <Link
-            to="/projects"
-            className="flex items-center gap-1 text-[11px] text-muted-foreground transition hover:text-primary"
-          >
-            查看全部 <ArrowRight size={12} />
-          </Link>
-        </div>
-        <div className="flex h-[156px] items-center justify-center rounded-[14px] border border-dashed border-slate-200 bg-white/40 dark:border-slate-700 dark:bg-white/5">
-          <p className="text-xs text-muted-foreground">项目正在整理中</p>
-        </div>
-      </section>
-    )
-  }
-
+function FeaturedProjectsShell({
+  className,
+  children,
+}: {
+  className?: string
+  children: ReactNode
+}) {
   return (
     <section
       className={cn(
@@ -171,6 +81,63 @@ export default function FeaturedProjects({ className }: FeaturedProjectsProps) {
           查看全部 <ArrowRight size={12} />
         </Link>
       </div>
+      {children}
+    </section>
+  )
+}
+
+export default function FeaturedProjects({ className }: FeaturedProjectsProps) {
+  const { data, isLoading, isError } = usePublicProjects({ pageSize: 10 })
+
+  const displayProjects = (data?.items ?? []).map(mapToDisplayProject)
+  const visibleProjects = displayProjects.slice(0, 3)
+
+  // Error state: API failed — keep section visible with non-breaking fallback
+  if (isError && !isLoading) {
+    return (
+      <FeaturedProjectsShell className={className}>
+        <div className="flex h-[156px] items-center justify-center rounded-[14px] border border-dashed border-amber-200 bg-amber-50/50 dark:border-amber-800 dark:bg-amber-950/20">
+          <p className="text-xs text-muted-foreground">项目加载失败，请稍后重试</p>
+        </div>
+      </FeaturedProjectsShell>
+    )
+  }
+
+  // Loading state: render skeleton cards
+  if (isLoading) {
+    return (
+      <FeaturedProjectsShell className={className}>
+        <ShowcaseGrid className="h-[156px]">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div
+              key={index}
+              className="flex h-full flex-col gap-0 overflow-hidden rounded-[14px] border border-white/50 bg-white/40 py-0"
+            >
+              <div className="h-[108px] shrink-0 animate-pulse rounded-t-[14px] bg-gray-200 dark:bg-gray-800" />
+              <div className="flex min-h-0 flex-1 flex-col gap-1 p-2">
+                <div className="h-3 w-16 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
+                <div className="h-2.5 w-24 animate-pulse rounded bg-gray-100 dark:bg-gray-800/60" />
+              </div>
+            </div>
+          ))}
+        </ShowcaseGrid>
+      </FeaturedProjectsShell>
+    )
+  }
+
+  // Empty state: no published projects — keep section visible so layout stays stable
+  if (visibleProjects.length === 0) {
+    return (
+      <FeaturedProjectsShell className={className}>
+        <div className="flex h-[156px] items-center justify-center rounded-[14px] border border-dashed border-slate-200 bg-white/40 dark:border-slate-700 dark:bg-white/5">
+          <p className="text-xs text-muted-foreground">项目正在整理中</p>
+        </div>
+      </FeaturedProjectsShell>
+    )
+  }
+
+  return (
+    <FeaturedProjectsShell className={className}>
       <ShowcaseGrid className="h-[156px]">
         {visibleProjects.map((project) => (
           <Card
@@ -221,6 +188,6 @@ export default function FeaturedProjects({ className }: FeaturedProjectsProps) {
           </Card>
         ))}
       </ShowcaseGrid>
-    </section>
+    </FeaturedProjectsShell>
   )
 }
