@@ -1,5 +1,5 @@
 ---
-status: diagnosed
+status: partial
 phase: 02-content-management-core
 source:
   - 02-01-SUMMARY.md
@@ -11,12 +11,19 @@ source:
   - 02-07-SUMMARY.md
   - 02-08-SUMMARY.md
 started: 2026-05-22T14:30:00+08:00
-updated: 2026-05-22T15:10:00+08:00
+updated: 2026-05-22T23:01:02+08:00
 ---
 
 ## Current Test
 
-[testing paused — 1 blocked, 2 skipped, 3 issues outstanding]
+[gap closure executed — 9 diagnosed gaps addressed/accepted by 02-09 and 02-10; retest still needed for 1 blocked and 2 skipped checks]
+
+## Gap Closure Status
+
+- 02-09 resolved admin overview live data, recent edits, table deletion, HTML preview, and markdown paste handling.
+- 02-09 accepted the BlockNote v0.51.x floating toolbar limitation by user choice (`stay-on-v051`).
+- 02-10 resolved project status enum, purpose-built project form, and home project API integration.
+- Remaining work is verification, not planning: rerun `$gsd-verify-work 2` to retest fixed areas and complete skipped/blocked API/public visibility checks.
 
 ## Tests
 
@@ -94,7 +101,8 @@ blocked: 1
 ## Gaps
 
 - truth: "Content stat cards show accurate live counts for articles, notes, and projects"
-  status: failed
+  status: resolved
+  resolved_by: "02-09-SUMMARY.md"
   reason: "User reported: 创建新笔记发布后，数量还是显示0"
   severity: major
   test: 3
@@ -106,7 +114,8 @@ blocked: 1
     - "Wire useAdminArticles/useAdminNotes/useAdminProjects to replace hardcoded stats"
   debug_session: ".planning/debug/admin-overview-mock-data.md"
 - truth: "Recent edits section shows a list of recently modified content"
-  status: failed
+  status: resolved
+  resolved_by: "02-09-SUMMARY.md"
   reason: "User reported: 近期编辑记录板块也没有显示"
   severity: major
   test: 3
@@ -118,7 +127,8 @@ blocked: 1
     - "Fetch content by updatedAt, merge, sort descending, render top N"
   debug_session: ".planning/debug/admin-overview-mock-data.md"
 - truth: "Table blocks can be easily deleted via block-level controls"
-  status: failed
+  status: resolved
+  resolved_by: "02-09-SUMMARY.md"
   reason: "User reported: 表格块的删除操作体验差"
   severity: major
   test: 5
@@ -130,7 +140,9 @@ blocked: 1
     - "Add custom table handle menu item for whole-table deletion"
   debug_session: ".planning/debug/block-editor-ux-issues.md"
 - truth: "Editor toolbar is bound to the active line/block, not floating disconnected"
-  status: failed
+  status: accepted
+  resolved_by: "02-09-SUMMARY.md"
+  decision: "User selected stay-on-v051; BlockNote v0.51.x only supports floating formattingToolbar behavior."
   reason: "User reported: 工具栏需要跟行绑定"
   severity: major
   test: 5
@@ -142,7 +154,8 @@ blocked: 1
     - "Upgrade to BlockNote v0.60+ for inline toolbar support, or build custom slash-menu toolbar"
   debug_session: ".planning/debug/block-editor-ux-issues.md"
 - truth: "Editor provides a preview mode to see rendered content before publishing"
-  status: failed
+  status: resolved
+  resolved_by: "02-09-SUMMARY.md"
   reason: "User reported: 缺少预览功能"
   severity: major
   test: 5
@@ -156,7 +169,8 @@ blocked: 1
     - "Use blocksToFullHTML() to render actual HTML in preview mode"
   debug_session: ".planning/debug/block-editor-ux-issues.md"
 - truth: "Pasting markdown text auto-detects and renders as structured blocks"
-  status: failed
+  status: resolved
+  resolved_by: "02-09-SUMMARY.md"
   reason: "User reported: 需要支持粘贴的md文本自动识别渲染"
   severity: major
   test: 5
@@ -168,7 +182,8 @@ blocked: 1
     - "Add pasteHandler with plainTextAsMarkdown: true to prioritize markdown over HTML"
   debug_session: ".planning/debug/block-editor-ux-issues.md"
 - truth: "Project editor is purpose-built with form fields (cover image, name, description, status, git URL) rather than reusing the article/note block editor"
-  status: failed
+  status: resolved
+  resolved_by: "02-10-SUMMARY.md"
   reason: "User reported: 项目编辑不应该跟笔记或者文章一样，而是提供封面图、名称、简介、状态、git地址"
   severity: major
   test: 8
@@ -180,7 +195,8 @@ blocked: 1
     - "Create purpose-built ProjectForm component replacing block editor for project kind"
   debug_session: ".planning/debug/phase-02-project-management-gaps.md"
 - truth: "Project status machine supports 待启动, 开发中, 更新中, 已归档 states with proper transitions"
-  status: failed
+  status: resolved
+  resolved_by: "02-10-SUMMARY.md"
   reason: "User reported: 项目的状态机需要设计，例如待启动、开发中、更新中、已归档"
   severity: major
   test: 8
@@ -197,7 +213,8 @@ blocked: 1
     - "Write migration for existing project documents"
   debug_session: ".planning/debug/phase-02-project-management-gaps.md"
 - truth: "Home page project section supports iterative migration from mock data to real API"
-  status: failed
+  status: resolved
+  resolved_by: "02-10-SUMMARY.md"
   reason: "User reported: 首页项目部分也需要支持从mock数据到真实接口的迭代"
   severity: major
   test: 8

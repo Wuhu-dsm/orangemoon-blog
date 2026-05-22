@@ -54,29 +54,29 @@
 
 **UI hint:** yes
 
-**Plans:** 8/10 plans complete
+**Plans:** 10/10 plans complete
 
 Plans:
 
 **Wave 1**
-- [ ] `02-01-PLAN.md` — Backend content contracts, slug helpers, upload purposes, module entrypoints
-- [ ] `02-05-PLAN.md` — Protected admin route shell, sidebar, top bar, overview, conditional public sidebar entry
+- [x] `02-01-PLAN.md` — Backend content contracts, slug helpers, upload purposes, module entrypoints
+- [x] `02-05-PLAN.md` — Protected admin route shell, sidebar, top bar, overview, conditional public sidebar entry
 
 **Wave 2 *(blocked on relevant Wave 1 foundations)***
-- [ ] `02-02-PLAN.md` — Article schema, service, public/admin APIs, tests
-- [ ] `02-03-PLAN.md` — Note schema, service, public/admin APIs, tests
-- [ ] `02-04-PLAN.md` — Project schema, service, public/admin APIs, tests
-- [ ] `02-06-PLAN.md` — Block editor adapter, preview, frontend upload purpose parity
+- [x] `02-02-PLAN.md` — Article schema, service, public/admin APIs, tests
+- [x] `02-03-PLAN.md` — Note schema, service, public/admin APIs, tests
+- [x] `02-04-PLAN.md` — Project schema, service, public/admin APIs, tests
+- [x] `02-06-PLAN.md` — Block editor adapter, preview, frontend upload purpose parity
 
 **Wave 3 *(blocked on backend content APIs, admin shell, and editor adapter)***
-- [ ] `02-07-PLAN.md` — Admin article/note/project content tables, editor flows, API hooks
+- [x] `02-07-PLAN.md` — Admin article/note/project content tables, editor flows, API hooks
 
 **Wave 4 *(blocked on admin shell and content workspace)***
-- [ ] `02-08-PLAN.md` — Friend-link, guestbook, user management shells, admin user API, final automated verification
+- [x] `02-08-PLAN.md` — Friend-link, guestbook, user management shells, admin user API, final automated verification
 
 **Wave 5 — Gap Closure *(UAT issue fixes from 02-UAT.md)***
-- [ ] `02-09-PLAN.md` — Wire admin overview live data, fix block editor UX (table delete, HTML preview, markdown paste, toolbar decision)
-- [ ] `02-10-PLAN.md` — Fix project status enum, replace block editor with purpose-built ProjectForm, wire FeaturedProjects to public API
+- [x] `02-09-PLAN.md` — Wire admin overview live data, fix block editor UX (table delete, HTML preview, markdown paste, toolbar decision)
+- [x] `02-10-PLAN.md` — Fix project status enum, replace block editor with purpose-built ProjectForm, wire FeaturedProjects to public API
 
 Cross-cutting constraints:
 - Admin writes must be admin-only, public reads must expose only published non-deleted content, and editor body content must remain editor-native JSON only.
