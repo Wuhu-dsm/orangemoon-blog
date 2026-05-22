@@ -1,7 +1,7 @@
 # Roadmap: SoraBlog
 
 **Created:** 2026-05-21
-**Phases:** 9
+**Phases:** 10
 **Requirements:** 62 v1 requirements mapped
 
 ---
@@ -12,6 +12,7 @@
 |---|-------|------|--------------|------------------|
 | 1 | Infrastructure | 4/4 | Complete    | 2026-05-21 |
 | 2 | Content Management Core | 8/8 | Complete   | 2026-05-22 |
+| 02.1 | Editor and Home API Gap Closure (INSERTED) | 编辑器核心编辑修复、首页项目空数据兜底、最新文章真实 API | ADMN-03, ARTC-07, HOME-02~03, HOME-09 | 5 |
 | 3 | Article Frontend | 文章列表、详情、归档、评论前端 | ARTC-01~06 | 5 |
 | 4 | Note Frontend | 笔记看板、详情、文集前端 | NOTE-01~04 | 4 |
 | 5 | Home Dashboard | 数据驱动的完整首页 | HOME-01~09 | 5 |
@@ -82,6 +83,41 @@ Cross-cutting constraints:
 - Admin writes must be admin-only, public reads must expose only published non-deleted content, and editor body content must remain editor-native JSON only.
 
 **Note:** 这是 MVP 的核心骨架。Phase 2 完成后，博主已经可以通过后台独立生产内容，后续 phase 只需在前端和消费端迭代。
+
+---
+
+### Phase 02.1: Editor and Home API Gap Closure (INSERTED)
+**Goal:** 修复后台内容编辑器的核心编辑能力，并补齐首页项目空数据兜底与最新文章真实接口接入；优先解决编辑器黑底、只能输入文字等当前阻塞问题。
+**Mode:** mvp
+**Depends on:** Phase 2
+**Success Criteria**:
+1. 后台文章/笔记编辑器背景在亮色/暗色模式下与管理后台一致，不再出现不可读黑底。
+2. 编辑器支持预期的富文本/Markdown 编辑能力：标题、段落、列表、引用、代码块、图片、表格等基础块可创建、编辑、删除。
+3. 编辑器内容保存、重新打开、预览/详情渲染保持一致，不能退化为仅纯文本输入。
+4. 修复首页精选项目在真实接口返回空数组或无数据时模块静默消失的问题；应提供符合设计的稳定空态、降级内容或明确兜底策略，且不出现布局塌陷。
+5. 首页最新文章模块调用真实文章 API 渲染数据，并在空数据、加载中、加载失败时有明确且不破坏布局的展示策略。
+
+**Requirements:** ADMN-03, ARTC-07, HOME-02, HOME-03, HOME-09
+
+**UI hint:** yes
+
+**Plans:** 3 plans ready
+
+Plans:
+
+**Wave 1 — Editor Recovery**
+- [ ] `02.1-01-PLAN.md` — Fix BlockNote editor theme/readability and verify full block editing, save/reopen, markdown paste, table delete, and preview.
+
+**Wave 2 — Home API Gap Closure *(blocked on Wave 1 verification context only; code paths are independent)***
+- [ ] `02.1-02-PLAN.md` — Wire LatestArticles to the public articles API with loading, empty, and error states.
+- [ ] `02.1-03-PLAN.md` — Replace FeaturedProjects null empty state with stable empty/error fallbacks while preserving real project data rendering.
+
+Cross-cutting constraints:
+- Do not treat the current project-empty-data disappearance as desired behavior; empty project data needs an intentional visible fallback.
+- Do not restore mock article/project cards as real data. Loading skeletons are allowed, but normal rendering must use public APIs.
+- Editor verification must be interaction-based, not just visual: create, edit, delete, paste, save, reopen, and preview mixed blocks.
+
+**Note:** 这是紧急插入阶段。规划时必须重度关注编辑器交互，不只检查样式，还要实际验证块级编辑、粘贴、保存、重新加载和预览链路。首页项目空数据导致模块不展示是当前问题，计划不得把“隐藏模块”当作目标行为。
 
 ---
 

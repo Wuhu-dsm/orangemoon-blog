@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: ready_to_verify
-last_updated: 2026-05-22T15:01:02.000Z
+status: ready_to_execute
+last_updated: 2026-05-22T23:39:46.7069001+08:00
 progress:
-  total_phases: 9
+  total_phases: 10
   completed_phases: 2
-  total_plans: 14
+  total_plans: 17
   completed_plans: 14
   percent: 22
-stopped_at: Phase 02 plans complete (10/10) — ready to verify Phase 2 before Phase 3
+stopped_at: Phase 02.1 planned (3 plans) — ready to execute urgent editor/home API gap closure
 ---
 
 # State: SoraBlog
@@ -20,7 +20,7 @@ stopped_at: Phase 02 plans complete (10/10) — ready to verify Phase 2 before P
 See: `.planning/PROJECT.md` (updated 2026-05-21)
 
 **Core value:** 访客能够流畅地阅读文章、浏览项目、查看笔记，并与博主通过留言板和友链进行互动；博主可以通过内置管理后台高效地管理全部内容。
-**Current focus:** Phase 2 verification — content management core
+**Current focus:** Phase 02.1 execution — urgent editor UX and home API gap closure
 
 ---
 
@@ -30,6 +30,7 @@ See: `.planning/PROJECT.md` (updated 2026-05-21)
 |-------|------|--------|--------------|-----------|
 | 1 | Infrastructure | ✅ Complete | 9/9 | 9 |
 | 2 | Content Management Core | ✅ Plans Complete / UAT Partial | 8/8 | 8 |
+| 02.1 | Editor and Home API Gap Closure (INSERTED) | ✅ Planned / Ready to Execute | 5 refs | 0 |
 | 3 | Article Frontend | ⏳ Not Started | 6/6 | 0 |
 | 4 | Note Frontend | ⏳ Not Started | 4/4 | 0 |
 | 5 | Home Dashboard | ⏳ Not Started | 9/9 | 0 |
@@ -44,23 +45,27 @@ See: `.planning/PROJECT.md` (updated 2026-05-21)
 
 ## Current Phase Detail
 
-### Phase 2: Content Management Core
+### Phase 02.1: Editor and Home API Gap Closure (INSERTED)
 
-**Goal:** 搭建管理后台框架与内容管理核心 API，让博主能先创建和编辑文章、笔记、项目
+**Goal:** 修复后台内容编辑器的核心编辑能力，并补齐首页项目空数据兜底与最新文章真实接口接入；优先解决编辑器黑底、只能输入文字等当前阻塞问题。
 
 **Blockers:**
 
-- None
+- Phase 2 UAT retest is still pending.
+- Phase 02.1 is intentionally inserted before Phase 3 because editor bugs block content production and the home API gaps affect upcoming frontend work.
 
 **In Progress:**
 
-- UAT retest needed after gap closure plans 02-09 and 02-10.
+- 3 plans created and ready to execute:
+  - `02.1-01-PLAN.md` — Editor theme/readability and full block editing verification
+  - `02.1-02-PLAN.md` — LatestArticles public API integration
+  - `02.1-03-PLAN.md` — FeaturedProjects empty/error fallback repair
 
 **Next Actions:**
 
-1. `$gsd-verify-work 2` — 复测 Phase 2 的 UAT gap closure 和剩余 skipped/blocked 项
-2. `$gsd-progress` — 查看更新后的 phase 状态
-3. `$gsd-discuss-phase 3` — Phase 2 验证通过后开始 Article Frontend
+1. `$gsd-execute-phase 02.1` — 执行编辑器修复、最新文章真实 API 接入、首页项目空数据兜底
+2. `$gsd-verify-work 2` — 复测 Phase 2 的 UAT gap closure 和剩余 skipped/blocked 项
+3. `$gsd-progress` — 查看更新后的 phase 状态
 
 ---
 
@@ -71,6 +76,15 @@ See: `.planning/PROJECT.md` (updated 2026-05-21)
 - 2026-05-21: Roadmap restructured — Phase 2 "Content Management Core" moved up to build MVP skeleton first (Admin + content APIs before frontend display)
 - 2026-05-21: Phase 1 completed — owner auth, visitor identity, upload infrastructure, health checks, Compose reliability, code review, and verification passed
 - 2026-05-22: Phase 2 plans completed (10/10) with gap closure for admin overview, editor UX, project form/status, and FeaturedProjects API wiring
+- 2026-05-22: Phase 02.1 planned (3 plans) with editor interaction recovery first, followed by latest article API wiring and FeaturedProjects empty/error fallback repair
+
+---
+
+## Accumulated Context
+
+### Roadmap Evolution
+
+- 2026-05-22: Phase 02.1 inserted after Phase 2 (URGENT) — 修复编辑器黑底和仅文字输入问题；修复首页项目接口返回空数据时模块静默消失的问题，需提供稳定空态或兜底策略；博客首页最新文章需要接真实接口；规划时重度关注编辑器编辑能力。
 
 ---
 
@@ -86,4 +100,4 @@ See: `.planning/PROJECT.md` (updated 2026-05-21)
 
 ---
 
-*Updated: 2026-05-21*
+*Updated: 2026-05-22*
