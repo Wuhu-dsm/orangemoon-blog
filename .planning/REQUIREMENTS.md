@@ -24,13 +24,13 @@
 
 - [ ] **HOME-01**: 首页 Banner 轮播展示精选内容，支持自动切换和手动导航
 - [ ] **HOME-02**: 最新文章列表展示（标题、摘要、标签、阅读数、发布时间）
-- [ ] **HOME-03**: 精选项目卡片展示（封面、名称、技术栈、状态）
+- [x] **HOME-03**: 精选项目卡片展示（封面、名称、技术栈、状态）
 - [ ] **HOME-04**: 个人资料卡片展示（头像、昵称、简介、社交链接、等级）
 - [ ] **HOME-05**: 标签云展示热门标签，点击可跳转对应归档页
 - [ ] **HOME-06**: 时间轴展示近期动态/里程碑
 - [ ] **HOME-07**: 邮件订阅输入框可提交邮箱地址
 - [ ] **HOME-08**: 阅读统计图表展示（Recharts 数据可视化）
-- [ ] **HOME-09**: 首页所有数据从后端 API 动态获取，非静态写死
+- [x] **HOME-09**: 首页所有数据从后端 API 动态获取，非静态写死
 
 ### Article System
 
@@ -163,13 +163,13 @@
 | NOTE-04 | Phase 4 | Pending |
 | HOME-01 | Phase 5 | Pending |
 | HOME-02 | Phase 5 | Pending |
-| HOME-03 | Phase 5 | Pending |
+| HOME-03 | Phase 02.1 | Complete |
 | HOME-04 | Phase 5 | Pending |
 | HOME-05 | Phase 5 | Pending |
 | HOME-06 | Phase 5 | Pending |
 | HOME-07 | Phase 5 | Pending |
 | HOME-08 | Phase 5 | Pending |
-| HOME-09 | Phase 5 | Pending |
+| HOME-09 | Phase 02.1 | Complete |
 | PROJ-01 | Phase 6 | Pending |
 | PROJ-02 | Phase 6 | Pending |
 | PROJ-03 | Phase 6 | Pending |
@@ -203,4 +203,4 @@
 
 ---
 *Requirements defined: 2026-05-21*
-*Last updated: 2026-05-21 after initial definition*
+*Last updated: 2026-05-22 after Phase 02.1 gap closure*

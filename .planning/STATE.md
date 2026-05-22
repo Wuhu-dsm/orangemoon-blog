@@ -8,9 +8,9 @@ progress:
   total_phases: 10
   completed_phases: 2
   total_plans: 17
-  completed_plans: 14
-  percent: 22
-stopped_at: Phase 02.1 planned (3 plans) — ready to execute urgent editor/home API gap closure
+  completed_plans: 15
+  percent: 25
+stopped_at: Phase 02.1 completed (3/3 plans executed) — ready for verification and Phase 3 transition
 ---
 
 # State: SoraBlog
@@ -30,7 +30,7 @@ See: `.planning/PROJECT.md` (updated 2026-05-21)
 |-------|------|--------|--------------|-----------|
 | 1 | Infrastructure | ✅ Complete | 9/9 | 9 |
 | 2 | Content Management Core | ✅ Plans Complete / UAT Partial | 8/8 | 8 |
-| 02.1 | Editor and Home API Gap Closure (INSERTED) | ✅ Planned / Ready to Execute | 5 refs | 0 |
+| 02.1 | Editor and Home API Gap Closure (INSERTED) | ✅ Complete | 5 refs | 3 |
 | 3 | Article Frontend | ⏳ Not Started | 6/6 | 0 |
 | 4 | Note Frontend | ⏳ Not Started | 4/4 | 0 |
 | 5 | Home Dashboard | ⏳ Not Started | 9/9 | 0 |
@@ -56,16 +56,14 @@ See: `.planning/PROJECT.md` (updated 2026-05-21)
 
 **In Progress:**
 
-- 3 plans created and ready to execute:
-  - `02.1-01-PLAN.md` — Editor theme/readability and full block editing verification
-  - `02.1-02-PLAN.md` — LatestArticles public API integration
-  - `02.1-03-PLAN.md` — FeaturedProjects empty/error fallback repair
+- All 3 plans executed and committed:
+  - `02.1-01-PLAN.md` — Editor theme/readability and full block editing verification ✅
+  - `02.1-02-PLAN.md` — LatestArticles public API integration ✅
+  - `02.1-03-PLAN.md` — FeaturedProjects empty/error fallback repair ✅
 
 **Next Actions:**
 
-1. `$gsd-execute-phase 02.1` — 执行编辑器修复、最新文章真实 API 接入、首页项目空数据兜底
-2. `$gsd-verify-work 2` — 复测 Phase 2 的 UAT gap closure 和剩余 skipped/blocked 项
-3. `$gsd-progress` — 查看更新后的 phase 状态
+1. `$gsd-verify-work 2` — Verify Phase 2 and 02.1 gap closure UAT
 
 ---
 
@@ -77,6 +75,7 @@ See: `.planning/PROJECT.md` (updated 2026-05-21)
 - 2026-05-21: Phase 1 completed — owner auth, visitor identity, upload infrastructure, health checks, Compose reliability, code review, and verification passed
 - 2026-05-22: Phase 2 plans completed (10/10) with gap closure for admin overview, editor UX, project form/status, and FeaturedProjects API wiring
 - 2026-05-22: Phase 02.1 planned (3 plans) with editor interaction recovery first, followed by latest article API wiring and FeaturedProjects empty/error fallback repair
+- 2026-05-22: Phase 02.1 execution completed — 3/3 plans committed: editor theme/block editing fix, LatestArticles API integration, FeaturedProjects empty/error fallback repair
 
 ---
 

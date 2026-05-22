@@ -101,16 +101,16 @@ Cross-cutting constraints:
 
 **UI hint:** yes
 
-**Plans:** 3 plans ready
+**Plans:** 3/3 plans complete
 
 Plans:
 
 **Wave 1 — Editor Recovery**
-- [ ] `02.1-01-PLAN.md` — Fix BlockNote editor theme/readability and verify full block editing, save/reopen, markdown paste, table delete, and preview.
+- [x] `02.1-01-PLAN.md` — Fix BlockNote editor theme/readability and verify full block editing, save/reopen, markdown paste, table delete, and preview.
 
 **Wave 2 — Home API Gap Closure *(blocked on Wave 1 verification context only; code paths are independent)***
-- [ ] `02.1-02-PLAN.md` — Wire LatestArticles to the public articles API with loading, empty, and error states.
-- [ ] `02.1-03-PLAN.md` — Replace FeaturedProjects null empty state with stable empty/error fallbacks while preserving real project data rendering.
+- [x] `02.1-02-PLAN.md` — Wire LatestArticles to the public articles API with loading, empty, and error states.
+- [x] `02.1-03-PLAN.md` — Replace FeaturedProjects null empty state with stable empty/error fallbacks while preserving real project data rendering.
 
 Cross-cutting constraints:
 - Do not treat the current project-empty-data disappearance as desired behavior; empty project data needs an intentional visible fallback.
