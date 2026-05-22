@@ -1,7 +1,17 @@
 import '@blocknote/react/style.css'
-import { useCreateBlockNote, BlockNoteViewRaw } from '@blocknote/react'
-import type { PartialBlock } from '@blocknote/core'
+import {
+  BlockNoteViewRaw,
+  FormattingToolbar,
+  FormattingToolbarController,
+  getFormattingToolbarItems,
+  useBlockNoteEditor,
+  useComponentsContext,
+  useCreateBlockNote,
+  useEditorState,
+} from '@blocknote/react'
+import type { Block, BlockNoteEditor, PartialBlock } from '@blocknote/core'
 import { useEffect, useRef, useMemo } from 'react'
+import { Trash2 } from 'lucide-react'
 import type { BlockContent } from '../../../types/content'
 
 interface ContentBlockEditorProps {
@@ -10,6 +20,64 @@ interface ContentBlockEditorProps {
   emptyPrompt?: string
   readOnly?: boolean
   onUploadImage?: (file: File) => Promise<string>
+}
+
+function findSelectedTableBlock(
+  editor: BlockNoteEditor,
+): Block | undefined {
+  const selectedBlocks = editor.getSelection()?.blocks ?? [
+    editor.getTextCursorPosition().block,
+  ]
+
+  for (const block of selectedBlocks) {
+    if (block.type === 'table') return block
+
+    let parent = editor.getParentBlock(block)
+    while (parent) {
+      if (parent.type === 'table') return parent
+      parent = editor.getParentBlock(parent)
+    }
+  }
+
+  return undefined
+}
+
+function DeleteTableButton() {
+  const editor = useBlockNoteEditor()
+  const Components = useComponentsContext()
+  const tableBlock = useEditorState({
+    editor,
+    selector: ({ editor }) => {
+      if (!editor.isEditable) return undefined
+      const block = findSelectedTableBlock(editor)
+      return block ? { id: block.id } : undefined
+    },
+    on: 'selection',
+  })
+
+  if (!Components || !tableBlock) return null
+
+  return (
+    <Components.FormattingToolbar.Button
+      className="bn-button"
+      label="删除表格"
+      mainTooltip="删除整张表格"
+      icon={<Trash2 size={16} />}
+      onClick={() => {
+        editor.focus()
+        editor.removeBlocks([tableBlock.id])
+      }}
+    />
+  )
+}
+
+function AdminFormattingToolbar() {
+  return (
+    <FormattingToolbar>
+      {getFormattingToolbarItems()}
+      <DeleteTableButton />
+    </FormattingToolbar>
+  )
 }
 
 export function ContentBlockEditor({
@@ -43,6 +111,12 @@ export function ContentBlockEditor({
         // BlockNote dictionary type is vendor-specific; cast is intentional at the adapter boundary.
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
+      pasteHandler: ({ defaultPasteHandler }) => {
+        return defaultPasteHandler({
+          prioritizeMarkdownOverHTML: true,
+          plainTextAsMarkdown: true,
+        })
+      },
     },
     [],
   )
@@ -72,12 +146,16 @@ export function ContentBlockEditor({
           isInternalChange.current = true
           onChange?.(editor.document as BlockContent)
         }}
-        formattingToolbar
+        formattingToolbar={false}
         linkToolbar
         slashMenu
         sideMenu
         tableHandles
-      />
+      >
+        <FormattingToolbarController
+          formattingToolbar={AdminFormattingToolbar}
+        />
+      </BlockNoteViewRaw>
     </div>
   )
 }
