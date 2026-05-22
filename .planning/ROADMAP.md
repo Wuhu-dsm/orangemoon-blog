@@ -54,7 +54,7 @@
 
 **UI hint:** yes
 
-**Plans:** 8/8 plans complete
+**Plans:** 8/10 plans complete
 
 Plans:
 
@@ -73,6 +73,10 @@ Plans:
 
 **Wave 4 *(blocked on admin shell and content workspace)***
 - [ ] `02-08-PLAN.md` — Friend-link, guestbook, user management shells, admin user API, final automated verification
+
+**Wave 5 — Gap Closure *(UAT issue fixes from 02-UAT.md)***
+- [ ] `02-09-PLAN.md` — Wire admin overview live data, fix block editor UX (table delete, HTML preview, markdown paste, toolbar decision)
+- [ ] `02-10-PLAN.md` — Fix project status enum, replace block editor with purpose-built ProjectForm, wire FeaturedProjects to public API
 
 Cross-cutting constraints:
 - Admin writes must be admin-only, public reads must expose only published non-deleted content, and editor body content must remain editor-native JSON only.
