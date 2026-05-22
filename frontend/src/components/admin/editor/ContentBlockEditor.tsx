@@ -1,11 +1,10 @@
 import '@blocknote/react/style.css'
 import {
-  BlockNoteView,
+  BlockNoteViewRaw,
   FormattingToolbar,
   FormattingToolbarController,
   getFormattingToolbarItems,
   useBlockNoteEditor,
-  useComponentsContext,
   useCreateBlockNote,
   useEditorState,
 } from '@blocknote/react'
@@ -45,7 +44,6 @@ function findSelectedTableBlock(
 
 function DeleteTableButton() {
   const editor = useBlockNoteEditor()
-  const Components = useComponentsContext()
   const tableBlock = useEditorState({
     editor,
     selector: ({ editor }) => {
@@ -56,19 +54,21 @@ function DeleteTableButton() {
     on: 'selection',
   })
 
-  if (!Components || !tableBlock) return null
+  if (!tableBlock) return null
 
   return (
-    <Components.FormattingToolbar.Button
+    <button
+      type="button"
       className="bn-button"
-      label="删除表格"
-      mainTooltip="删除整张表格"
-      icon={<Trash2 size={16} />}
+      title="删除整张表格"
+      aria-label="删除表格"
       onClick={() => {
         editor.focus()
         editor.removeBlocks([tableBlock.id])
       }}
-    />
+    >
+      <Trash2 size={16} />
+    </button>
   )
 }
 
@@ -142,7 +142,7 @@ export function ContentBlockEditor({
 
   return (
     <div className="bn-container admin-block-editor">
-      <BlockNoteView
+      <BlockNoteViewRaw
         editor={editor}
         editable={!readOnly}
         theme={isDark ? 'dark' : 'light'}
@@ -159,7 +159,7 @@ export function ContentBlockEditor({
         <FormattingToolbarController
           formattingToolbar={AdminFormattingToolbar}
         />
-      </BlockNoteView>
+      </BlockNoteViewRaw>
     </div>
   )
 }
