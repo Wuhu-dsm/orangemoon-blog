@@ -1,6 +1,6 @@
 import '@blocknote/react/style.css'
 import {
-  BlockNoteViewRaw,
+  BlockNoteView,
   FormattingToolbar,
   FormattingToolbarController,
   getFormattingToolbarItems,
@@ -142,7 +142,7 @@ export function ContentBlockEditor({
 
   return (
     <div className="bn-container admin-block-editor">
-      <BlockNoteViewRaw
+      <BlockNoteView
         editor={editor}
         editable={!readOnly}
         theme={isDark ? 'dark' : 'light'}
@@ -159,7 +159,7 @@ export function ContentBlockEditor({
         <FormattingToolbarController
           formattingToolbar={AdminFormattingToolbar}
         />
-      </BlockNoteViewRaw>
+      </BlockNoteView>
     </div>
   )
 }

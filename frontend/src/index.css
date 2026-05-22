@@ -131,5 +131,7 @@
   .admin-block-editor .bn-editor {
     background: hsl(var(--card));
     color: hsl(var(--foreground));
+    min-height: 380px;
+    padding: 0.5rem 0.25rem;
   }
 }
