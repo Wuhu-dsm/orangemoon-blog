@@ -213,7 +213,7 @@ function toProjectDto(
     projectStatus: value.projectStatus,
     repositoryUrl: value.repositoryUrl,
     demoUrl: value.demoUrl,
-    body: { blocks: value.body },
+    ...(value.body.length > 0 ? { body: { blocks: value.body } } : {}),
     status,
   }
 }

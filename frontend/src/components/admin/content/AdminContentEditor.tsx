@@ -20,6 +20,7 @@ import type {
   Project,
   ProjectStatus,
 } from '@/api/adminContent'
+import { ProjectForm } from '@/components/admin/content/ProjectForm'
 import { ContentBlockEditor } from '@/components/admin/editor/ContentBlockEditor'
 import { ContentBlockPreview } from '@/components/admin/editor/ContentBlockPreview'
 import type { BlockContent, ContentKind } from '@/types/content'
@@ -214,7 +215,7 @@ export function AdminContentEditor({
                 {mode === 'create' ? `新建${label}` : `编辑${label}`}
               </h2>
               <p className="text-xs text-gray-500">
-                正文由块编辑器产出，并以 JSON 保存。
+                {kind === 'project' ? '项目封面、详情、技术栈和截图等信息。' : '正文由块编辑器产出，并以 JSON 保存。'}
               </p>
             </div>
           </div>
@@ -263,7 +264,34 @@ export function AdminContentEditor({
           </div>
         </div>
 
-        <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
+        {kind === 'project' ? (
+          <ProjectForm
+            title={title}
+            onTitleChange={setTitle}
+            slug={slug}
+            onSlugChange={setSlug}
+            summary={summary}
+            onSummaryChange={setSummary}
+            coverImage={coverImage}
+            onCoverImageChange={setCoverImage}
+            onCoverUpload={handleCoverUpload}
+            isUploading={isUploading}
+            projectStatus={projectStatus}
+            onProjectStatusChange={setProjectStatus}
+            techStackText={techStackText}
+            onTechStackTextChange={setTechStackText}
+            repositoryUrl={repositoryUrl}
+            onRepositoryUrlChange={setRepositoryUrl}
+            demoUrl={demoUrl}
+            onDemoUrlChange={setDemoUrl}
+            screenshotsText={screenshotsText}
+            onScreenshotsTextChange={setScreenshotsText}
+            onScreenshotUpload={handleScreenshotUpload}
+            tagsText={tagsText}
+            onTagsTextChange={setTagsText}
+          />
+        ) : (
+          <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
           <Card>
             <CardHeader>
               <CardTitle>正文内容</CardTitle>
@@ -379,75 +407,9 @@ export function AdminContentEditor({
               </Card>
             )}
 
-            {kind === 'project' && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>项目设置</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <Field label="状态">
-                    <select
-                      value={projectStatus}
-                      onChange={(event) =>
-                        setProjectStatus(event.target.value as ProjectStatus)
-                      }
-                      className={selectClassName}
-                    >
-                      <option value="pending">待启动</option>
-                      <option value="developing">开发中</option>
-                      <option value="updating">更新中</option>
-                      <option value="archived">已归档</option>
-                    </select>
-                  </Field>
-                  <Field label="技术栈">
-                    <Input
-                      value={techStackText}
-                      onChange={(event) => setTechStackText(event.target.value)}
-                      placeholder="React, NestJS, MongoDB"
-                    />
-                  </Field>
-                  <Field label="仓库地址">
-                    <Input
-                      value={repositoryUrl}
-                      onChange={(event) => setRepositoryUrl(event.target.value)}
-                      placeholder="https://github.com/..."
-                    />
-                  </Field>
-                  <Field label="演示地址">
-                    <Input
-                      value={demoUrl}
-                      onChange={(event) => setDemoUrl(event.target.value)}
-                      placeholder="https://..."
-                    />
-                  </Field>
-                  <Field label="项目截图">
-                    <div className="flex gap-2">
-                      <Input
-                        value={screenshotsText}
-                        onChange={(event) =>
-                          setScreenshotsText(event.target.value)
-                        }
-                        placeholder="多个地址用逗号分隔"
-                      />
-                      <label className="inline-flex h-8 cursor-pointer items-center justify-center rounded-lg border border-input px-2 text-sm hover:bg-muted">
-                        <ImagePlus className="size-4" />
-                        <span className="sr-only">上传项目截图</span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={(event) =>
-                            void handleScreenshotUpload(event.target.files?.[0])
-                          }
-                        />
-                      </label>
-                    </div>
-                  </Field>
-                </CardContent>
-              </Card>
-            )}
-          </div>
         </div>
+      </div>
+      )}
       </div>
 
       <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
