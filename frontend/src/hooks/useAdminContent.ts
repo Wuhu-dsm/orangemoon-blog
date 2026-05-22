@@ -1,292 +1,284 @@
 import {
-  useQuery,
   useMutation,
+  useQuery,
   useQueryClient,
   type UseQueryResult,
 } from '@tanstack/react-query'
-import type {
-  Article,
-  Note,
-  Project,
-  ArticleListParams,
-  NoteListParams,
-  ProjectListParams,
-  UpdateArticlePayload,
-  UpdateNotePayload,
-  UpdateProjectPayload,
-} from '../api/adminContent'
 import {
-  listArticles,
-  getArticle,
-  createArticle,
-  updateArticle,
-  publishArticle,
-  unpublishArticle,
   archiveArticle,
-  deleteArticle,
-  listNotes,
-  getNote,
-  createNote,
-  updateNote,
-  publishNote,
-  unpublishNote,
   archiveNote,
-  deleteNote,
-  listProjects,
-  getProject,
-  createProject,
-  updateProject,
-  publishProject,
   archiveProject,
-  deleteProject,
+  createArticle,
+  createNote,
+  createProject,
+  findAllArticles,
+  findAllNotes,
+  findAllProjects,
+  findArticleById,
+  findNoteById,
+  findProjectById,
+  publishArticle,
+  publishNote,
+  publishProject,
+  softDeleteArticle,
+  softDeleteNote,
+  softDeleteProject,
+  unpublishArticle,
+  unpublishNote,
+  unpublishProject,
+  updateArticle,
+  updateNote,
+  updateProject,
+  type Article,
+  type ContentQueryParams,
+  type CreateArticleDto,
+  type CreateNoteDto,
+  type CreateProjectDto,
+  type Note,
+  type Project,
+  type UpdateArticleDto,
+  type UpdateNoteDto,
+  type UpdateProjectDto,
 } from '../api/adminContent'
 
-// ─── Query keys ───
+type UpdateVariables<T> = {
+  id: string
+  dto: T
+}
 
-const keys = {
+export const adminContentKeys = {
   articles: {
-    all: () => ['admin', 'articles'] as const,
-    list: (params?: ArticleListParams) =>
-      [...keys.articles.all(), 'list', params] as const,
-    detail: (id: string) => [...keys.articles.all(), 'detail', id] as const,
+    all: ['admin', 'articles'] as const,
+    list: (params?: ContentQueryParams) =>
+      [...adminContentKeys.articles.all, 'list', params] as const,
+    detail: (id: string) =>
+      [...adminContentKeys.articles.all, 'detail', id] as const,
   },
   notes: {
-    all: () => ['admin', 'notes'] as const,
-    list: (params?: NoteListParams) =>
-      [...keys.notes.all(), 'list', params] as const,
-    detail: (id: string) => [...keys.notes.all(), 'detail', id] as const,
+    all: ['admin', 'notes'] as const,
+    list: (params?: ContentQueryParams) =>
+      [...adminContentKeys.notes.all, 'list', params] as const,
+    detail: (id: string) =>
+      [...adminContentKeys.notes.all, 'detail', id] as const,
   },
   projects: {
-    all: () => ['admin', 'projects'] as const,
-    list: (params?: ProjectListParams) =>
-      [...keys.projects.all(), 'list', params] as const,
-    detail: (id: string) => [...keys.projects.all(), 'detail', id] as const,
+    all: ['admin', 'projects'] as const,
+    list: (params?: ContentQueryParams) =>
+      [...adminContentKeys.projects.all, 'list', params] as const,
+    detail: (id: string) =>
+      [...adminContentKeys.projects.all, 'detail', id] as const,
   },
 }
 
-// ─── Articles ───
+function invalidateArticleQueries(queryClient: ReturnType<typeof useQueryClient>, id?: string) {
+  queryClient.invalidateQueries({ queryKey: adminContentKeys.articles.all })
+  if (id) {
+    queryClient.invalidateQueries({ queryKey: adminContentKeys.articles.detail(id) })
+  }
+}
 
-export function useArticlesList(params?: ArticleListParams) {
+function invalidateNoteQueries(queryClient: ReturnType<typeof useQueryClient>, id?: string) {
+  queryClient.invalidateQueries({ queryKey: adminContentKeys.notes.all })
+  if (id) {
+    queryClient.invalidateQueries({ queryKey: adminContentKeys.notes.detail(id) })
+  }
+}
+
+function invalidateProjectQueries(queryClient: ReturnType<typeof useQueryClient>, id?: string) {
+  queryClient.invalidateQueries({ queryKey: adminContentKeys.projects.all })
+  if (id) {
+    queryClient.invalidateQueries({ queryKey: adminContentKeys.projects.detail(id) })
+  }
+}
+
+export function useAdminArticles(params?: ContentQueryParams) {
   return useQuery({
-    queryKey: keys.articles.list(params),
-    queryFn: () => listArticles(params),
+    queryKey: adminContentKeys.articles.list(params),
+    queryFn: () => findAllArticles(params),
   })
 }
 
-export function useArticleDetail(id: string): UseQueryResult<Article, Error> {
+export function useAdminArticle(id?: string): UseQueryResult<Article, Error> {
   return useQuery({
-    queryKey: keys.articles.detail(id),
-    queryFn: () => getArticle(id),
-    enabled: !!id,
+    queryKey: adminContentKeys.articles.detail(id ?? ''),
+    queryFn: () => findArticleById(id ?? ''),
+    enabled: Boolean(id),
   })
 }
 
-export function useCreateArticle() {
-  const qc = useQueryClient()
+export function useCreateAdminArticle() {
+  const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: createArticle,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: keys.articles.all() })
-    },
+    mutationFn: (dto: CreateArticleDto) => createArticle(dto),
+    onSuccess: (article) => invalidateArticleQueries(queryClient, article._id),
   })
 }
 
-export function useUpdateArticle() {
-  const qc = useQueryClient()
+export function useUpdateAdminArticle() {
+  const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: UpdateArticlePayload }) =>
-      updateArticle(id, payload),
-    onSuccess: (_, { id }) => {
-      qc.invalidateQueries({ queryKey: keys.articles.all() })
-      qc.invalidateQueries({ queryKey: keys.articles.detail(id) })
-    },
+    mutationFn: ({ id, dto }: UpdateVariables<UpdateArticleDto>) =>
+      updateArticle(id, dto),
+    onSuccess: (_, { id }) => invalidateArticleQueries(queryClient, id),
   })
 }
 
-export function usePublishArticle() {
-  const qc = useQueryClient()
+export function usePublishAdminArticle() {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: publishArticle,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: keys.articles.all() })
-    },
+    onSuccess: (article) => invalidateArticleQueries(queryClient, article._id),
   })
 }
 
-export function useUnpublishArticle() {
-  const qc = useQueryClient()
+export function useUnpublishAdminArticle() {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: unpublishArticle,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: keys.articles.all() })
-    },
+    onSuccess: (article) => invalidateArticleQueries(queryClient, article._id),
   })
 }
 
-export function useArchiveArticle() {
-  const qc = useQueryClient()
+export function useArchiveAdminArticle() {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: archiveArticle,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: keys.articles.all() })
-    },
+    onSuccess: (article) => invalidateArticleQueries(queryClient, article._id),
   })
 }
 
-export function useDeleteArticle() {
-  const qc = useQueryClient()
+export function useSoftDeleteAdminArticle() {
+  const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: deleteArticle,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: keys.articles.all() })
-    },
+    mutationFn: softDeleteArticle,
+    onSuccess: (article) => invalidateArticleQueries(queryClient, article._id),
   })
 }
 
-// ─── Notes ───
-
-export function useNotesList(params?: NoteListParams) {
+export function useAdminNotes(params?: ContentQueryParams) {
   return useQuery({
-    queryKey: keys.notes.list(params),
-    queryFn: () => listNotes(params),
+    queryKey: adminContentKeys.notes.list(params),
+    queryFn: () => findAllNotes(params),
   })
 }
 
-export function useNoteDetail(id: string): UseQueryResult<Note, Error> {
+export function useAdminNote(id?: string): UseQueryResult<Note, Error> {
   return useQuery({
-    queryKey: keys.notes.detail(id),
-    queryFn: () => getNote(id),
-    enabled: !!id,
+    queryKey: adminContentKeys.notes.detail(id ?? ''),
+    queryFn: () => findNoteById(id ?? ''),
+    enabled: Boolean(id),
   })
 }
 
-export function useCreateNote() {
-  const qc = useQueryClient()
+export function useCreateAdminNote() {
+  const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: createNote,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: keys.notes.all() })
-    },
+    mutationFn: (dto: CreateNoteDto) => createNote(dto),
+    onSuccess: (note) => invalidateNoteQueries(queryClient, note._id),
   })
 }
 
-export function useUpdateNote() {
-  const qc = useQueryClient()
+export function useUpdateAdminNote() {
+  const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: UpdateNotePayload }) =>
-      updateNote(id, payload),
-    onSuccess: (_, { id }) => {
-      qc.invalidateQueries({ queryKey: keys.notes.all() })
-      qc.invalidateQueries({ queryKey: keys.notes.detail(id) })
-    },
+    mutationFn: ({ id, dto }: UpdateVariables<UpdateNoteDto>) =>
+      updateNote(id, dto),
+    onSuccess: (_, { id }) => invalidateNoteQueries(queryClient, id),
   })
 }
 
-export function usePublishNote() {
-  const qc = useQueryClient()
+export function usePublishAdminNote() {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: publishNote,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: keys.notes.all() })
-    },
+    onSuccess: (note) => invalidateNoteQueries(queryClient, note._id),
   })
 }
 
-export function useUnpublishNote() {
-  const qc = useQueryClient()
+export function useUnpublishAdminNote() {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: unpublishNote,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: keys.notes.all() })
-    },
+    onSuccess: (note) => invalidateNoteQueries(queryClient, note._id),
   })
 }
 
-export function useArchiveNote() {
-  const qc = useQueryClient()
+export function useArchiveAdminNote() {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: archiveNote,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: keys.notes.all() })
-    },
+    onSuccess: (note) => invalidateNoteQueries(queryClient, note._id),
   })
 }
 
-export function useDeleteNote() {
-  const qc = useQueryClient()
+export function useSoftDeleteAdminNote() {
+  const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: deleteNote,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: keys.notes.all() })
-    },
+    mutationFn: softDeleteNote,
+    onSuccess: (note) => invalidateNoteQueries(queryClient, note._id),
   })
 }
 
-// ─── Projects ───
-
-export function useProjectsList(params?: ProjectListParams) {
+export function useAdminProjects(params?: ContentQueryParams) {
   return useQuery({
-    queryKey: keys.projects.list(params),
-    queryFn: () => listProjects(params),
+    queryKey: adminContentKeys.projects.list(params),
+    queryFn: () => findAllProjects(params),
   })
 }
 
-export function useProjectDetail(id: string): UseQueryResult<Project, Error> {
+export function useAdminProject(id?: string): UseQueryResult<Project, Error> {
   return useQuery({
-    queryKey: keys.projects.detail(id),
-    queryFn: () => getProject(id),
-    enabled: !!id,
+    queryKey: adminContentKeys.projects.detail(id ?? ''),
+    queryFn: () => findProjectById(id ?? ''),
+    enabled: Boolean(id),
   })
 }
 
-export function useCreateProject() {
-  const qc = useQueryClient()
+export function useCreateAdminProject() {
+  const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: createProject,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: keys.projects.all() })
-    },
+    mutationFn: (dto: CreateProjectDto) => createProject(dto),
+    onSuccess: (project) => invalidateProjectQueries(queryClient, project._id),
   })
 }
 
-export function useUpdateProject() {
-  const qc = useQueryClient()
+export function useUpdateAdminProject() {
+  const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: UpdateProjectPayload }) =>
-      updateProject(id, payload),
-    onSuccess: (_, { id }) => {
-      qc.invalidateQueries({ queryKey: keys.projects.all() })
-      qc.invalidateQueries({ queryKey: keys.projects.detail(id) })
-    },
+    mutationFn: ({ id, dto }: UpdateVariables<UpdateProjectDto>) =>
+      updateProject(id, dto),
+    onSuccess: (_, { id }) => invalidateProjectQueries(queryClient, id),
   })
 }
 
-export function usePublishProject() {
-  const qc = useQueryClient()
+export function usePublishAdminProject() {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: publishProject,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: keys.projects.all() })
-    },
+    onSuccess: (project) => invalidateProjectQueries(queryClient, project._id),
   })
 }
 
-export function useArchiveProject() {
-  const qc = useQueryClient()
+export function useUnpublishAdminProject() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: unpublishProject,
+    onSuccess: (project) => invalidateProjectQueries(queryClient, project._id),
+  })
+}
+
+export function useArchiveAdminProject() {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: archiveProject,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: keys.projects.all() })
-    },
+    onSuccess: (project) => invalidateProjectQueries(queryClient, project._id),
   })
 }
 
-export function useDeleteProject() {
-  const qc = useQueryClient()
+export function useSoftDeleteAdminProject() {
+  const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: deleteProject,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: keys.projects.all() })
-    },
+    mutationFn: softDeleteProject,
+    onSuccess: (project) => invalidateProjectQueries(queryClient, project._id),
   })
 }

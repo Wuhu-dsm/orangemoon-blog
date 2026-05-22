@@ -1,126 +1,104 @@
 import { apiClient, type ApiEnvelope } from './client'
 import type { BlockContent, ContentStatus } from '../types/content'
 
-// ─── Enums ───
-
 export type NoteType = 'short' | 'code' | 'quote' | 'todo'
-
 export type ProjectStatus = 'planning' | 'in-progress' | 'completed' | 'maintenance'
+export type ContentBodyDto = { blocks: BlockContent }
 
-// ─── Shared fields ───
-
-interface ContentBase {
+export interface Article {
   _id: string
   title: string
   slug: string
   summary?: string
   coverImage?: string
   tags: string[]
-  body?: BlockContent
+  category?: string
+  body?: ContentBodyDto
   status: ContentStatus
   publishedAt?: string
-  updatedAt: string
-  createdAt: string
   deletedAt?: string
   deletedBy?: string
+  createdAt: string
+  updatedAt: string
 }
 
-// ─── Entity types ───
-
-export interface Article extends ContentBase {
-  category?: string
-}
-
-export interface Note extends ContentBase {
+export interface Note {
+  _id: string
+  title: string
+  slug: string
+  summary?: string
+  coverImage?: string
+  tags: string[]
   noteType: NoteType
+  body?: ContentBodyDto
+  status: ContentStatus
+  publishedAt?: string
+  deletedAt?: string
+  deletedBy?: string
+  createdAt: string
+  updatedAt: string
 }
 
-export interface Project extends ContentBase {
+export interface Project {
+  _id: string
+  title: string
+  slug: string
+  summary?: string
+  coverImage?: string
   screenshots: string[]
+  tags: string[]
   techStack: string[]
   projectStatus?: ProjectStatus
   repositoryUrl?: string
   demoUrl?: string
+  body?: ContentBodyDto
+  status: ContentStatus
+  publishedAt?: string
+  deletedAt?: string
+  deletedBy?: string
+  createdAt: string
+  updatedAt: string
 }
 
-export type AdminContentItem = Article | Note | Project
-
-// ─── List response ───
-
-export interface ListResponse<T> {
+export interface ContentListResponse<T> {
   items: T[]
   total: number
 }
 
-// ─── Query params ───
-
-export interface ContentListParams {
+export interface ContentQueryParams {
   page?: number
   pageSize?: number
   status?: ContentStatus
   search?: string
   tag?: string
-}
-
-export interface ArticleListParams extends ContentListParams {
   category?: string
-}
-
-export interface NoteListParams extends ContentListParams {
   noteType?: NoteType
-}
-
-export interface ProjectListParams extends ContentListParams {
   projectStatus?: ProjectStatus
 }
 
-// ─── Create / Update payloads ───
-
-export interface CreateArticlePayload {
+export interface CreateArticleDto {
   title: string
   slug?: string
   summary?: string
   coverImage?: string
   tags?: string[]
   category?: string
-  body?: BlockContent
+  body?: ContentBodyDto
   status?: ContentStatus
 }
 
-export interface UpdateArticlePayload {
-  title?: string
-  slug?: string
-  summary?: string
-  coverImage?: string
-  tags?: string[]
-  category?: string
-  body?: BlockContent
-  status?: ContentStatus
-}
-
-export interface CreateNotePayload {
+export interface CreateNoteDto {
   title: string
   slug?: string
   summary?: string
   coverImage?: string
   tags?: string[]
   noteType: NoteType
-  body?: BlockContent
+  body?: ContentBodyDto
   status?: ContentStatus
 }
 
-export interface UpdateNotePayload {
-  title?: string
-  slug?: string
-  summary?: string
-  coverImage?: string
-  tags?: string[]
-  noteType?: NoteType
-  body?: BlockContent
-  status?: ContentStatus
-}
-
-export interface CreateProjectPayload {
+export interface CreateProjectDto {
   title: string
   slug?: string
   summary?: string
@@ -131,54 +109,43 @@ export interface CreateProjectPayload {
   projectStatus?: ProjectStatus
   repositoryUrl?: string
   demoUrl?: string
-  body?: BlockContent
+  body?: ContentBodyDto
   status?: ContentStatus
 }
 
-export interface UpdateProjectPayload {
-  title?: string
-  slug?: string
-  summary?: string
-  coverImage?: string
-  screenshots?: string[]
-  tags?: string[]
-  techStack?: string[]
-  projectStatus?: ProjectStatus
-  repositoryUrl?: string
-  demoUrl?: string
-  body?: BlockContent
-  status?: ContentStatus
-}
+export type UpdateArticleDto = Partial<CreateArticleDto>
+export type UpdateNoteDto = Partial<CreateNoteDto>
+export type UpdateProjectDto = Partial<CreateProjectDto>
 
 // ─── Articles ───
 
-export async function listArticles(params?: ArticleListParams) {
-  const response = await apiClient.get<unknown, ApiEnvelope<ListResponse<Article>>>(
-    '/admin/articles',
-    { params },
-  )
+export async function findAllArticles(params?: ContentQueryParams) {
+  const response = await apiClient.get<
+    unknown,
+    ApiEnvelope<ContentListResponse<Article>>
+  >('/admin/articles', { params })
   return response.data
 }
 
-export async function getArticle(id: string) {
+export async function findArticleById(id: string) {
   const response = await apiClient.get<unknown, ApiEnvelope<Article>>(
     `/admin/articles/${id}`,
   )
   return response.data
 }
 
-export async function createArticle(payload: CreateArticlePayload) {
+export async function createArticle(dto: CreateArticleDto) {
   const response = await apiClient.post<unknown, ApiEnvelope<Article>>(
     '/admin/articles',
-    payload,
+    dto,
   )
   return response.data
 }
 
-export async function updateArticle(id: string, payload: UpdateArticlePayload) {
+export async function updateArticle(id: string, dto: UpdateArticleDto) {
   const response = await apiClient.patch<unknown, ApiEnvelope<Article>>(
     `/admin/articles/${id}`,
-    payload,
+    dto,
   )
   return response.data
 }
@@ -204,7 +171,7 @@ export async function archiveArticle(id: string) {
   return response.data
 }
 
-export async function deleteArticle(id: string) {
+export async function softDeleteArticle(id: string) {
   const response = await apiClient.delete<unknown, ApiEnvelope<Article>>(
     `/admin/articles/${id}`,
   )
@@ -213,33 +180,33 @@ export async function deleteArticle(id: string) {
 
 // ─── Notes ───
 
-export async function listNotes(params?: NoteListParams) {
-  const response = await apiClient.get<unknown, ApiEnvelope<ListResponse<Note>>>(
-    '/admin/notes',
-    { params },
-  )
+export async function findAllNotes(params?: ContentQueryParams) {
+  const response = await apiClient.get<
+    unknown,
+    ApiEnvelope<ContentListResponse<Note>>
+  >('/admin/notes', { params })
   return response.data
 }
 
-export async function getNote(id: string) {
+export async function findNoteById(id: string) {
   const response = await apiClient.get<unknown, ApiEnvelope<Note>>(
     `/admin/notes/${id}`,
   )
   return response.data
 }
 
-export async function createNote(payload: CreateNotePayload) {
+export async function createNote(dto: CreateNoteDto) {
   const response = await apiClient.post<unknown, ApiEnvelope<Note>>(
     '/admin/notes',
-    payload,
+    dto,
   )
   return response.data
 }
 
-export async function updateNote(id: string, payload: UpdateNotePayload) {
+export async function updateNote(id: string, dto: UpdateNoteDto) {
   const response = await apiClient.patch<unknown, ApiEnvelope<Note>>(
     `/admin/notes/${id}`,
-    payload,
+    dto,
   )
   return response.data
 }
@@ -265,7 +232,7 @@ export async function archiveNote(id: string) {
   return response.data
 }
 
-export async function deleteNote(id: string) {
+export async function softDeleteNote(id: string) {
   const response = await apiClient.delete<unknown, ApiEnvelope<Note>>(
     `/admin/notes/${id}`,
   )
@@ -274,33 +241,33 @@ export async function deleteNote(id: string) {
 
 // ─── Projects ───
 
-export async function listProjects(params?: ProjectListParams) {
-  const response = await apiClient.get<unknown, ApiEnvelope<ListResponse<Project>>>(
-    '/admin/projects',
-    { params },
-  )
+export async function findAllProjects(params?: ContentQueryParams) {
+  const response = await apiClient.get<
+    unknown,
+    ApiEnvelope<ContentListResponse<Project>>
+  >('/admin/projects', { params })
   return response.data
 }
 
-export async function getProject(id: string) {
+export async function findProjectById(id: string) {
   const response = await apiClient.get<unknown, ApiEnvelope<Project>>(
     `/admin/projects/${id}`,
   )
   return response.data
 }
 
-export async function createProject(payload: CreateProjectPayload) {
+export async function createProject(dto: CreateProjectDto) {
   const response = await apiClient.post<unknown, ApiEnvelope<Project>>(
     '/admin/projects',
-    payload,
+    dto,
   )
   return response.data
 }
 
-export async function updateProject(id: string, payload: UpdateProjectPayload) {
+export async function updateProject(id: string, dto: UpdateProjectDto) {
   const response = await apiClient.patch<unknown, ApiEnvelope<Project>>(
     `/admin/projects/${id}`,
-    payload,
+    dto,
   )
   return response.data
 }
@@ -312,6 +279,14 @@ export async function publishProject(id: string) {
   return response.data
 }
 
+export async function unpublishProject(id: string) {
+  const response = await apiClient.patch<unknown, ApiEnvelope<Project>>(
+    `/admin/projects/${id}`,
+    { status: 'draft' },
+  )
+  return response.data
+}
+
 export async function archiveProject(id: string) {
   const response = await apiClient.patch<unknown, ApiEnvelope<Project>>(
     `/admin/projects/${id}/archive`,
@@ -319,7 +294,7 @@ export async function archiveProject(id: string) {
   return response.data
 }
 
-export async function deleteProject(id: string) {
+export async function softDeleteProject(id: string) {
   const response = await apiClient.delete<unknown, ApiEnvelope<Project>>(
     `/admin/projects/${id}`,
   )
