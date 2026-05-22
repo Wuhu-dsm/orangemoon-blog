@@ -40,7 +40,7 @@
 - [ ] **ARTC-04**: 文章支持标签和分类体系
 - [ ] **ARTC-05**: 标签归档页展示某标签下的所有文章
 - [ ] **ARTC-06**: 文章支持评论（访客可匿名评论，登录用户可实名评论）
-- [ ] **ARTC-07**: 后端文章 CRUD API 完整，支持富文本/Markdown 内容存储
+- [x] **ARTC-07**: 后端文章 CRUD API 完整，支持富文本/Markdown 内容存储
 
 ### Project System
 
@@ -48,7 +48,7 @@
 - [ ] **PROJ-02**: 项目卡片包含封面、名称、简介、技术栈标签、状态
 - [ ] **PROJ-03**: 项目支持按状态（开发中/已完成/维护中）筛选
 - [ ] **PROJ-04**: 项目详情页展示完整信息（描述、截图、链接、技术细节）
-- [ ] **PROJ-05**: 后端项目 CRUD API 完整
+- [x] **PROJ-05**: 后端项目 CRUD API 完整
 
 ### Note System
 
@@ -56,7 +56,7 @@
 - [ ] **NOTE-02**: 笔记卡片支持多种样式（短文、代码片段、引用、待办）
 - [ ] **NOTE-03**: 笔记详情页支持 Markdown 渲染和代码高亮
 - [ ] **NOTE-04**: 笔记文集页按主题/系列聚合相关笔记
-- [ ] **NOTE-05**: 后端笔记 CRUD API 完整
+- [x] **NOTE-05**: 后端笔记 CRUD API 完整
 
 ### Timeline & About
 
@@ -86,7 +86,7 @@
 
 - [ ] **ADMN-01**: 管理后台独立路由 `/admin`，需管理员角色登录访问
 - [ ] **ADMN-02**: 后台仪表盘展示站点概览（内容统计、访问趋势、最新动态）
-- [ ] **ADMN-03**: 后台支持文章/项目/笔记的完整 CRUD
+- [x] **ADMN-03**: 后台支持文章/项目/笔记的完整 CRUD
 - [ ] **ADMN-04**: 后台支持友链审核和管理
 - [ ] **ADMN-05**: 后台支持留言管理（审核、回复、删除、置顶）
 - [ ] **ADMN-06**: 后台支持用户管理（查看、禁用、调整角色）
@@ -144,13 +144,13 @@
 | AUTH-04 | Phase 1 | Complete |
 | AUTH-05 | Phase 1 | Complete |
 | ADMN-01 | Phase 2 | Pending |
-| ADMN-03 | Phase 2 | Pending |
+| ADMN-03 | Phase 2 | Complete |
 | ADMN-04 | Phase 2 | Pending |
 | ADMN-05 | Phase 2 | Pending |
 | ADMN-06 | Phase 2 | Pending |
-| ARTC-07 | Phase 2 | Pending |
-| NOTE-05 | Phase 2 | Pending |
-| PROJ-05 | Phase 2 | Pending |
+| ARTC-07 | Phase 2 | Complete |
+| NOTE-05 | Phase 2 | Complete |
+| PROJ-05 | Phase 2 | Complete |
 | ARTC-01 | Phase 3 | Pending |
 | ARTC-02 | Phase 3 | Pending |
 | ARTC-03 | Phase 3 | Pending |
