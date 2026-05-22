@@ -55,10 +55,38 @@ function mapToDisplayProject(project: PublicProject): DisplayProject {
 }
 
 export default function FeaturedProjects({ className }: FeaturedProjectsProps) {
-  const { data, isLoading } = usePublicProjects({ pageSize: 10 })
+  const { data, isLoading, isError } = usePublicProjects({ pageSize: 10 })
 
   const displayProjects = (data?.items ?? []).map(mapToDisplayProject)
   const visibleProjects = displayProjects.slice(0, 3)
+
+  // Error state: API failed — keep section visible with non-breaking fallback
+  if (isError && !isLoading) {
+    return (
+      <section
+        className={cn(
+          'rounded-[14px] border border-white/60 bg-white/60 p-3 shadow-[0_12px_40px_rgba(125,211,252,0.2)] backdrop-blur-xl dark:ring-white/10',
+          className
+        )}
+      >
+        <div className="mb-2 flex items-center justify-between">
+          <h3 className="flex items-center gap-1.5 text-sm font-semibold text-[#1E293B]">
+            <Sparkles size={14} className="text-cyan-400" />
+            精选项目
+          </h3>
+          <Link
+            to="/projects"
+            className="flex items-center gap-1 text-[11px] text-muted-foreground transition hover:text-primary"
+          >
+            查看全部 <ArrowRight size={12} />
+          </Link>
+        </div>
+        <div className="flex h-[156px] items-center justify-center rounded-[14px] border border-dashed border-amber-200 bg-amber-50/50 dark:border-amber-800 dark:bg-amber-950/20">
+          <p className="text-xs text-muted-foreground">项目加载失败，请稍后重试</p>
+        </div>
+      </section>
+    )
+  }
 
   // Loading state: render skeleton cards
   if (isLoading) {
