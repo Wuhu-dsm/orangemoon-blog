@@ -1,16 +1,10 @@
 import '@blocknote/react/style.css'
 import {
   BlockNoteViewRaw,
-  FormattingToolbar,
-  FormattingToolbarController,
-  getFormattingToolbarItems,
-  useBlockNoteEditor,
   useCreateBlockNote,
-  useEditorState,
 } from '@blocknote/react'
-import type { Block, BlockNoteEditor, PartialBlock } from '@blocknote/core'
+import type { PartialBlock } from '@blocknote/core'
 import { useEffect, useRef, useMemo } from 'react'
-import { Trash2 } from 'lucide-react'
 import type { BlockContent } from '../../../types/content'
 import { useThemeStore } from '../../../stores/themeStore'
 
@@ -20,65 +14,6 @@ interface ContentBlockEditorProps {
   emptyPrompt?: string
   readOnly?: boolean
   onUploadImage?: (file: File) => Promise<string>
-}
-
-function findSelectedTableBlock(
-  editor: BlockNoteEditor,
-): Block | undefined {
-  const selectedBlocks = editor.getSelection()?.blocks ?? [
-    editor.getTextCursorPosition().block,
-  ]
-
-  for (const block of selectedBlocks) {
-    if (block.type === 'table') return block
-
-    let parent = editor.getParentBlock(block)
-    while (parent) {
-      if (parent.type === 'table') return parent
-      parent = editor.getParentBlock(parent)
-    }
-  }
-
-  return undefined
-}
-
-function DeleteTableButton() {
-  const editor = useBlockNoteEditor()
-  const tableBlock = useEditorState({
-    editor,
-    selector: ({ editor }) => {
-      if (!editor.isEditable) return undefined
-      const block = findSelectedTableBlock(editor)
-      return block ? { id: block.id } : undefined
-    },
-    on: 'selection',
-  })
-
-  if (!tableBlock) return null
-
-  return (
-    <button
-      type="button"
-      className="bn-button"
-      title="删除整张表格"
-      aria-label="删除表格"
-      onClick={() => {
-        editor.focus()
-        editor.removeBlocks([tableBlock.id])
-      }}
-    >
-      <Trash2 size={16} />
-    </button>
-  )
-}
-
-function AdminFormattingToolbar() {
-  return (
-    <FormattingToolbar>
-      {getFormattingToolbarItems()}
-      <DeleteTableButton />
-    </FormattingToolbar>
-  )
 }
 
 export function ContentBlockEditor({
@@ -150,16 +85,11 @@ export function ContentBlockEditor({
           isInternalChange.current = true
           onChange?.(editor.document as BlockContent)
         }}
-        formattingToolbar={false}
         linkToolbar
         slashMenu
         sideMenu
         tableHandles
-      >
-        <FormattingToolbarController
-          formattingToolbar={AdminFormattingToolbar}
-        />
-      </BlockNoteViewRaw>
+      />
     </div>
   )
 }
