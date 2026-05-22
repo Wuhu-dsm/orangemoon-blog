@@ -2,7 +2,7 @@ import { apiClient, type ApiEnvelope } from './client'
 import type { BlockContent, ContentStatus } from '../types/content'
 
 export type NoteType = 'short' | 'code' | 'quote' | 'todo'
-export type ProjectStatus = 'planning' | 'in-progress' | 'completed' | 'maintenance'
+export type ProjectStatus = 'pending' | 'developing' | 'updating' | 'archived'
 export type ContentBodyDto = { blocks: BlockContent }
 
 export interface Article {

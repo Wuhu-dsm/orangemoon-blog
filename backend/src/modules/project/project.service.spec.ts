@@ -17,7 +17,7 @@ function createMockProject(overrides: Partial<Project> = {}): ProjectDocument {
     screenshots: ['https://example.com/screen1.jpg'],
     tags: ['tag1', 'tag2'],
     techStack: ['react', 'nestjs'],
-    projectStatus: ProjectStatus.InProgress,
+    projectStatus: ProjectStatus.Developing,
     repositoryUrl: 'https://github.com/test/project',
     demoUrl: 'https://demo.example.com',
     body: { blocks: [] },
@@ -162,7 +162,7 @@ describe('ProjectService', () => {
     it('persists projectStatus on create', async () => {
       const saved = createMockProject({
         slug: 'my-project',
-        projectStatus: ProjectStatus.Completed,
+        projectStatus: ProjectStatus.Updating,
       });
       model.mockImplementation(() => ({
         save: jest.fn().mockResolvedValue(saved),
@@ -173,33 +173,33 @@ describe('ProjectService', () => {
 
       const result = await service.create({
         title: 'My Project',
-        projectStatus: ProjectStatus.Completed,
+        projectStatus: ProjectStatus.Updating,
       });
 
-      expect(result.projectStatus).toBe(ProjectStatus.Completed);
+      expect(result.projectStatus).toBe(ProjectStatus.Updating);
     });
 
     it('allows updating projectStatus', async () => {
       const existing = createMockProject({
         slug: 'original',
-        projectStatus: ProjectStatus.Planning,
+        projectStatus: ProjectStatus.Pending,
       });
       model.findById.mockReturnValue({
         exec: jest.fn().mockResolvedValue(existing),
       });
       const updated = createMockProject({
         slug: 'original',
-        projectStatus: ProjectStatus.Maintenance,
+        projectStatus: ProjectStatus.Archived,
       });
       model.findByIdAndUpdate.mockReturnValue({
         exec: jest.fn().mockResolvedValue(updated),
       });
 
       const result = await service.update('project-id', {
-        projectStatus: ProjectStatus.Maintenance,
+        projectStatus: ProjectStatus.Archived,
       });
 
-      expect(result.projectStatus).toBe(ProjectStatus.Maintenance);
+      expect(result.projectStatus).toBe(ProjectStatus.Archived);
     });
   });
 
@@ -233,7 +233,7 @@ describe('ProjectService', () => {
       const projects = [
         createMockProject({
           status: ContentStatus.Published,
-          projectStatus: ProjectStatus.Completed,
+          projectStatus: ProjectStatus.Updating,
         }),
       ];
       model.find.mockReturnValue({
@@ -247,14 +247,14 @@ describe('ProjectService', () => {
       });
 
       const result = await service.findAllPublic({
-        projectStatus: ProjectStatus.Completed,
+        projectStatus: ProjectStatus.Updating,
       });
 
       expect(model.find).toHaveBeenCalledWith(
         expect.objectContaining({
           status: ContentStatus.Published,
           deletedAt: null,
-          projectStatus: ProjectStatus.Completed,
+          projectStatus: ProjectStatus.Updating,
         }),
       );
       expect(result.items).toHaveLength(1);

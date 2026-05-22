@@ -293,10 +293,10 @@ const noteTypeLabel: Record<string, string> = {
 }
 
 const projectStatusLabel: Record<string, string> = {
-  planning: '规划中',
-  'in-progress': '进行中',
-  completed: '已完成',
-  maintenance: '维护中',
+  pending: '待启动',
+  'developing': '开发中',
+  updating: '更新中',
+  archived: '已归档',
 }
 
 function formatDate(value?: string) {

@@ -113,7 +113,7 @@ export function AdminContentEditor({
     initialEditorValue.techStack.join(', '),
   )
   const [projectStatus, setProjectStatus] =
-    useState<ProjectStatus>(() => initialEditorValue.projectStatus ?? 'planning')
+    useState<ProjectStatus>(() => initialEditorValue.projectStatus ?? 'pending')
   const [repositoryUrl, setRepositoryUrl] = useState(
     () => initialEditorValue.repositoryUrl ?? '',
   )
@@ -393,10 +393,10 @@ export function AdminContentEditor({
                       }
                       className={selectClassName}
                     >
-                      <option value="planning">规划中</option>
-                      <option value="in-progress">进行中</option>
-                      <option value="completed">已完成</option>
-                      <option value="maintenance">维护中</option>
+                      <option value="pending">待启动</option>
+                      <option value="developing">开发中</option>
+                      <option value="updating">更新中</option>
+                      <option value="archived">已归档</option>
                     </select>
                   </Field>
                   <Field label="技术栈">
@@ -495,7 +495,7 @@ function toEditorValue(value?: EditableContent): ContentEditorValue {
     screenshots: value && 'screenshots' in value ? value.screenshots : [],
     techStack: value && 'techStack' in value ? value.techStack : [],
     projectStatus:
-      value && 'projectStatus' in value ? value.projectStatus : 'planning',
+      value && 'projectStatus' in value ? value.projectStatus : 'pending',
     repositoryUrl:
       value && 'repositoryUrl' in value ? value.repositoryUrl : '',
     demoUrl: value && 'demoUrl' in value ? value.demoUrl : '',
