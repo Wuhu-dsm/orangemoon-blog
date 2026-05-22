@@ -1,63 +1,200 @@
-import { useState } from 'react'
-import { Users, Search } from 'lucide-react'
-import { Input } from '@/components/ui/input'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useMemo, useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Shield, ShieldOff, UserCog, UserRound } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
+import {
+  AdminManagementTable,
+  type ManagementColumn,
+} from '@/components/admin/management/AdminManagementTable'
+import {
+  findAllAdminUsers,
+  updateAdminUser,
+  type AdminUser,
+  type AdminUserListParams,
+  type AdminUserRole,
+  type AdminUserStatus,
+  type AdminUpdateUserDto,
+} from '@/api/adminManagement'
+
+const userKeys = {
+  all: ['admin', 'users'] as const,
+  list: (params: AdminUserListParams) =>
+    [...userKeys.all, 'list', params] as const,
+}
+
+const statusOptions = [
+  { value: 'all', label: '全部' },
+  { value: 'active', label: '正常' },
+  { value: 'banned', label: '已禁用' },
+]
+
+const columns: ManagementColumn<AdminUser>[] = [
+  {
+    key: 'user',
+    label: '用户',
+    className: 'min-w-64 whitespace-normal',
+    render: (item) => (
+      <div className="space-y-1">
+        <div className="font-medium text-gray-900 dark:text-gray-100">
+          {item.username}
+        </div>
+        <div className="text-xs text-gray-500">{item.email}</div>
+      </div>
+    ),
+  },
+  {
+    key: 'role',
+    label: '角色',
+    render: (item) => (
+      <Badge variant="outline">{item.role === 'admin' ? '管理员' : '用户'}</Badge>
+    ),
+  },
+  {
+    key: 'status',
+    label: '状态',
+    render: (item) => (
+      <Badge
+        variant="secondary"
+        className={
+          item.status === 'active'
+            ? 'bg-teal-100 text-teal-700 dark:bg-teal-500/15 dark:text-teal-300'
+            : 'bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300'
+        }
+      >
+        {item.status === 'active' ? '正常' : '已禁用'}
+      </Badge>
+    ),
+  },
+  {
+    key: 'level',
+    label: '等级',
+    render: (item) => `Lv.${item.level}`,
+  },
+  {
+    key: 'lastLoginAt',
+    label: '最近登录',
+    render: (item) => formatDate(item.lastLoginAt),
+  },
+]
 
 export default function AdminUsers() {
-  const [role, setRole] = useState('all')
-  const [searchQuery, setSearchQuery] = useState('')
+  const queryClient = useQueryClient()
+  const [status, setStatus] = useState('all')
+  const [role, setRole] = useState<'all' | AdminUserRole>('all')
+  const [search, setSearch] = useState('')
+
+  const queryParams = useMemo<AdminUserListParams>(
+    () => ({
+      status: status === 'all' ? undefined : (status as AdminUserStatus),
+      role: role === 'all' ? undefined : role,
+      search: search.trim() || undefined,
+    }),
+    [role, search, status],
+  )
+
+  const usersQuery = useQuery({
+    queryKey: userKeys.list(queryParams),
+    queryFn: () => findAllAdminUsers(queryParams),
+  })
+
+  const updateUser = useMutation({
+    mutationFn: ({ id, dto }: { id: string; dto: AdminUpdateUserDto }) =>
+      updateAdminUser(id, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: userKeys.all })
+    },
+  })
+
+  function updateTargetUser(user: AdminUser, dto: AdminUpdateUserDto) {
+    void updateUser.mutateAsync({ id: user._id, dto })
+  }
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div>
         <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
           用户管理
         </h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          查看用户信息，调整管理员/用户角色，并禁用异常账号。
+        </p>
       </div>
 
       <Card>
         <CardContent className="p-4">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <Tabs value={role} onValueChange={setRole}>
-              <TabsList>
-                <TabsTrigger value="all">全部</TabsTrigger>
-                <TabsTrigger value="admin">管理员</TabsTrigger>
-                <TabsTrigger value="user">普通用户</TabsTrigger>
-              </TabsList>
-            </Tabs>
-            <div className="relative max-w-sm">
-              <Search
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                size={16}
-              />
-              <Input
-                placeholder="搜索用户名或邮箱..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-          </div>
-
-          <div className="mt-8 flex flex-col items-center justify-center py-12 text-center">
-            <Users
-              size={40}
-              className="mb-4 text-gray-300 dark:text-gray-600"
-            />
-            <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">
-              {searchQuery
-                ? `未找到匹配 "${searchQuery}" 的内容`
-                : '还没有用户'}
-            </h3>
-            {!searchQuery && (
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                系统用户将显示在这里。
-              </p>
-            )}
-          </div>
+          <AdminManagementTable
+            items={usersQuery.data?.items ?? []}
+            columns={columns}
+            status={status}
+            search={search}
+            statusOptions={statusOptions}
+            searchPlaceholder="搜索用户名或邮箱..."
+            emptyTitle="还没有用户"
+            emptyDescription="系统用户会显示在这里，只有管理员可以进入此页面。"
+            isLoading={usersQuery.isLoading}
+            error={usersQuery.error}
+            getRowId={(item) => item._id}
+            onStatusChange={setStatus}
+            onSearchChange={setSearch}
+            extraControls={
+              <select
+                value={role}
+                onChange={(event) =>
+                  setRole(event.target.value as 'all' | AdminUserRole)
+                }
+                className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
+                aria-label="按角色筛选用户"
+              >
+                <option value="all">全部角色</option>
+                <option value="admin">管理员</option>
+                <option value="user">用户</option>
+              </select>
+            }
+            actions={[
+              {
+                label: '设为管理员',
+                icon: <UserCog />,
+                disabled: (item) => item.role === 'admin' || updateUser.isPending,
+                onClick: (item) => updateTargetUser(item, { role: 'admin' }),
+              },
+              {
+                label: '设为用户',
+                icon: <UserRound />,
+                disabled: (item) => item.role === 'user' || updateUser.isPending,
+                onClick: (item) => updateTargetUser(item, { role: 'user' }),
+              },
+              {
+                label: '禁用',
+                icon: <ShieldOff />,
+                variant: 'destructive',
+                disabled: (item) =>
+                  item.status === 'banned' || updateUser.isPending,
+                onClick: (item) => updateTargetUser(item, { status: 'banned' }),
+              },
+              {
+                label: '恢复',
+                icon: <Shield />,
+                disabled: (item) =>
+                  item.status === 'active' || updateUser.isPending,
+                onClick: (item) => updateTargetUser(item, { status: 'active' }),
+              },
+            ]}
+          />
         </CardContent>
       </Card>
     </div>
   )
+}
+
+function formatDate(value?: string) {
+  if (!value) return '未记录'
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value
+  return new Intl.DateTimeFormat('zh-CN', {
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date)
 }

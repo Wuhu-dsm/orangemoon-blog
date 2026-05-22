@@ -1,76 +1,141 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Plus, Link as LinkIcon, Search } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useMemo, useState } from 'react'
+import { Check, ExternalLink, Trash2, X } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
+import {
+  AdminManagementTable,
+  type ManagementColumn,
+} from '@/components/admin/management/AdminManagementTable'
+
+type FriendLinkStatus = 'pending' | 'approved' | 'rejected'
+
+interface FriendLinkItem {
+  id: string
+  siteName: string
+  url: string
+  owner: string
+  status: FriendLinkStatus
+  submittedAt: string
+}
+
+const friendLinks: FriendLinkItem[] = []
+
+const statusOptions = [
+  { value: 'all', label: '全部' },
+  { value: 'pending', label: '待审核' },
+  { value: 'approved', label: '已通过' },
+  { value: 'rejected', label: '已拒绝' },
+]
+
+const statusLabel: Record<FriendLinkStatus, string> = {
+  pending: '待审核',
+  approved: '已通过',
+  rejected: '已拒绝',
+}
+
+const columns: ManagementColumn<FriendLinkItem>[] = [
+  {
+    key: 'siteName',
+    label: '站点',
+    className: 'min-w-64 whitespace-normal',
+    render: (item) => (
+      <div className="space-y-1">
+        <div className="font-medium text-gray-900 dark:text-gray-100">
+          {item.siteName}
+        </div>
+        <a
+          href={item.url}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-1 text-xs text-primary-600"
+        >
+          {item.url}
+          <ExternalLink className="size-3" />
+        </a>
+      </div>
+    ),
+  },
+  {
+    key: 'owner',
+    label: '申请人',
+    render: (item) => item.owner,
+  },
+  {
+    key: 'status',
+    label: '状态',
+    render: (item) => <Badge variant="outline">{statusLabel[item.status]}</Badge>,
+  },
+  {
+    key: 'submittedAt',
+    label: '提交时间',
+    render: (item) => item.submittedAt,
+  },
+]
 
 export default function AdminFriendLinks() {
   const [status, setStatus] = useState('all')
-  const [searchQuery, setSearchQuery] = useState('')
+  const [search, setSearch] = useState('')
+
+  const filteredItems = useMemo(() => {
+    return friendLinks.filter((item) => {
+      const statusMatched = status === 'all' || item.status === status
+      const keyword = search.trim().toLowerCase()
+      const searchMatched =
+        !keyword ||
+        item.siteName.toLowerCase().includes(keyword) ||
+        item.url.toLowerCase().includes(keyword) ||
+        item.owner.toLowerCase().includes(keyword)
+
+      return statusMatched && searchMatched
+    })
+  }, [search, status])
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div>
         <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
           友链管理
         </h2>
-        <Button asChild className="gap-2">
-          <Link to="/admin/friends/new">
-            <Plus size={16} />
-            添加友链
-          </Link>
-        </Button>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          管理待审核、已通过、已拒绝的友链申请。
+        </p>
       </div>
 
       <Card>
         <CardContent className="p-4">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <Tabs value={status} onValueChange={setStatus}>
-              <TabsList>
-                <TabsTrigger value="all">全部</TabsTrigger>
-                <TabsTrigger value="pending">待审核</TabsTrigger>
-                <TabsTrigger value="approved">已通过</TabsTrigger>
-                <TabsTrigger value="rejected">已拒绝</TabsTrigger>
-              </TabsList>
-            </Tabs>
-            <div className="relative max-w-sm">
-              <Search
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                size={16}
-              />
-              <Input
-                placeholder="搜索网站名称..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-          </div>
-
-          <div className="mt-8 flex flex-col items-center justify-center py-12 text-center">
-            <LinkIcon
-              size={40}
-              className="mb-4 text-gray-300 dark:text-gray-600"
-            />
-            <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">
-              {searchQuery
-                ? `未找到匹配 "${searchQuery}" 的内容`
-                : '还没有友链'}
-            </h3>
-            {!searchQuery && (
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                添加第一个友链，或等待访客提交申请。
-              </p>
-            )}
-            <Button asChild className="mt-4 gap-2">
-              <Link to="/admin/friends/new">
-                <Plus size={16} />
-                添加友链
-              </Link>
-            </Button>
-          </div>
+          <AdminManagementTable
+            items={filteredItems}
+            columns={columns}
+            status={status}
+            search={search}
+            statusOptions={statusOptions}
+            searchPlaceholder="搜索站点名称、链接或申请人..."
+            emptyTitle="还没有友链申请"
+            emptyDescription="待审核、已通过、已拒绝的友链都会在这里管理。"
+            getRowId={(item) => item.id}
+            onStatusChange={setStatus}
+            onSearchChange={setSearch}
+            actions={[
+              {
+                label: '通过',
+                icon: <Check />,
+                disabled: (item) => item.status === 'approved',
+                onClick: () => undefined,
+              },
+              {
+                label: '拒绝',
+                icon: <X />,
+                disabled: (item) => item.status === 'rejected',
+                onClick: () => undefined,
+              },
+              {
+                label: '删除',
+                icon: <Trash2 />,
+                variant: 'destructive',
+                onClick: () => undefined,
+              },
+            ]}
+          />
         </CardContent>
       </Card>
     </div>
