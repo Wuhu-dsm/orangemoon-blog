@@ -84,12 +84,12 @@
 
 ### Admin Dashboard
 
-- [ ] **ADMN-01**: 管理后台独立路由 `/admin`，需管理员角色登录访问
+- [x] **ADMN-01**: 管理后台独立路由 `/admin`，需管理员角色登录访问
 - [ ] **ADMN-02**: 后台仪表盘展示站点概览（内容统计、访问趋势、最新动态）
 - [x] **ADMN-03**: 后台支持文章/项目/笔记的完整 CRUD
-- [ ] **ADMN-04**: 后台支持友链审核和管理
-- [ ] **ADMN-05**: 后台支持留言管理（审核、回复、删除、置顶）
-- [ ] **ADMN-06**: 后台支持用户管理（查看、禁用、调整角色）
+- [x] **ADMN-04**: 后台支持友链审核和管理
+- [x] **ADMN-05**: 后台支持留言管理（审核、回复、删除、置顶）
+- [x] **ADMN-06**: 后台支持用户管理（查看、禁用、调整角色）
 
 ### Data & Subscription
 
@@ -143,11 +143,11 @@
 | AUTH-03 | Phase 1 | Complete |
 | AUTH-04 | Phase 1 | Complete |
 | AUTH-05 | Phase 1 | Complete |
-| ADMN-01 | Phase 2 | Pending |
+| ADMN-01 | Phase 2 | Complete |
 | ADMN-03 | Phase 2 | Complete |
-| ADMN-04 | Phase 2 | Pending |
-| ADMN-05 | Phase 2 | Pending |
-| ADMN-06 | Phase 2 | Pending |
+| ADMN-04 | Phase 2 | Complete |
+| ADMN-05 | Phase 2 | Complete |
+| ADMN-06 | Phase 2 | Complete |
 | ARTC-07 | Phase 2 | Complete |
 | NOTE-05 | Phase 2 | Complete |
 | PROJ-05 | Phase 2 | Complete |

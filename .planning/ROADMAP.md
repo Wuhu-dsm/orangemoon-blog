@@ -11,7 +11,7 @@
 | # | Phase | Goal | Requirements | Success Criteria |
 |---|-------|------|--------------|------------------|
 | 1 | Infrastructure | 4/4 | Complete    | 2026-05-21 |
-| 2 | Content Management Core | 7/8 | In Progress|  |
+| 2 | Content Management Core | 8/8 | Complete   | 2026-05-22 |
 | 3 | Article Frontend | 文章列表、详情、归档、评论前端 | ARTC-01~06 | 5 |
 | 4 | Note Frontend | 笔记看板、详情、文集前端 | NOTE-01~04 | 4 |
 | 5 | Home Dashboard | 数据驱动的完整首页 | HOME-01~09 | 5 |
@@ -54,7 +54,7 @@
 
 **UI hint:** yes
 
-**Plans:** 7/8 plans executed
+**Plans:** 8/8 plans complete
 
 Plans:
 
