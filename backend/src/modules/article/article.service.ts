@@ -65,6 +65,10 @@ export class ArticleService {
       throw new NotFoundException('Article not found');
     }
 
+    console.log('[DEBUG] update dto:', JSON.stringify(dto, null, 2));
+    console.log('[DEBUG] dto.body:', JSON.stringify(dto.body, null, 2));
+    console.log('[DEBUG] dto.body.blocks:', JSON.stringify(dto.body?.blocks, null, 2));
+
     let slug = existing.slug;
     if (dto.slug !== undefined) {
       const baseSlug = createSlugBase(dto.slug);

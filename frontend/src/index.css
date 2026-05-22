@@ -107,7 +107,8 @@
 /* ---- BlockNote admin editor theme overrides ---- */
 
 @layer components {
-  .admin-block-editor .bn-root {
+  .admin-block-editor .bn-root,
+  .admin-block-editor.bn-root {
     --bn-colors-editor-background: hsl(var(--card));
     --bn-colors-editor-text: hsl(var(--foreground));
     --bn-colors-side-menu: hsl(var(--card));
@@ -128,7 +129,8 @@
     --bn-colors-placeholder: hsl(var(--muted-foreground));
   }
 
-  .admin-block-editor .bn-editor {
+  .admin-block-editor .bn-editor,
+  .admin-block-editor.bn-root .bn-editor {
     background: hsl(var(--card));
     color: hsl(var(--foreground));
     min-height: 380px;

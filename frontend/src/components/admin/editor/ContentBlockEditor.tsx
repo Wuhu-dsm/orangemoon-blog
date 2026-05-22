@@ -1,9 +1,8 @@
-import '@blocknote/react/style.css'
-import {
-  BlockNoteViewRaw,
-  useCreateBlockNote,
-} from '@blocknote/react'
-import type { PartialBlock } from '@blocknote/core'
+import '@blocknote/mantine/style.css'
+import { BlockNoteView } from '@blocknote/mantine'
+import { useCreateBlockNote } from '@blocknote/react'
+import type { Dictionary, PartialBlock } from '@blocknote/core'
+import { zh } from '@blocknote/core/locales'
 import { useEffect, useRef, useMemo } from 'react'
 import type { BlockContent } from '../../../types/content'
 import { useThemeStore } from '../../../stores/themeStore'
@@ -29,6 +28,17 @@ export function ContentBlockEditor({
     // Intentionally stable: useCreateBlockNote only reads initialContent once.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  const dictionary = useMemo<Dictionary>(
+    () => ({
+      ...zh,
+      placeholders: {
+        ...zh.placeholders,
+        emptyDocument: emptyPrompt,
+        default: emptyPrompt,
+      },
+    }),
+    [emptyPrompt],
+  )
 
   const { isDark } = useThemeStore()
 
@@ -41,14 +51,7 @@ export function ContentBlockEditor({
             return url
           }
         : undefined,
-      dictionary: {
-        placeholders: {
-          emptyDocument: emptyPrompt,
-          default: emptyPrompt,
-        },
-        // BlockNote dictionary type is vendor-specific; cast is intentional at the adapter boundary.
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any,
+      dictionary,
       pasteHandler: ({ defaultPasteHandler }) => {
         return defaultPasteHandler({
           prioritizeMarkdownOverHTML: true,
@@ -56,7 +59,7 @@ export function ContentBlockEditor({
         })
       },
     },
-    [],
+    [dictionary],
   )
 
   const isInternalChange = useRef(false)
@@ -76,8 +79,8 @@ export function ContentBlockEditor({
   }, [value, editor])
 
   return (
-    <div className="bn-container admin-block-editor">
-      <BlockNoteViewRaw
+    <div className="admin-block-editor">
+      <BlockNoteView
         editor={editor}
         editable={!readOnly}
         theme={isDark ? 'dark' : 'light'}
@@ -88,6 +91,7 @@ export function ContentBlockEditor({
         linkToolbar
         slashMenu
         sideMenu
+        filePanel
         tableHandles
       />
     </div>

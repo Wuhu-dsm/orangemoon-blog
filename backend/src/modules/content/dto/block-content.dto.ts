@@ -1,4 +1,7 @@
+import { IsArray, IsOptional } from 'class-validator';
+
 export class BlockContentDto {
-  /** Editor-native block JSON payload */
+  @IsOptional()
+  @IsArray()
   blocks: unknown[];
 }

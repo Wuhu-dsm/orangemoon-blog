@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git worktree *)",
+      "Bash(git branch *)",
+      "Bash(git *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(npx tsc *)",
+      "Bash(gsd-sdk query *)",
+      "Bash(npm ls *)",
+      "Skill(gsd:code-review)",
+      "Bash(node -e \"const b = require\\('@blocknote/react'\\); console.log\\(Object.keys\\(b\\).filter\\(k => k.includes\\('View'\\) || k.includes\\('view'\\)\\).join\\('\\\\n'\\)\\)\")",
+      "Bash(node -e ' *)",
+      "Bash(node -e \"const p = require\\('./node_modules/class-transformer/package.json'\\); console.log\\('class-transformer:', p.version\\);\")",
+      "Bash(node -e \"const p = require\\('./node_modules/class-validator/package.json'\\); console.log\\('class-validator:', p.version\\);\")"
+    ]
+  }
+}
