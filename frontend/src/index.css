@@ -103,3 +103,33 @@
     font: inherit;
   }
 }
+
+/* ---- BlockNote admin editor theme overrides ---- */
+
+@layer components {
+  .admin-block-editor .bn-root {
+    --bn-colors-editor-background: hsl(var(--card));
+    --bn-colors-editor-text: hsl(var(--foreground));
+    --bn-colors-side-menu: hsl(var(--card));
+    --bn-colors-side-menu-foreground: hsl(var(--muted-foreground));
+    --bn-colors-hovered: hsl(var(--accent));
+    --bn-colors-hovered-text: hsl(var(--accent-foreground));
+    --bn-colors-menu: hsl(var(--popover));
+    --bn-colors-menu-text: hsl(var(--popover-foreground));
+    --bn-colors-tooltip: hsl(var(--popover));
+    --bn-colors-tooltip-text: hsl(var(--popover-foreground));
+    --bn-colors-border: hsl(var(--border));
+    --bn-colors-shadow: hsl(var(--border));
+    --bn-colors-selected: hsl(var(--accent));
+    --bn-colors-selected-text: hsl(var(--accent-foreground));
+    --bn-colors-table-cell: hsl(var(--card));
+    --bn-colors-table-cell-text: hsl(var(--foreground));
+    --bn-colors-table-border: hsl(var(--border));
+    --bn-colors-placeholder: hsl(var(--muted-foreground));
+  }
+
+  .admin-block-editor .bn-editor {
+    background: hsl(var(--card));
+    color: hsl(var(--foreground));
+  }
+}
