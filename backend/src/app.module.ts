@@ -24,6 +24,7 @@ import { ArticleModule } from './modules/article/article.module';
 import { HealthModule } from './modules/health/health.module';
 import { NoteModule } from './modules/note/note.module';
 import { ProjectModule } from './modules/project/project.module';
+import { SettingModule } from './modules/setting/setting.module';
 import { UserModule } from './modules/user/user.module';
 import { JwtAuthGuard } from './modules/auth/strategies/jwt-auth.guard';
 import { UploadModule } from './modules/upload/upload.module';
@@ -74,6 +75,7 @@ import { VisitorModule } from './modules/visitor/visitor.module';
     ArticleModule,
     NoteModule,
     ProjectModule,
+    SettingModule,
   ],
   controllers: [AppController],
   providers: [

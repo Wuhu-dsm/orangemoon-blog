@@ -36,6 +36,9 @@ services:
       - JWT_REFRESH_EXPIRES_IN=30d
       - UPLOAD_DIR=/app/uploads
       - MAX_FILE_SIZE=5242880
+      - OWNER_EMAIL=admin@orangemoon.blog
+      - OWNER_USERNAME=admin
+      - OWNER_PASSWORD=admin123456
     depends_on:
       mongodb:
         condition: service_healthy

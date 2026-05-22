@@ -5,6 +5,7 @@ import {
   BookOpen,
   FolderOpen,
   PenLine,
+  Settings,
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -52,6 +53,7 @@ const quickActions = [
   { label: '写文章', path: '/admin/articles/new', icon: PenLine },
   { label: '记笔记', path: '/admin/notes/new', icon: BookOpen },
   { label: '建项目', path: '/admin/projects/new', icon: FolderOpen },
+  { label: '首页配置', path: '/admin/settings', icon: Settings },
 ]
 
 export default function AdminOverview() {

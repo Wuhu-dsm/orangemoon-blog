@@ -11,6 +11,7 @@ import AdminProjects from '../pages/Admin/AdminProjects'
 import AdminFriendLinks from '../pages/Admin/AdminFriendLinks'
 import AdminGuestbook from '../pages/Admin/AdminGuestbook'
 import AdminUsers from '../pages/Admin/AdminUsers'
+import AdminSettings from '../pages/Admin/AdminSettings'
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,7 @@ export const router = createBrowserRouter([
       { path: 'friends', element: <AdminFriendLinks /> },
       { path: 'guestbook', element: <AdminGuestbook /> },
       { path: 'users', element: <AdminUsers /> },
+      { path: 'settings', element: <AdminSettings /> },
       { path: '*', element: <Navigate to="/admin" replace /> },
     ],
   },

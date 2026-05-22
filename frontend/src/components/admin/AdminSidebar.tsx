@@ -8,6 +8,7 @@ import {
   Link as LinkIcon,
   MessageSquare,
   Users,
+  Settings,
   Menu,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -28,6 +29,7 @@ const navItems = [
   { icon: LinkIcon, label: '友链', path: '/admin/friends' },
   { icon: MessageSquare, label: '留言', path: '/admin/guestbook' },
   { icon: Users, label: '用户', path: '/admin/users' },
+  { icon: Settings, label: '首页配置', path: '/admin/settings' },
 ]
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {

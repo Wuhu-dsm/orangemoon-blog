@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { Shield, ShieldOff, UserCog, UserRound } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
@@ -103,7 +104,9 @@ export default function AdminUsers() {
       updateAdminUser(id, dto),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userKeys.all })
+      toast.success('用户更新成功')
     },
+    onError: () => toast.error('用户更新失败'),
   })
 
   function updateTargetUser(user: AdminUser, dto: AdminUpdateUserDto) {
