@@ -31,3 +31,35 @@ export async function fetchPublicProjects(params?: {
   >('/projects', { params })
   return response.data
 }
+
+/** Public article fields exposed by GET /api/v1/articles */
+export interface PublicArticle {
+  _id: string
+  title: string
+  slug: string
+  summary?: string
+  coverImage?: string
+  tags: string[]
+  category?: string
+  body?: { blocks: unknown }
+  publishedAt?: string
+  createdAt: string
+  updatedAt: string
+  viewCount?: number
+  readCount?: number
+  views?: number
+}
+
+export async function fetchPublicArticles(params?: {
+  page?: number
+  pageSize?: number
+  tag?: string
+  category?: string
+  search?: string
+}): Promise<PublicListResponse<PublicArticle>> {
+  const response = await apiClient.get<
+    unknown,
+    ApiEnvelope<PublicListResponse<PublicArticle>>
+  >('/articles', { params })
+  return response.data
+}
